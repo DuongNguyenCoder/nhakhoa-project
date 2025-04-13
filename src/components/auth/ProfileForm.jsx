@@ -5,8 +5,9 @@ import { setCurrentUser } from "@/redux/appSlice";
 
 const ProfileForm = () => {
   const dispatch = useDispatch();
-  const currentUser = useSelector((state) => state.app.currentUser);
-  console.log("Redux currentUser object:", currentUser); 
+  // Lấy dữ liệu user từ Redux (trong currentUser.data)
+  const currentUser = useSelector((state) => state.app.currentUser?.data);
+  const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -16,6 +17,8 @@ const ProfileForm = () => {
     profilePic: null,
   });
   const [preview, setPreview] = useState("");
+
+  //đồng bộ data từ redux vô form
   useEffect(() => {
     if (currentUser) {
       setFormData({
@@ -29,8 +32,6 @@ const ProfileForm = () => {
       setPreview(currentUser.profilePic || "");
     }
   }, [currentUser]);
-
-  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -58,22 +59,29 @@ const ProfileForm = () => {
       }
 
       const res = await apiUpdateProfile(submitData);
+      const updatedUser = res?.data?.data;
       console.log("TEST UPDATE: ", res.data.data);
 
-      if (res?.data?.data) {
-        dispatch(setCurrentUser(res.data.data));
+      if (updatedUser) {
+        dispatch(setCurrentUser(updatedUser));
         alert("Cập nhật thành công!");
       } else {
         alert("Dữ liệu trả về không hợp lệ.");
       }
     } catch (err) {
+      console.error("Lỗi cập nhật profile:", err);
       alert("Có lỗi xảy ra. Vui lòng thử lại!");
-      console.error(err);
     } finally {
       setLoading(false);
     }
   };
-  console.log();
+  if (!currentUser) {
+    return (
+      <div className="p-6 text-center text-gray-500">
+        Đang tải thông tin người dùng...
+      </div>
+    );
+  }
   return (
     <form
       onSubmit={handleSubmit}

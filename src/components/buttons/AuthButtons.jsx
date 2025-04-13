@@ -15,7 +15,7 @@ const AuthButtons = () => {
 
     const isLoggedIn = useSelector((state) => state.app.isSignIn);
     const currentUser = useSelector((state) => state.app.currentUser);
-    const firstName = currentUser?.name?.split(" ")[0];
+    const firstName = currentUser?.data?.name?.split(" ")[0];
     const handleLogOut = () => {
       dispatch(setIsSignOut());
       navigate("/");
