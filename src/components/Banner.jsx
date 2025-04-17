@@ -1,79 +1,35 @@
-import React, { useEffect, useRef, useState } from "react";
-import { ImgsBanner } from "@/data/ImgsBanner";
+import React, { useEffect, useState } from 'react'
+import BannerSlider from './BannerSlider';
+import { apiGetBanner } from '@/apis/BannerAPI';
 
-export default function Banner() {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const trackRef = useRef(null);
-  const [paused, setPaused] = useState(false);
-
-  const goToSlide = (direction) => {
-    setCurrentIndex((prevIndex) =>
-      (prevIndex + direction + ImgsBanner.length) % ImgsBanner.length
-    );
-  };
-
-  useEffect(() => {
-    if (paused) return;
-    const interval = setInterval(() => {
-      goToSlide(1);
-    }, 2500);
-    return () => clearInterval(interval);
-  }, [paused]);
-
-  useEffect(() => {
-    const offset = currentIndex * 100;
-    if (trackRef.current) {
-      trackRef.current.style.transform = `translateX(-${offset}%)`;
-    }
-  }, [currentIndex]);
-
+const Banner = () => {
+  const [dataBanner, setDataBanner] = useState([]);
+      useEffect(() => {
+          const getDataBanner = async () => {
+            const res = await apiGetBanner();
+            console.log("API GET BANNERSLIDER: ", res.data.data);
+            setDataBanner(res.data.data);
+          };
+          getDataBanner();
+        }, []);
   return (
-    <div 
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
-      className="relative w-full overflow-hidden md:h-64 lg:h-[394px]"
-    >
-      <div
-        ref={trackRef}
-        className="flex transition-transform duration-500 ease-in-out"
-      >
-        {ImgsBanner.map((item, index) => (
-          <img
-            key={index}
-            src={item.image}
-            className="w-full flex-shrink-0 object-cover"
-            alt={`Banner ${index + 1}`}
-          />
-        ))}
+    <div className='w-full h-full flex gap-3'>
+      <div className='xl:w-[75%] w-full h-full'>
+        <BannerSlider/>
       </div>
-
-      {/* Navigation buttons */}
-      <button
-        onClick={() => goToSlide(-1)}
-        className="absolute top-1/2 left-2 -translate-y-1/2 bg-white bg-opacity-50 px-2 py-1 rounded-full shadow hover:bg-opacity-80"
-      >
-        ‹
-      </button>
-      <button
-        onClick={() => goToSlide(1)}
-        className="absolute top-1/2 right-2 -translate-y-1/2 bg-white bg-opacity-50 px-2 py-1 rounded-full shadow hover:bg-opacity-80"
-      >
-        ›
-      </button>
-
-      <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-2">
-        {ImgsBanner.map((_, idx) => (
-          <button
-            key={idx}
-            onClick={() => setCurrentIndex(idx)}
-            className={`h-2 w-2 rounded-full ${
-              idx === currentIndex ? "bg-white" : "bg-white/50"
-            }`}
-          ></button>
+      <div className='w-[25%] hidden xl:grid h-full grid-rows-3 gap-2'>
+        {dataBanner.slice(0, 3).map((item, index) => (
+          <div key={index} className='rounded-md mx-2'>
+            <img 
+              src={item.bannerPic} 
+              alt={`Thumbnail ${index + 1}`}
+              className='h-full w-full'
+            />
+          </div>
         ))}
       </div>
     </div>
   );
-}
+};
 
-
+export default Banner;

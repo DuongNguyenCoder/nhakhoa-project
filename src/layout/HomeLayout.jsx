@@ -9,15 +9,15 @@ import { Outlet } from 'react-router-dom';
 
 const HomeLayout = () => {
   return (
-    <div className='flex flex-col min-h-screen items-center'>
+    <div className='flex flex-col min-h-screen items-center bg-amber-100'>
       <div className='w-full'>
         <TopHeader/>
         <MainHeader/>
       </div>
-      <div className='w-full'>
+      <div className='w-full h-auto md:mb-3'>
         <BannerHome/>
       </div>
-      <main className='w-full flex-wrap'>
+      <main className='w-full flex-wrap px-3 lg:px-6 xl:px-9 2xl:px-12 mx-auto'>
         <Outlet/>
       </main>
     </div>

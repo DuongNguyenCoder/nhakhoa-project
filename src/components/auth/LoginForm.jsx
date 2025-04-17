@@ -87,7 +87,7 @@ export default function LoginForm() {
             <input type="checkbox" className="mr-2" />
             Ghi nhớ đăng nhập
           </label>
-          <a href="/quen-mat-khau" className="text-sm text-lime-600 hover:underline">
+          <a href="/auth/forgot" className="text-sm text-lime-600 hover:underline">
             Quên mật khẩu?
           </a>
         </div>

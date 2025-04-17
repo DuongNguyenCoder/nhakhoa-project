@@ -3,7 +3,8 @@ import SideBar from "@/components/SideBar";
 import ProductCard from "@/components/ui/ProductCart";
 import ProductSlider from "@/components/ui/ProductSlider";
 import React, { useEffect, useState } from "react";
-
+import Pagination from "@/components/ui/Pagination"; 
+import { CubeIcon } from "@heroicons/react/24/solid";
 const Products = () => {
   const [dataProduct, setDataProduct] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
@@ -19,38 +20,21 @@ const Products = () => {
   }, [currentPage]);
 
   return (
-    <div id="product-list" className="flex w-full flex-col gap-6">
-      {dataProduct.some((p) => p.isFeatured) && (
-        <div className="w-full">
-          <ProductSlider products={dataProduct} />
-        </div>
-      )}
-      <div className="w-full lg:flex ">
+    <div id="product-list" className="flex w-full flex-col gap-6 bg-white rounded-2xl py-2">
+      <div className="w-full ">
         <div className="w-full px-3 2xl:pl-10">
+          <div className="w-full mb-4 flex gap-1.5 items-center mt-1.5">
+          <CubeIcon className="size-7 text-yellow-400"/>
           <h1 className="text-lg font-bold text-red-900">SẢN PHẨM</h1>
-          <div className="grid grid-cols-2 gap-5 lg:grid-cols-3">
+          </div>
+          <div className="w-full grid grid-cols-2 gap-5 lg:grid-cols-3">
             {dataProduct.map((product) => (
               <ProductCard key={product.index} item={product} />
             ))}
           </div>
-          <div id="pagination" className="w-full">
-            {[...Array(totalPages)].map((_, index) => (
-              <button
-                key={index}
-                className={`rounded px-3 py-1 ${
-                  index + 1 === currentPage
-                    ? "bg-blue-600 text-white"
-                    : "bg-gray-200"
-                }`}
-                onClick={() => setCurrentPage(index + 1)}
-              >
-                {index + 1}
-              </button>
-            ))}
+          <div className="w-full">
+            <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={(page) => setCurrentPage(page)}/>
           </div>
-        </div>
-        <div className="w-full px-2 lg:w-[30%] mt-7">
-          <SideBar />
         </div>
       </div>
     </div>

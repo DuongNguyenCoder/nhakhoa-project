@@ -1,26 +1,52 @@
-import MainHeader from '@/components/MainHeader'
-import TopHeader from '@/components/TopHeader'
-import React from 'react'
-import { Outlet } from 'react-router-dom'
+import { apiGetAllProduct } from "@/apis/ProductAPI";
+import MainHeader from "@/components/MainHeader";
+import SideBar from "@/components/SideBar";
+import SideBarDiscount from "@/components/SideBarDiscount";
+import TopHeader from "@/components/TopHeader";
+import ProductSlider from "@/components/ui/ProductSlider";
+import React, { useEffect, useState } from "react";
+import { Outlet } from "react-router-dom";
 
 const ProductLayout = () => {
+  const [dataProduct, setDataProduct] = useState([]);
+  useEffect(() => {
+    const getAPIProduct = async () => {
+      const response = await apiGetAllProduct({ limit: 9999 });
+      console.log("FULL RESPONSE PRODUCT", response);
+      setDataProduct(response.data.data);
+    };
+    getAPIProduct();
+  }, []);
   return (
     <div>
-      <div className='min-h-screen bg-gray-200'>
-      <div className="w-full">
-        <TopHeader />
-        <MainHeader />
-      </div>
-      <div className='w-full md:w-[760px] lg:w-[970px] xl:w-[1230px] 2xl:w-[1500px] mx-auto md:px-1 lg:px-3'>
-        <main className="w-full px-4">
-          <section id='content'>
-            <Outlet />
-          </section> 
-        </main>
-      </div>
-    </div>
-    </div>
-  )
-}
+      <div className="min-h-screen bg-gray-200">
+        <div className="w-full">
+          <TopHeader />
+          <MainHeader />
+        </div>
+        <div className="mx-auto w-full md:w-[760px] md:px-1 lg:w-[970px] lg:px-3 xl:w-[1230px] 2xl:w-[1500px]">
+          <main className="w-full px-4">
+            {dataProduct.length > 0 && (
+              <ProductSlider
+                products={dataProduct.filter((p) => p.isFeatured)}
+                title="SẢN PHẨM NỔI BẬT - HOT DEAL"
+              />
+            )}
 
-export default ProductLayout
+            <div className="my-5 w-full lg:flex">
+              <section id="content" className="w-full p-2">
+                <Outlet />
+              </section>
+              <div className="mt-6 flex w-full flex-col px-2 lg:mt-0 lg:w-[32%]">
+                <SideBar />
+                <SideBarDiscount />
+              </div>
+            </div>
+          </main>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default ProductLayout;

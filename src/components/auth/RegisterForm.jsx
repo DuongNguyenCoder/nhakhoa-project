@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { apiSignUp } from "@/apis/userAPI";
 import { useNavigate } from "react-router-dom";
-
+import { toast } from "react-toastify";
 const RegisterForm = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -27,30 +27,25 @@ const RegisterForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validate()) return;
-
-    try {
       const payload = {
         email: formData.email.trim(),
         name: formData.name.trim(),
         password: formData.password,
       };
-
-      await apiSignUp(payload);
-      alert("Đăng ký thành công!");
-      navigate("/dang-nhap");
-      console.log("PAYLOAD: ", payload)
-    } catch (err) {
-      console.error("Lỗi đăng ký:", err?.response?.data || err.message);
-      alert(
-        err?.response?.data?.message || "Đăng ký thất bại. Vui lòng thử lại."
-      );
-    }
+      const res = await apiSignUp(payload);
+      console.log("RESPONSE API SIGN UP: ", res)
+      if(res?.data?.success){
+        toast.success(res.data.mes);
+        navigate("/dang-nhap");
+      } else {
+        toast.error(res.data.mes);
+      }
   };
 
   return (
     <form
       onSubmit={handleSubmit}
-      className="max-w-md mx-auto p-4 space-y-4 bg-white rounded shadow"
+      className="max-w-md mx-auto shadow-lg p-4 space-y-4 bg-white rounded"
     >
       <h2 className="text-xl font-bold">Đăng ký tài khoản</h2>
 

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { ShoppingCartIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useDispatch, useSelector } from "react-redux";
-import { clearCart, removeFromCart } from "@/redux/appSlice";
+import { clearCart } from "@/redux/appSlice";
 
 const CartShopping = () => {
   const dispatch = useDispatch();
@@ -11,10 +11,7 @@ const CartShopping = () => {
   const totalPrice = cartItems.reduce(
     (sum, item) => sum + item.price * item.quantity, 0
   )
-  const handleRemoveItem = (id) => {
-    dispatch(removeFromCart(id));
-  }
-
+ 
   const handleClearCart = () => {
     dispatch(clearCart());
   }
@@ -61,7 +58,7 @@ const CartShopping = () => {
                           {product.title}
                         </div>
                         <div className="text-red-600 font-medium">
-                          {product.price.toLocaleString()}₫ <span className="text-black font-light">× {product.quantity}</span>
+                          {product.price}₫ <span className="text-black font-light">× {product.quantity}</span>
                         </div>
                       </div>
                       <XMarkIcon onClick={() => handleRemoveItem(product._id)} className="absolute top-2 right-2 size-5 group-hover:scale-105 hover:text-red-500 text-gray-600 cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity duration-200"/>

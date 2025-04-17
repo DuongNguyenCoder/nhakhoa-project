@@ -4,41 +4,63 @@ import About from "@/pages/About";
 import Contact from "@/pages/Contact";
 import HomeLayout from "@/layout/HomeLayout";
 
-import React from 'react'
+import React from "react";
 import DefaultLayout from "@/layout/DefaultLayout";
 import BaoHanh from "@/pages/BaoHanh";
 import HangThanhLy from "@/pages/HangThanhLy";
 import News from "@/pages/News";
-import Products from "@/pages/Products";
-import ProductDetail from "@/pages/ProductDetail";
+import Products from "@/pages/product/Products";
+import ProductDetail from "@/pages/product/ProductDetail";
 import ProductLayout from "@/layout/ProductLayout";
-import RegisterForm from "@/components/auth/RegisterForm";
 import AuthPage from "@/pages/AuthPage";
 import ProfilePage from "@/pages/ProfilePage";
+import ProductByDirectoryPage from "@/pages/product/ProductByDirectoryPage";
+import ProductByCategoryPage from "@/pages/product/ProductByCategoryPage";
 
 const AppRouter = () => {
   return (
     <Routes>
-        <Route element={<HomeLayout/>}>
-            <Route path="/" element={<Home/>}/>
-        </Route>
-        <Route element={<ProductLayout/>}>
-          <Route path="/products" element={<Products/>}/>
-          <Route path="/products/:productId" element={<ProductDetail/>}/>
-          <Route path="/auth/:type" element={<AuthPage />} />
-          <Route path="/dang-nhap" element={<Navigate to="/auth/login" replace />} />
-          <Route path="/dang-ky" element={<Navigate to="/auth/register" replace />} />
-          <Route path="/profile" element={<ProfilePage/>}/>
-        </Route>
-        <Route element={<DefaultLayout/>}>
-            <Route path="/bao-hanh" element={<BaoHanh/>}/>
-            <Route path="/contact" element={<Contact/>}/>
-            <Route path="/hang-thanh-ly" element={<HangThanhLy/>}/>
-            <Route path="/about" element={<About/>}/>
-            <Route path="/news" element={<News/>}/>
-        </Route>
-    </Routes>
-  )
-}
+      {/* Trang chủ */}
+      <Route element={<HomeLayout />}>
+        <Route path="/" element={<Home />} />
+      </Route>
 
-export default AppRouter
+      {/* Layout Product dùng chung cho sản phẩm và sidebar */}
+      <Route path="/products" element={<ProductLayout />}>
+        <Route index element={<Products />} />
+        <Route path=":productId" element={<ProductDetail />} />
+        <Route path="directory" element={<ProductByDirectoryPage />} />
+        <Route path="category" element={<ProductByCategoryPage/>}/>
+      </Route>
+
+      {/* Các route dùng ProductLayout nhưng không có prefix /product */}
+      <Route element={<ProductLayout />}>
+        <Route
+          path="/dang-nhap"
+          element={<Navigate to="/auth/login" replace />}
+        />
+        <Route
+          path="/dang-ky"
+          element={<Navigate to="/auth/register" replace />}
+        />
+        <Route
+          path="/quen-mat-khau"
+          element={<Navigate to="/auth/forgot" replace />}
+        />
+        <Route path="/auth/:type" element={<AuthPage />} />
+        <Route path="/profile" element={<ProfilePage />} />
+      </Route>
+
+      {/* Các trang tĩnh khác */}
+      <Route element={<DefaultLayout />}>
+        <Route path="/bao-hanh" element={<BaoHanh />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/hang-thanh-ly" element={<HangThanhLy />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/news" element={<News />} />
+      </Route>
+    </Routes>
+  );
+};
+
+export default AppRouter;

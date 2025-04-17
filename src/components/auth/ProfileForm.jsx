@@ -26,7 +26,7 @@ const ProfileForm = () => {
         email: currentUser.email || "",
         mobile: currentUser.mobile || "",
         address: currentUser.address || "",
-        profilePic: null,
+        profilePic: currentUser.profilePic || "",
       });
 
       setPreview(currentUser.profilePic || "");
@@ -54,13 +54,16 @@ const ProfileForm = () => {
       if (formData.address) submitData.append("address", formData.address);
 
       // Chỉ append profilePic nếu có file mới
-      if (formData.profilePic instanceof File) {
-        submitData.append("profilePic", formData.profilePic);
-      }
+      submitData.append(
+        "profilePic",
+        formData.profilePic instanceof File
+          ? formData.profilePic
+          : currentUser.profilePic || ""
+      );
 
       const res = await apiUpdateProfile(submitData);
-      const updatedUser = res?.data?.data;
-      console.log("TEST UPDATE: ", res.data.data);
+      const updatedUser = res?.data;
+      console.log("TEST UPDATE: ", updatedUser);
 
       if (updatedUser) {
         dispatch(setCurrentUser(updatedUser));
@@ -75,13 +78,13 @@ const ProfileForm = () => {
       setLoading(false);
     }
   };
-  if (!currentUser) {
-    return (
-      <div className="p-6 text-center text-gray-500">
-        Đang tải thông tin người dùng...
-      </div>
-    );
-  }
+  // if (!currentUser) {
+  //   return (
+  //     <div className="p-6 text-center text-gray-500">
+  //       Đang tải thông tin người dùng...
+  //     </div>
+  //   );
+  // }
   return (
     <form
       onSubmit={handleSubmit}

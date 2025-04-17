@@ -66,3 +66,21 @@
     @apply bg-background text-foreground;
   }
 }
+@layer components {
+  .my-swiper .swiper-button-next,
+  .my-swiper .swiper-button-prev {
+    @apply text-orange-500 w-10 h-10 hover:text-orange-400;
+  }
+
+  .my-swiper .swiper-pagination {
+    @apply absolute bottom-4 mr-1 flex justify-end gap-0.5 z-10;
+  }
+
+  .my-swiper .swiper-pagination-bullet {
+    @apply bg-zinc-400 w-2 h-2 opacity-100;
+  }
+
+  .my-swiper .swiper-pagination-bullet-active {
+    @apply bg-lime-500;
+  }
+}
