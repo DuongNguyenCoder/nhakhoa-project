@@ -12,10 +12,15 @@ const useQuery = () => {
 const ProductByDirectoryPage = () => {
   const query = useQuery();
   const directoryId = query.get("directory");
+  const directoryTitle = query.get("title") || "Sản phẩm";
   const [products, setProducts] = useState([]);
   console.log("directoryId: ", directoryId);
   const [totalPages, setTotalPages] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [directoryId]);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -31,7 +36,9 @@ const ProductByDirectoryPage = () => {
 
   return (
     <div className="w-full">
-      <h1 className="text-lg font-bold text-red-900">sản phẩm</h1>
+      <div className="w-full border-b border-b-blue-300 uppercase tracking-wider mb-4">
+      <h1 className="text-xl font-bold text-blue-600 shadow-lg">{directoryTitle}</h1>
+      </div>
       <div className="grid grid-cols-2 gap-5 lg:grid-cols-3">
         {products.map((product) => (
           <ProductCard key={product._id} item={product} />

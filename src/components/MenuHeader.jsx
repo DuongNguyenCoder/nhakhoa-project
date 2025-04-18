@@ -16,7 +16,7 @@ const MenuHeader = () => {
     }
   }, [location.pathname]);
   return (
-    <div className="flex h-12 items-center space-x-4 border-b border-b-orange-500 md:h-[52px]">
+    <div className="flex h-12 items-center space-x-4 border-b border-b-orange-400 md:h-[52px]">
       <div className="flex h-full w-full justify-around gap-x-0 bg-red-800">
         {isHomePage && (
           <div

@@ -1,4 +1,6 @@
 import { apiGetAllProduct } from "@/apis/ProductAPI";
+import Breadcrumb from "@/components/Breadcrumb";
+import Footer from "@/components/Footer";
 import MainHeader from "@/components/MainHeader";
 import SideBar from "@/components/SideBar";
 import SideBarDiscount from "@/components/SideBarDiscount";
@@ -24,6 +26,7 @@ const ProductLayout = () => {
           <TopHeader />
           <MainHeader />
         </div>
+        <Breadcrumb />
         <div className="mx-auto w-full md:w-[760px] md:px-1 lg:w-[970px] lg:px-3 xl:w-[1230px] 2xl:w-[1500px]">
           <main className="w-full px-4">
             {dataProduct.length > 0 && (
@@ -32,7 +35,6 @@ const ProductLayout = () => {
                 title="SẢN PHẨM NỔI BẬT - HOT DEAL"
               />
             )}
-
             <div className="my-5 w-full lg:flex">
               <section id="content" className="w-full p-2">
                 <Outlet />
@@ -44,6 +46,7 @@ const ProductLayout = () => {
             </div>
           </main>
         </div>
+        <Footer/>
       </div>
     </div>
   );

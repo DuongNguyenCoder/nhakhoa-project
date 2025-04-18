@@ -3,7 +3,7 @@ import AddToCartButton from "@/components/buttons/AddToCartButton";
 import BuyNowButton from "@/components/buttons/BuyNowButton";
 import ProductCard from "@/components/ui/ProductCart";
 import useAddToCart from "@/hooks/useAddToCart";
-import { clearCart } from "@/redux/appSlice";
+import { clearCart, setCartItems, setCurrentUser } from "@/redux/appSlice";
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
@@ -13,17 +13,22 @@ import {
 } from "@heroicons/react/24/outline";
 import { CubeIcon, HandThumbUpIcon } from "@heroicons/react/24/solid";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Pagination from "@/components/ui/Pagination";
+import { apiAddToCard, apiGetCurrent } from "@/apis/userAPI";
+import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
 
 const ProductDetail = () => {
   const { productId } = useParams();
   const [product, setProduct] = useState(null);
   const [quantity, setQuantity] = useState(1);
-  const addToCard = useAddToCart();
+  const dispatch = useDispatch();
   const [allProduct, setAllProduct] = useState();
   const [currentPage, setCurrentPage] = useState();
   const [ totalPages, setTotalPages] = useState();
+  const {isSignIn} = useSelector((state) => state.app)
+  const navigate = useNavigate();
 
   const handleDecrease = () => {
     if (quantity > 1) setQuantity(quantity - 1);
@@ -75,11 +80,35 @@ const ProductDetail = () => {
       prevIndex === product.productPics.length ? 0 : prevIndex + 1,
     );
   };
-
+  
   if (!product) return <div>Đang tải...</div>;
   const discount = Math.round(
     ((product.originalPrice - product.salePrice) / product.originalPrice) * 100,
   );
+
+  const items = [
+    {
+      product: product._id,
+      quantity: quantity,
+    },
+  ];
+  const handleAddToCard = async () => {
+    if (!isSignIn) {
+      toast.warning("Vui lòng đăng nhập để thêm vào giỏ hàng!");
+      return navigate("/dang-nhap");
+    }
+    const res = await apiAddToCard({products: items});
+    console.log("API ADD TO CARD: ", res);
+    if(res.data.success){
+      const res = await apiGetCurrent();
+      if(res?.data?.data){
+        dispatch(setCurrentUser(res.data.data))
+      }
+      toast.success('Đã thêm vào giỏ hàng!');
+    } else {
+      toast.error('Thêm thất bại!');
+    }
+  }
 
   return (
     <div className="w-full">
@@ -187,7 +216,7 @@ const ProductDetail = () => {
               <BuyNowButton />
             </div>
             <div>
-              <AddToCartButton onClick={() => addToCard(product)} />
+              <AddToCartButton onClick={handleAddToCard} />
             </div>
           </div>
           {/* END */}

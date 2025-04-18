@@ -6,6 +6,7 @@ import MenuHeader from '@/components/MenuHeader';
 import Banner from '@/components/Banner';
 import BannerHome from '@/pages/home/BannerHome';
 import { Outlet } from 'react-router-dom';
+import Footer from '@/components/Footer';
 
 const HomeLayout = () => {
   return (
@@ -20,6 +21,9 @@ const HomeLayout = () => {
       <main className='w-full flex-wrap px-3 lg:px-6 xl:px-9 2xl:px-12 mx-auto'>
         <Outlet/>
       </main>
+      <div className='w-full mt-20'>
+      <Footer/>
+      </div>
     </div>
   );
 };

@@ -49,9 +49,20 @@ export const apiResetPassword = (data) =>
     method: "post",
     data,
   });
-export const apiUpdateCart = (data) =>
+export const apiAddToCard = (data) =>
   instance({
-    url: "/api/user/update-cart",
+    url: "/api/user/add-to-cart",
     method: "put",
     data,
+  });
+export const apiRemoveFromCard = (data) =>
+  instance({
+    url: "/api/user/remove-from-cart",
+    method: "put",
+    data,
+  });
+export const apiClearCard = () =>
+  instance({
+    url: "/api/user/clear-cart",
+    method: "put",
   });

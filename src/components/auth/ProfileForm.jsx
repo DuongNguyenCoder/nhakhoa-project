@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { apiUpdateProfile } from "@/apis/userAPI";
+import { apiGetCurrent, apiUpdateProfile } from "@/apis/userAPI";
 import { setCurrentUser } from "@/redux/appSlice";
+import { toast } from "react-toastify";
 
 const ProfileForm = () => {
   const dispatch = useDispatch();
   // Lấy dữ liệu user từ Redux (trong currentUser.data)
-  const currentUser = useSelector((state) => state.app.currentUser?.data);
+  const currentUser = useSelector((state) => state.app.currentUser);
   const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -54,113 +55,115 @@ const ProfileForm = () => {
       if (formData.address) submitData.append("address", formData.address);
 
       // Chỉ append profilePic nếu có file mới
-      submitData.append(
-        "profilePic",
-        formData.profilePic instanceof File
-          ? formData.profilePic
-          : currentUser.profilePic || ""
-      );
+      if (formData.profilePic instanceof File) {
+        submitData.append("profilePic", formData.profilePic);
+      }
 
       const res = await apiUpdateProfile(submitData);
-      const updatedUser = res?.data;
-      console.log("TEST UPDATE: ", updatedUser);
+      console.log("API UPDATE PROFILE: ", res);
 
-      if (updatedUser) {
-        dispatch(setCurrentUser(updatedUser));
-        alert("Cập nhật thành công!");
+      if (res.data.success) {
+        const updatedUser = await apiGetCurrent();
+        dispatch(setCurrentUser(updatedUser.data.data));
+        console.log("Đồng bộ profile thành công");
       } else {
-        alert("Dữ liệu trả về không hợp lệ.");
+        console.log("Lỗi rồi Đcm!");
       }
     } catch (err) {
+      toast.error("Vui lòng chọn 1 Avartar bất kì để cập nhật!")
       console.error("Lỗi cập nhật profile:", err);
-      alert("Có lỗi xảy ra. Vui lòng thử lại!");
     } finally {
       setLoading(false);
     }
   };
-  // if (!currentUser) {
-  //   return (
-  //     <div className="p-6 text-center text-gray-500">
-  //       Đang tải thông tin người dùng...
-  //     </div>
-  //   );
-  // }
+ 
   return (
     <form
       onSubmit={handleSubmit}
-      className="mx-auto w-full max-w-2xl space-y-5 rounded-xl bg-white p-6 shadow-md"
+      className="mx-auto my-2 max-w-3xl rounded-3xl bg-gradient-to-br from-pink-100 via-white to-blue-100 p-8 shadow-2xl ring-1 ring-white/60 backdrop-blur-lg"
     >
-      <h2 className="text-center text-xl font-bold text-gray-800">
-        Cập nhật hồ sơ
+      <h2 className="mb-6 text-center text-3xl font-extrabold text-indigo-700 drop-shadow-lg">
+        🌟 Cập nhật hồ sơ của bạn 🌟
       </h2>
 
-      <div className="flex flex-col items-center gap-2">
+      <div className="flex flex-col items-center gap-4">
         <img
-          src={preview || "/default-avatar.png"} // Fallback nếu không có preview
+          src={preview || "/default-avatar.png"}
           alt="Avatar"
-          className="h-24 w-24 rounded-full border object-cover"
+          className="h-28 w-28 rounded-full border-4 border-white shadow-xl ring-2 ring-indigo-400 transition hover:scale-105 hover:ring-pink-300"
         />
         <input
           type="file"
           name="profilePic"
           accept="image/*"
           onChange={handleChange}
-          className="text-sm"
+          className="text-sm font-medium text-indigo-700"
         />
       </div>
 
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+      <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-2">
         <div>
-          <label className="block text-sm font-medium">Họ tên *</label>
+          <label className="mb-1 block text-sm font-semibold text-gray-700">
+            Họ tên *
+          </label>
           <input
             type="text"
             name="name"
             required
             value={formData.name}
             onChange={handleChange}
-            className="mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+            className="w-full rounded-xl border border-gray-300 bg-white p-3 text-gray-800 shadow-sm transition focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-pink-300"
           />
         </div>
+
         <div>
-          <label className="block text-sm font-medium">Email *</label>
+          <label className="mb-1 block text-sm font-semibold text-gray-700">
+            Email *
+          </label>
           <input
             type="email"
             name="email"
-            required
+            disabled
             value={formData.email}
             onChange={handleChange}
-            className="mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+            className="w-full cursor-not-allowed rounded-xl border border-gray-200 bg-gray-100 p-3 text-gray-500 shadow-inner"
           />
         </div>
+
         <div>
-          <label className="block text-sm font-medium">Số điện thoại</label>
+          <label className="mb-1 block text-sm font-semibold text-gray-700">
+            Số điện thoại
+          </label>
           <input
             type="tel"
             name="mobile"
             value={formData.mobile}
             onChange={handleChange}
-            className="mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+            className="w-full rounded-xl border border-gray-300 bg-white p-3 text-gray-800 shadow-sm transition focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-pink-300"
           />
         </div>
+
         <div>
-          <label className="block text-sm font-medium">Địa chỉ</label>
+          <label className="mb-1 block text-sm font-semibold text-gray-700">
+            Địa chỉ
+          </label>
           <input
             type="text"
             name="address"
             value={formData.address}
             onChange={handleChange}
-            className="mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+            className="w-full rounded-xl border border-gray-300 bg-white p-3 text-gray-800 shadow-sm transition focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-pink-300"
           />
         </div>
       </div>
 
-      <div className="pt-3 text-center">
+      <div className="mt-8 text-center">
         <button
           type="submit"
           disabled={loading}
-          className="rounded-lg bg-indigo-600 px-6 py-2 text-white transition hover:bg-indigo-700 disabled:opacity-60"
+          className="rounded-full bg-gradient-to-r from-indigo-500 via-pink-500 to-purple-500 px-8 py-3 text-lg font-semibold text-white shadow-md transition duration-300 ease-in-out hover:scale-105 hover:shadow-xl disabled:opacity-50"
         >
-          {loading ? "Đang cập nhật..." : "Cập nhật"}
+          {loading ? "💫 Đang cập nhật..." : "✨ Cập nhật hồ sơ ✨"}
         </button>
       </div>
     </form>

@@ -51,10 +51,9 @@ const SideBar = () => {
                   >
                     <div className="flex items-center w-full gap-x-3 md:gap-x-2 lg:gap-x-2.5">
                       {item.directoryPic && <img src={item.directoryPic} className="lg:size-[30px] xl:size-[33px] rounded-full md:size-7 size-8" />}
-                      <Link to={`/products/directory?directory=${item._id}`} className='font-medium text-sm uppercase tracking-wide text-gray-800 text-wrap'>
+                      <Link to={`/products/directory?directory=${item._id}&title=${encodeURIComponent(item.title)}`} className='font-medium text-sm uppercase tracking-wide text-gray-800 text-wrap'>
                         {item.title}
                       </Link>
-                      {/* <span className='font-medium text-sm uppercase tracking-wide text-gray-800 text-wrap'>{item.title}</span> */}
                     </div>
                     <div className='items-center w-auto'>
                     {openIndex === index ? (
@@ -71,17 +70,11 @@ const SideBar = () => {
                           <li key={child._id} className='flex items-center gap-4'>
                             <ArrowRightCircleIcon className='size-4'/>
                             <Link
-                              to = {`/products/category?category=${child._id}`}
+                              to = {`/products/category?category=${child._id}&title=${encodeURIComponent(child.title)}`}
                               className="text-[16px] text-slate-900 hover:text-ellipsis hover:text-[17px] hover:font-medium hover:text-red-600"
                             >
                               {child.title}
                             </Link>
-                            {/* <a
-                              href={child.url}
-                              className="text-[16px] text-slate-900 hover:text-ellipsis hover:text-[17px] hover:font-medium hover:text-red-600"
-                            >
-                              {child.title}
-                            </a> */}
                           </li>
                         ))}
                       </ul>

@@ -15,6 +15,11 @@ const ProductByCategoryPage = () => {
   const query = useQuery();
   const categoryId = query.get("category");
   const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }, [categoryId]);
+
   useEffect(() => {
     const fetchProducts = async () => {
       const res = await apiGetAllProduct({

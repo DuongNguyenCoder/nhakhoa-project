@@ -8,7 +8,7 @@ import MenuHeader from './MenuHeader';
 
 const MainHeader = () => {
   return (
-    <div className='bg-gray-100 w-full items-center h-36 md:h-72 lg:h-[300px] xl:h-72 relative'>
+    <div className='relative bg-gray-100 w-full items-center h-36 md:h-72 lg:h-[300px] xl:h-72'>
       <div className='flex flex-col h-full'>
         <div className='items-center justify-between h-28 lg:h-full xl:h-[135px] flex px-1 md:px-3 py-1'>
           <div className='border-none px-2'>

@@ -1,4 +1,3 @@
-import { apiUpdateCart } from "@/apis/userAPI";
 import { setCartItems } from "@/redux/appSlice";
 import React from "react";
 import { useDispatch } from "react-redux";

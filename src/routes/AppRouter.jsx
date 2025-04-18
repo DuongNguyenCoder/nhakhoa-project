@@ -16,6 +16,10 @@ import AuthPage from "@/pages/AuthPage";
 import ProfilePage from "@/pages/ProfilePage";
 import ProductByDirectoryPage from "@/pages/product/ProductByDirectoryPage";
 import ProductByCategoryPage from "@/pages/product/ProductByCategoryPage";
+import AuthLayout from "@/layout/AuthLayout";
+import CheckoutStep1 from "@/pages/checkout/CheckOutStep1";
+import CheckoutStep2 from "@/pages/checkout/CheckoutStep2";
+import ThankYouPage from "@/pages/checkout/ThankYouPage";
 
 const AppRouter = () => {
   return (
@@ -30,11 +34,14 @@ const AppRouter = () => {
         <Route index element={<Products />} />
         <Route path=":productId" element={<ProductDetail />} />
         <Route path="directory" element={<ProductByDirectoryPage />} />
-        <Route path="category" element={<ProductByCategoryPage/>}/>
+        <Route path="category" element={<ProductByCategoryPage />} />
       </Route>
 
-      {/* Các route dùng ProductLayout nhưng không có prefix /product */}
-      <Route element={<ProductLayout />}>
+      {/* */}
+      <Route path="/thank-you" element={<ThankYouPage />} />
+      <Route element={<AuthLayout />}>
+        <Route path="/check-out-step1" element={<CheckoutStep1 />} />
+        <Route path="/check-out-step2" element={<CheckoutStep2 />} />
         <Route
           path="/dang-nhap"
           element={<Navigate to="/auth/login" replace />}

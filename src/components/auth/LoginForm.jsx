@@ -1,8 +1,8 @@
 // src/components/LoginForm.jsx
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { apiGetCurrent, apiSignIn } from "@/apis/userAPI";
 import { useNavigate } from "react-router-dom";
-import { setIsSignIn, setCurrentUser } from "@/redux/appSlice";
+import { setIsSignIn, setCurrentUser, setCartItems } from "@/redux/appSlice";
 import { useDispatch } from "react-redux";
 
 export default function LoginForm() {
@@ -21,13 +21,13 @@ export default function LoginForm() {
   
     try {
       const res = await apiSignIn(formData);
-      console.log("KẾT QUẢ:", res);
+      console.log("KẾT QUẢ SIGN IN:", res);
   
       if (res?.data?.success) {
         dispatch(setIsSignIn(true));
         const currentUserRes = await apiGetCurrent();
-        if (currentUserRes?.data) {
-            dispatch(setCurrentUser(currentUserRes.data));
+        if (currentUserRes?.data?.data) {
+            dispatch(setCurrentUser(currentUserRes.data.data));
         }
         navigate("/");
       } else {
@@ -38,6 +38,16 @@ export default function LoginForm() {
       setError("Lỗi đăng nhập. Vui lòng thử lại.");
     }
   };
+
+  // useEffect(() => {
+  //   const updateCartItems = async () => {
+  //     const res = await apiGetCurrent();
+  //     if(res?.data?.data){
+  //       dispatch(setCartItems(res.data.data.cart));
+  //     }
+  //   }
+  //   updateCartItems();
+  // }, [res.data.data.cart])
 
   return (
     <div className="w-full max-w-md bg-white p-8 rounded-2xl shadow-xl">

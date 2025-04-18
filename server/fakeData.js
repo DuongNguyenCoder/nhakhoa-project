@@ -187,7 +187,7 @@ const generateCategories = async () => {
 const generateDirectories = async (categories) => {
   const directoryDocs = directories.map((title) => {
     const matchingCategories = categories.filter(
-      (cat) => getDirectoryForCategory(cat.title) === title
+      (cat) => getDirectoryForCategory(cat.title) === title,
     );
     return {
       title,
@@ -234,7 +234,7 @@ const generateUsers = async (count = 15) => {
         mobile: "09" + faker.string.numeric(8),
         profilePic: faker.image.avatar(),
         address: faker.location.streetAddress(true),
-      })
+      }),
     );
   }
 
@@ -278,7 +278,7 @@ const generateProducts = async (categories, directories, count = 70) => {
         brand: faker.helpers.arrayElement(fakeBrands),
         origin: faker.helpers.arrayElement(fakeOrigins),
         introduce: faker.lorem.paragraph(),
-      })
+      }),
     );
   }
 
@@ -317,7 +317,7 @@ const generateWarranties = async (products, categories) => {
           terms: `Bảo hành ${
             product.title
           }:\n1. ${faker.lorem.sentence()}\n2. ${faker.lorem.sentence()}`,
-        })
+        }),
       );
     }
   }
@@ -360,7 +360,7 @@ const generateOrders = async (users, products, count = 100) => {
         status: faker.helpers.arrayElement(["UNPAID", "PAID"]),
         orderBy: faker.helpers.arrayElement(users)._id,
         orderIdMomo: `MOMO${faker.string.numeric(10)}`,
-      })
+      }),
     );
   }
 
@@ -375,6 +375,7 @@ const generateNews = async (categories, count = 20) => {
     "Hướng dẫn chăm sóc răng miệng",
     "Tin sức khỏe",
     "Tin tức nổi bật",
+    "Hỗ trợ khách hàng",
   ];
   for (let i = 0; i < count; i++) {
     news.push(
@@ -384,7 +385,7 @@ const generateNews = async (categories, count = 20) => {
         newPic: faker.image.urlLoremFlickr({ category: "medical" }),
         category: faker.helpers.arrayElement(category),
         status: faker.helpers.arrayElement(["ENABLE", "DISABLE"]),
-      })
+      }),
     );
   }
 
