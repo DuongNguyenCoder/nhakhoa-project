@@ -23,8 +23,9 @@ const SideBarDiscount = () => {
         </h2>
       </div>
 
-      <div className="w-full bg-orange-100 py-2">
+      <div className="w-full bg-orange-200 py-2">
         <Swiper
+        key={discountProducts.length}
           direction="vertical"
           slidesPerView={4}
           spaceBetween={10}

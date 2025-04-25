@@ -1,20 +1,21 @@
 import axios from "axios";
 
-export const apiGetAllUsers = () =>
+export const apiGetAllUsers = (params) =>
   axios({
-    url: "/user",
-    method: "post",
+    url: "/api/user",
+    method: "get",
+    params,
   });
 
 export const apiGetUserById = (id) =>
   axios({
-    url: `/user/${id}`,
+    url: `/api/user/${id}`,
     method: "get",
   });
 
 export const apiAddUser = (formData) =>
   axios({
-    url: "/user/add-user",
+    url: "/api/user/add-user",
     method: "post",
     data: formData,
     headers: {
@@ -24,7 +25,7 @@ export const apiAddUser = (formData) =>
 
 export const apiUpdateUserByAdmin = (id, formData) =>
   axios({
-    url: `/user/update-user/${id}`,
+    url: `/api/user/update-user/${id}`,
     method: "put",
     data: formData,
     headers: {
@@ -34,6 +35,6 @@ export const apiUpdateUserByAdmin = (id, formData) =>
 
 export const apiDeleteUserByAdmin = (id) =>
   axios({
-    url: `/user/delete-user/${id}`,
+    url: `/api/user/delete-user/${id}`,
     method: "delete",
   });

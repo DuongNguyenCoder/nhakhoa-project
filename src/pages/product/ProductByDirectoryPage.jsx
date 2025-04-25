@@ -39,7 +39,7 @@ const ProductByDirectoryPage = () => {
       <div className="w-full border-b border-b-blue-300 uppercase tracking-wider mb-4">
       <h1 className="text-xl font-bold text-blue-600 shadow-lg">{directoryTitle}</h1>
       </div>
-      <div className="grid grid-cols-2 gap-5 lg:grid-cols-3">
+      <div className="w-full px-5 md:px-0 grid grid-cols-2 gap-5 md:grid-cols-3 xl:grid-cols-4">
         {products.map((product) => (
           <ProductCard key={product._id} item={product} />
         ))}

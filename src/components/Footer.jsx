@@ -29,7 +29,7 @@ const Footer = () => {
               Nơi đăng ký: Tại sở Kế hoạch và đầu tư Hà Nội
             </p>
           </div>
-          <img src={logoSale} alt="logoSaleNoti" className="w-32 h-14 mt-2 lg:mx-auto"/>
+          <img src={logoSale} alt="logoSaleNoti" className="w-auto h-14 mt-2 lg:mx-auto"/>
         </div>
 
         {/* Cột 2: Hỗ trợ khách hàng */}

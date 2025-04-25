@@ -21,7 +21,7 @@ const ProductLayout = () => {
   }, []);
   return (
     <div>
-      <div className="min-h-screen bg-gray-200">
+      <div className="min-h-screen bg-[#FDEFC5]">
         <div className="w-full">
           <TopHeader />
           <MainHeader />

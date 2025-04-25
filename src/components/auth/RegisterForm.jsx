@@ -2,6 +2,11 @@ import React, { useState } from "react";
 import { apiSignUp } from "@/apis/userAPI";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { motion } from "framer-motion";
+
 const RegisterForm = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -9,6 +14,7 @@ const RegisterForm = () => {
     name: "",
     password: "",
     confirmPassword: "",
+    mobile: "",
   });
 
   const [errors, setErrors] = useState({});
@@ -17,6 +23,11 @@ const RegisterForm = () => {
     const err = {};
     if (!formData.email.trim()) err.email = "Email không được để trống";
     if (!formData.name.trim()) err.name = "Họ tên không được để trống";
+    if (!formData.mobile.trim()) {
+      err.mobile = "Số điện thoại không được để trống";
+    } else if (!/^0\d{9}$/.test(formData.mobile.trim())) {
+      err.mobile = "Số điện thoại không hợp lệ";
+    }
     if (!formData.password) err.password = "Mật khẩu không được để trống";
     if (formData.password !== formData.confirmPassword)
       err.confirmPassword = "Mật khẩu không khớp";
@@ -27,79 +38,111 @@ const RegisterForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validate()) return;
-      const payload = {
-        email: formData.email.trim(),
-        name: formData.name.trim(),
-        password: formData.password,
-      };
-      const res = await apiSignUp(payload);
+
+    const payload = {
+      email: formData.email.trim(),
+      name: formData.name.trim(),
+      password: formData.password,
+      mobile: formData.mobile.trim(),
+    };
+
+    apiSignUp(payload).then((res) => {
       console.log("RESPONSE API SIGN UP: ", res)
-      if(res?.data?.success){
-        toast.success(res.data.mes);
-        navigate("/dang-nhap");
-      } else {
-        toast.error(res.data.mes);
-      }
+    if (res?.data?.success) {
+      toast.success(res.data.mes);
+      navigate("/dang-nhap");
+    } else {
+      toast.error(res.response.data.mes);
+    }
+    }).catch((err) => {
+      console.log("Lỗi: ", err)
+    })
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="max-w-md mx-auto shadow-lg p-4 space-y-4 bg-white rounded"
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      className="flex justify-center items-center py-10 px-4"
     >
-      <h2 className="text-xl font-bold">Đăng ký tài khoản</h2>
+      <Card className="w-full max-w-md bg-white/90 backdrop-blur-md shadow-2xl border-amber-200 border rounded-3xl">
+        <CardContent className="p-8 space-y-6">
+          <h2 className="text-3xl font-extrabold text-center text-amber-700 drop-shadow">
+            Đăng ký tài khoản
+          </h2>
 
-      <input
-        type="email"
-        placeholder="Email"
-        value={formData.email}
-        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-        className="w-full p-2 border rounded"
-      />
-      {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
+          <div className="space-y-2">
+            <Input
+              type="email"
+              placeholder="Email"
+              value={formData.email}
+              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              className="bg-amber-50 focus:ring-2 focus:ring-amber-400"
+            />
+            {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
+          </div>
 
-      <input
-        type="text"
-        placeholder="Họ tên"
-        value={formData.name}
-        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-        className="w-full p-2 border rounded"
-      />
-      {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
+          <div className="space-y-2">
+            <Input
+              type="text"
+              placeholder="Họ tên"
+              value={formData.name}
+              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              className="bg-amber-50 focus:ring-2 focus:ring-amber-400"
+            />
+            {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
+          </div>
 
-      <input
-        type="password"
-        placeholder="Mật khẩu"
-        value={formData.password}
-        onChange={(e) =>
-          setFormData({ ...formData, password: e.target.value })
-        }
-        className="w-full p-2 border rounded"
-      />
-      {errors.password && (
-        <p className="text-red-500 text-sm">{errors.password}</p>
-      )}
+          <div className="space-y-2">
+            <Input
+              type="text"
+              placeholder="Số điện thoại"
+              value={formData.mobile}
+              onChange={(e) => setFormData({ ...formData, mobile: e.target.value })}
+              className="bg-amber-50 focus:ring-2 focus:ring-amber-400"
+            />
+            {errors.mobile && <p className="text-red-500 text-sm">{errors.mobile}</p>}
+          </div>
 
-      <input
-        type="password"
-        placeholder="Nhập lại mật khẩu"
-        value={formData.confirmPassword}
-        onChange={(e) =>
-          setFormData({ ...formData, confirmPassword: e.target.value })
-        }
-        className="w-full p-2 border rounded"
-      />
-      {errors.confirmPassword && (
-        <p className="text-red-500 text-sm">{errors.confirmPassword}</p>
-      )}
+          <div className="space-y-2">
+            <Input
+              type="password"
+              placeholder="Mật khẩu"
+              value={formData.password}
+              onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+              className="bg-amber-50 focus:ring-2 focus:ring-amber-400"
+            />
+            {errors.password && (
+              <p className="text-red-500 text-sm">{errors.password}</p>
+            )}
+          </div>
 
-      <button
-        type="submit"
-        className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
-      >
-        Đăng ký
-      </button>
-    </form>
+          <div className="space-y-2">
+            <Input
+              type="password"
+              placeholder="Nhập lại mật khẩu"
+              value={formData.confirmPassword}
+              onChange={(e) =>
+                setFormData({ ...formData, confirmPassword: e.target.value })
+              }
+              className="bg-amber-50 focus:ring-2 focus:ring-amber-400"
+            />
+            {errors.confirmPassword && (
+              <p className="text-red-500 text-sm">{errors.confirmPassword}</p>
+            )}
+          </div>
+
+          <Button
+            type="submit"
+            onClick={handleSubmit}
+            className="w-full bg-amber-500 hover:bg-amber-600 text-white py-2 text-lg font-semibold rounded-xl shadow-lg"
+          >
+            Đăng ký
+          </Button>
+        </CardContent>
+      </Card>
+    </motion.div>
   );
 };
 

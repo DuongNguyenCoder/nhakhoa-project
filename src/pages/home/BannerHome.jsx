@@ -1,5 +1,4 @@
 import Banner from '@/components/Banner'
-import BannerSlider from '@/components/BannerSlider'
 import SideBar from '@/components/SideBar'
 const BannerHome = () => {
   return (

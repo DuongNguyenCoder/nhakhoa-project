@@ -10,7 +10,7 @@ import Footer from '@/components/Footer';
 
 const HomeLayout = () => {
   return (
-    <div className='flex flex-col min-h-screen items-center bg-amber-100'>
+    <div className='flex flex-col min-h-screen items-center bg-[#FDEFC5]'>
       <div className='w-full'>
         <TopHeader/>
         <MainHeader/>

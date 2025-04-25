@@ -47,7 +47,7 @@ const updatedProfile = async (req, res) => {
     { ...req.body, profilePic: uploadResponse.secure_url },
     {
       new: true,
-    },
+    }
   );
   return res.json({
     success: Boolean(updatedUser),
@@ -155,7 +155,7 @@ const createUserByAdmin = async (req, res) => {
     {
       profilePic: uploadResponse.secure_url,
     },
-    { new: true },
+    { new: true }
   );
   return res.json({
     success: Boolean(updatedRecord),
@@ -179,7 +179,7 @@ const updateUserByAdmin = async (req, res) => {
     },
     {
       new: true,
-    },
+    }
   );
   return res.json({
     success: Boolean(updatedUser),
@@ -230,14 +230,11 @@ const forgotPassword = async (req, res) => {
 `;
 
   const response = await sendEmail(req.body.email, "Lấy lại mật khẩu.", html);
-  setTimeout(
-    async () => {
-      user.forgotPassCode = undefined;
-      await user.save();
-      console.log(`Đã xóa mã xác nhận của user ${email}`);
-    },
-    10 * 60 * 1000,
-  );
+  setTimeout(async () => {
+    user.forgotPassCode = undefined;
+    await user.save();
+    console.log(`Đã xóa mã xác nhận của user ${email}`);
+  }, 10 * 60 * 1000);
 
   return res.json({
     success: Boolean(response),
@@ -249,7 +246,7 @@ const forgotPassword = async (req, res) => {
 
 const checkForgotPassCode = async (req, res) => {
   const user = await User.findOne({ email: req.body.email }).select(
-    "forgotPassCode",
+    "forgotPassCode"
   );
   const isMatch = req.body.code == user.forgotPassCode;
   return res.json({
@@ -266,7 +263,7 @@ const resetPassword = async (req, res) => {
     {
       password: bcryptJs.hashSync(req.body.password, bcryptJs.genSaltSync(10)),
     },
-    { new: true },
+    { new: true }
   );
   return res.json({
     success: Boolean(response),
@@ -281,8 +278,7 @@ const addToCart = async (req, res) => {
 
   products.forEach((requestProduct) => {
     const existingProductIndex = user.cart.findIndex(
-      (cartProduct) =>
-        cartProduct.product.toString() === requestProduct.product,
+      (cartProduct) => cartProduct.product.toString() === requestProduct.product
     );
 
     if (existingProductIndex >= 0) {
@@ -319,7 +315,7 @@ const clearCart = async (req, res) => {
   const response = await User.findByIdAndUpdate(
     req.user.id,
     { cart: [] },
-    { new: true },
+    { new: true }
   );
   return res.json({
     success: Boolean(response),

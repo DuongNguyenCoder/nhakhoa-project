@@ -69,9 +69,9 @@ const ProfileForm = () => {
       } else {
         console.log("Lỗi rồi Đcm!");
       }
-    } catch (err) {
+    } catch {
       toast.error("Vui lòng chọn 1 Avartar bất kì để cập nhật!")
-      console.error("Lỗi cập nhật profile:", err);
+      // console.error("Lỗi cập nhật profile:", err);
     } finally {
       setLoading(false);
     }

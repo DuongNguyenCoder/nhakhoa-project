@@ -22,8 +22,8 @@ const AuthPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4">
-      <div className="w-full max-w-md my-4 bg-white shadow-md rounded-xl p-6">
+    <div className="min-h-screen bg-gradient-to-br from-amber-100 via-amber-50 to-white flex items-center justify-center px-4">
+      <div className="w-full max-w-md my-8">
         {renderForm()}
       </div>
     </div>

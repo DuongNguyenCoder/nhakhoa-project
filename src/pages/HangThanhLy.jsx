@@ -9,7 +9,6 @@ const LiquidationPage = () => {
   useEffect(() => {
     const fetchLiquidationProducts = async () => {
       const res = await apiGetAllProduct({ limit: 9999 });
-      console.log("TEST: ", res);
       if (res?.data?.data) {
         const filtered = res.data.data.filter((p) => p.isLiquidation);
         setProducts(filtered);
@@ -27,7 +26,7 @@ const LiquidationPage = () => {
         </p>
       </div>
 
-      <div className="grid grid-cols-2  lg:grid-cols-3 gap-5">
+      <div className="w-full px-5 md:px-0 grid grid-cols-2 gap-5 md:grid-cols-3 xl:grid-cols-4">
         {products.length > 0 ? (
           products.map((product) => (
             <ProductCard key={product._id} item={product} />

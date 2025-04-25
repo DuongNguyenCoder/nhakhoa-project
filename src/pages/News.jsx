@@ -1,8 +1,10 @@
-import { apiGetNew } from '@/apis/NewsAPI';
-import React, { useEffect, useState } from 'react'
+import { apiGetNew } from "@/apis/NewsAPI";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const News = () => {
   const [allNews, setAllNews] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchNews = async () => {
@@ -12,46 +14,53 @@ const News = () => {
     fetchNews();
   }, []);
 
-  // Tách danh sách category duy nhất từ danh sách tin tức
   const categories = [...new Set(allNews.map((item) => item.category))];
 
   const formatDate = (dateStr) => {
     const date = new Date(dateStr);
     return date.toLocaleDateString("vi-VN", {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
     });
   };
 
   return (
-    <div className="p-6 space-y-12">
+    <div className="space-y-12 p-6">
       {categories.map((cate) => {
         const filteredNews = allNews.filter((news) => news.category === cate);
         return (
           <div key={cate}>
-            <h2 className="text-2xl font-bold text-red-700 mb-4 border-b pb-2 border-red-300">
+            <h2 className="mb-4 border-b border-red-300 pb-2 text-2xl font-bold text-red-700">
               {cate}
             </h2>
-            <div className="grid md:grid-cols-3 gap-6">
+            <div className="grid gap-6 md:grid-cols-3">
               {filteredNews.map((news) => (
                 <div
                   key={news._id}
-                  className="bg-white rounded-lg shadow-md hover:shadow-xl transition p-4"
+                  className="rounded-lg bg-white p-4 shadow-md transition hover:shadow-xl"
                 >
                   <img
                     src={news.newPic}
                     alt={news.title}
-                    className="w-full h-40 object-cover rounded mb-3"
+                    className="mb-3 h-40 w-full cursor-pointer rounded object-cover"
+                    onClick={() => navigate(`/news/${news._id}`)}
                   />
-                  <h3 className="text-lg font-semibold text-gray-800">
+                  <h3
+                    className="cursor-pointer text-lg font-semibold text-gray-800 hover:underline"
+                    onClick={() => navigate(`/news/${news._id}`)}
+                  >
                     {news.title}
                   </h3>
-                  <p className="text-gray-400 text-sm mb-2">
+                  <p className="mb-2 text-sm text-gray-400">
                     📅 {formatDate(news.createdAt)}
                   </p>
-                  <p className="text-gray-600 text-sm line-clamp-3">
-                    {news.description}
+                  <p className="line-clamp-3 text-sm text-gray-600">
+                    {(() => {
+                      const temp = document.createElement("div");
+                      temp.innerHTML = news.description;
+                      return temp.textContent || temp.innerText || "";
+                    })()}
                   </p>
                 </div>
               ))}
@@ -63,4 +72,4 @@ const News = () => {
   );
 };
 
-export default News
+export default News;

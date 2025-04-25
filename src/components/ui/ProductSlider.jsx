@@ -7,10 +7,10 @@ import { Link } from 'react-router-dom';
 
 const ProductSlider = ({ products = [], title = 'Sản phẩm'}) => {
   return (
-    <div className="relative">
+    <div className="relative z-10">
       {/* Title */}
       {title && (
-        <h2 className="text-xl font-semibold mb-3 border-l-4 border-red-700 pl-2 text-red-700">
+        <h2 className="text-xl font-semibold mb-4 pb-1 border-b border-b-red-400 pl-2 text-red-700 shadow-md">
           {title}
         </h2>
       )}

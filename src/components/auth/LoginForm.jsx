@@ -1,8 +1,8 @@
 // src/components/LoginForm.jsx
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { apiGetCurrent, apiSignIn } from "@/apis/userAPI";
 import { useNavigate } from "react-router-dom";
-import { setIsSignIn, setCurrentUser, setCartItems } from "@/redux/appSlice";
+import { setIsSignIn, setCurrentUser } from "@/redux/appSlice";
 import { useDispatch } from "react-redux";
 
 export default function LoginForm() {
@@ -20,16 +20,19 @@ export default function LoginForm() {
     setError("");
   
     try {
-      const res = await apiSignIn(formData);
-      console.log("KẾT QUẢ SIGN IN:", res);
-  
+      const res = await apiSignIn(formData);  
       if (res?.data?.success) {
         dispatch(setIsSignIn(true));
         const currentUserRes = await apiGetCurrent();
         if (currentUserRes?.data?.data) {
-            dispatch(setCurrentUser(currentUserRes.data.data));
+          console.log("CurrentUser: ", currentUserRes);
+          dispatch(setCurrentUser(currentUserRes.data.data));
+          if(currentUserRes.data.data.role === "ADMIN"){
+            navigate("/admin/dashboard");
+          } else {
+            navigate("/");
+          }
         }
-        navigate("/");
       } else {
         setError("Tài khoản hoặc mật khẩu không chính xác.");
       }

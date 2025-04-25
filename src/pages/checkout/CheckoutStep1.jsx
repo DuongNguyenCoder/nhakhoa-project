@@ -72,7 +72,12 @@ const CheckoutStep1 = () => {
 
         <button
           onClick={() => navigate("/check-out-step2")}
-          className="rounded bg-green-600 px-4 py-2 text-white hover:bg-green-700"
+          className={`rounded px-4 py-2 text-white ${
+            cartItems.length === 0
+              ? "bg-gray-400 cursor-not-allowed"
+              : "bg-green-600 hover:bg-green-700"
+          }`}
+          disabled={cartItems.length === 0}
         >
           Tiếp tục
         </button>

@@ -6,7 +6,7 @@ import { Outlet } from 'react-router-dom'
 
 const AuthLayout = () => {
   return (
-    <div className='min-h-screen bg-gray-200'>
+    <div className='min-h-screen bg-[#FDEFC5]'>
       <div className="w-full">
         <TopHeader />
         <MainHeader />

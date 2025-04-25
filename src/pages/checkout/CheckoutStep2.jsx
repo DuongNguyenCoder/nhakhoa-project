@@ -42,8 +42,8 @@ const CheckoutStep2 = () => {
         product: item.product._id,
         quantity: item.quantity,
       })),
-    //   status: "Chờ xác nhận",
       orderBy: currentUser._id,
+      address: form.address,
     };
     const res = await apiAddOrder(orderData);
     if (res?.data?.success) {

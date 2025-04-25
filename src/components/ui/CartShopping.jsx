@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
+import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
 import { ShoppingCartIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useDispatch, useSelector } from "react-redux";
-import { clearCart, setCurrentUser } from "@/redux/appSlice";
+import { setCurrentUser } from "@/redux/appSlice";
 import { apiGetCurrent, apiRemoveFromCard } from "@/apis/userAPI";
 import { Link } from "react-router-dom";
 
@@ -26,14 +26,10 @@ const CartShopping = () => {
     }
   };
 
-  const handleClearCart = () => {
-    dispatch(clearCart());
-  };
-  console.log("cart ITEMS: ", cartItems);
   return (
     <div className="mr-6 h-auto w-auto border-none sm:mr-4">
-      <Menu >
-        <MenuButton className="inline-flex items-center justify-center gap-x-2">
+      <Popover >
+        <PopoverButton className="inline-flex items-center justify-center gap-x-2">
           <div className="relative">
             <ShoppingCartIcon className="size-6 sm:size-7" />
             <span
@@ -44,8 +40,8 @@ const CartShopping = () => {
             </span>
           </div>
           <span className="hidden font-mono text-base sm:block">GIỎ HÀNG</span>
-        </MenuButton>
-        <MenuItems
+        </PopoverButton>
+        <PopoverPanel
           className={`absolute left-0 right-0 top-full z-40 origin-top-right rounded-b-lg border border-gray-200 bg-white p-2 shadow-lg transition-all duration-150 focus:outline-none md:left-auto md:right-5 md:w-[400px] lg:w-[435px]`}
         >
           {/* Nếu giỏ hàng trống */}
@@ -103,8 +99,8 @@ const CartShopping = () => {
               </button>
             </div>
           </div>
-        </MenuItems>
-      </Menu>
+        </PopoverPanel>
+      </Popover>
     </div>
   );
 };

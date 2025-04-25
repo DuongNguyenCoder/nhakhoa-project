@@ -49,9 +49,9 @@ const AuthButtons = () => {
     }, [showLoginModal]);
 
   return (
-    <div className="flex items-center gap-1.5 border-x-2 border-stone-500">
-      <IdentificationIcon className="ml-3 mt-[1px] size-[18px]" />
-      <div className="flex items-center gap-6 text-sm font-normal">
+    <div className="flex h-full items-center gap-1.5 border-x-2 border-stone-500">
+      <IdentificationIcon className="ml-3 mt-[1px] size-[22px] md:size-[18px]" />
+      <div className="flex items-center gap-6 text-sm font-medium md:font-normal ">
       {isLoggedIn ? (
           <>
             <button onClick={() => navigate("/profile")} className="text-gray-700">Xin chào, {firstName}</button>

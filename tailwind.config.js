@@ -5,7 +5,7 @@ export default {
   plugins: [
     require("tailwind-scrollbar-hide"),
     require("@tailwindcss/typography"),
-    // ...
+    require("tailwindcss-animate"),
   ],
   theme: {
     extend: {
@@ -54,6 +54,9 @@ export default {
           3: "hsl(var(--chart-3))",
           4: "hsl(var(--chart-4))",
           5: "hsl(var(--chart-5))",
+        },
+        amber: {
+          75: "#FDEFC5",
         },
       },
     },

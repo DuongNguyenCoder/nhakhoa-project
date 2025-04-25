@@ -13,6 +13,7 @@ const ProductByCategoryPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const query = useQuery();
+  const categoryTitle = query.get("title") || "Sản phẩm";
   const categoryId = query.get("category");
   const [products, setProducts] = useState([]);
 
@@ -38,8 +39,10 @@ const ProductByCategoryPage = () => {
 
   return (
     <div className="w-full">
-      <h1 className="text-lg font-bold text-red-900">sản phẩm</h1>
-      <div className="grid grid-cols-2 gap-5 lg:grid-cols-3">
+      <div className="w-full border-b border-b-blue-300 uppercase tracking-wider mb-4">
+      <h1 className="text-xl font-bold text-blue-600 shadow-lg">{categoryTitle}</h1>
+      </div>
+      <div className="w-full px-5 md:px-0 grid grid-cols-2 gap-5 md:grid-cols-3 xl:grid-cols-4">
         {products.map((product) => (
           <ProductCard key={product._id} item={product} />
         ))}

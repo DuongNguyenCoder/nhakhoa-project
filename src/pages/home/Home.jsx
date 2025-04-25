@@ -17,7 +17,12 @@ import {
 } from "@heroicons/react/24/solid";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Autoplay, Navigation, Pagination } from "swiper/modules";
+import {
+  Autoplay,
+  Navigation,
+  Pagination as SwiperPagination,
+} from "swiper/modules";
+import Pagination from "@/components/ui/Pagination";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 const Home = () => {
@@ -26,9 +31,31 @@ const Home = () => {
   const [selectDirectory, setSelectDirectory] = useState("");
   const [dataNew, setDataNew] = useState([]);
   const [logoPartner, setLogoPartner] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const productsPerPage = 10;
+
   const dataTinNoiBat = dataNew.filter(
     (item) => item.category === "Tin tức nổi bật",
   );
+
+  const filteredFeaturedProducts = dataProduct.filter(
+    (p) =>
+      p.isFeatured &&
+      (!selectDirectory || String(p.directory._id) === selectDirectory),
+  );
+  const indexOfLastProduct = currentPage * productsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  const currentProducts = filteredFeaturedProducts.slice(
+    indexOfFirstProduct,
+    indexOfLastProduct,
+  );
+  const totalPages = Math.ceil(
+    filteredFeaturedProducts.length / productsPerPage,
+  );
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [selectDirectory]);
 
   useEffect(() => {
     const fetchNews = async () => {
@@ -73,7 +100,7 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="mx-auto min-h-screen items-center md:mx-2 md:mt-8 lg:mx-5 lg:mt-0 xl:mx-8">
+    <div className="mx-auto mt-5 min-h-screen items-center md:mx-2 lg:mx-5 xl:mx-8">
       <div className="mt-2 grid grid-cols-2 justify-between gap-5 text-wrap rounded-xl bg-red-400 px-6 py-4 text-lg font-bold text-white md:flex lg:text-xl">
         <div className="flex items-center gap-2">
           <GiftIcon className="size-6 md:size-7 lg:size-8" />
@@ -95,12 +122,12 @@ const Home = () => {
       {/* Hiển thị sản phẩm nổi bật theo Directory */}
       {dataProduct.some((p) => p.isFeatured) && (
         <div className="mt-6 w-full rounded-3xl bg-white p-6">
-          <div className="mb-4 flex flex-wrap gap-1.5 items-center justify-between px-3">
-            <div className="flex gap-2 items-center">
-              <StarIcon className="size-7 text-yellow-400"/>
-            <h2 className="text-base font-bold text-slate-800 md:text-lg">
-              SẢN PHẨM NỔI BẬT - HOT DEAL
-            </h2>
+          <div className="mb-4 flex flex-wrap items-center justify-between gap-1.5 px-3">
+            <div className="flex items-center gap-2">
+              <StarIcon className="size-7 text-yellow-400" />
+              <h2 className="text-base font-bold text-slate-800 md:text-lg">
+                SẢN PHẨM NỔI BẬT - HOT DEAL
+              </h2>
             </div>
             <select
               value={selectDirectory}
@@ -117,35 +144,31 @@ const Home = () => {
           </div>
 
           {/* Tạo danh sách sản phẩm đã lọc */}
-          {dataProduct.filter(
-            (p) =>
-              p.isFeatured &&
-              (!selectDirectory || String(p.directory._id) === selectDirectory),
-          ).length > 0 ? (
-            <div className="grid w-full grid-cols-2 gap-x-4 gap-y-6 md:grid-cols-3 lg:grid-cols-4">
-              {dataProduct
-                .filter(
-                  (p) =>
-                    p.isFeatured &&
-                    (!selectDirectory ||
-                      String(p.directory._id) === selectDirectory),
-                )
-                .map((product) => (
-                  <ProductCard key={product._id} item={product} />
-                ))}
+          {filteredFeaturedProducts.length > 0 ? (
+            <div className="grid w-full grid-cols-2 gap-x-5 gap-y-6 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5">
+              {currentProducts.map((product) => (
+                <ProductCard key={product._id} item={product} />
+              ))}
             </div>
           ) : (
             <div className="py-4 text-center italic text-gray-600">
               Không có sản phẩm nổi bật nào trong danh mục này.
             </div>
           )}
+
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={(page) => setCurrentPage(page)}
+          />
         </div>
       )}
 
       <div className="mx-2 my-3.5 w-full p-6">
         <div className="flex flex-wrap justify-center gap-4">
           {dataNew.slice(0, 3).map((item, index) => (
-            <a
+            <Link
+              to={`/news/${item._id}`}
               key={index}
               className={`w-[90%] md:w-[48%] lg:w-[32%] ${index === 2 ? "md:mx-auto" : ""} h-52 md:h-56`}
             >
@@ -154,7 +177,7 @@ const Home = () => {
                 alt={`New Image ${index + 1}`}
                 className="h-full w-full rounded-2xl object-cover"
               />
-            </a>
+            </Link>
           ))}
         </div>
       </div>
@@ -165,14 +188,29 @@ const Home = () => {
             ĐỐI TÁC
           </h2>
         </div>
+        <div className="mb-4 w-full px-4">
+          <h3 className="text-lg font-medium text-gray-600">
+            Minh Dental hợp tác chặt chẽ với nhiều đơn vị cung cấp trang thiết
+            bị Nha khoa đến từ các thương hiệu nổi tiếng và lâu năm trên thế
+            giới như: Cingol, Jindel, Baolai…, nhằm đảm bảo mang đến cho khách
+            hàng nguồn hàng uy tín và chất lượng cao.
+          </h3>
+        </div>
         <div className="w-full">
           <Swiper
-            modules={[Navigation, Pagination, Autoplay]}
-            loop={logoPartner.length > 4}
-            spaceBetween={5}
-            navigation
-            pagination={{ clickable: true }}
-            className="!px-5"
+            key={logoPartner.length}
+            modules={[Navigation, SwiperPagination, Autoplay]}
+            spaceBetween={10}
+            slidesPerView={2}
+            loop={true}
+            autoplay={{
+              delay: 2500,
+              disableOnInteraction: false, // Không tắt autoplay khi user tương tác
+              pauseOnMouseEnter: false, // Không dừng khi hover
+              stopOnLastSlide: false, // Cho loop
+              waitForTransition: false,
+            }}
+            navigation={true}
             breakpoints={{
               0: {
                 slidesPerView: 2,
@@ -187,11 +225,11 @@ const Home = () => {
           >
             {logoPartner.map((logo, index) => (
               <SwiperSlide key={index}>
-                <div className="mx-auto flex h-36 w-36 items-center justify-center rounded-full bg-gray-100 shadow-sm">
+                <div className="mx-auto flex h-[155px] w-[155px] items-center justify-center rounded-full bg-gray-200 shadow-sm">
                   <img
                     src={logo.partnerPic}
                     alt={`Logo Partner ${index + 1}`}
-                    className="h-32 w-32 rounded-full object-cover"
+                    className="h-[140px] w-[140px] rounded-full object-contain"
                   />
                 </div>
               </SwiperSlide>
@@ -212,16 +250,22 @@ const Home = () => {
               key={index}
               className={`flex w-full flex-col md:w-1/4 xl:w-1/5 ${index === 3 ? "hidden md:flex" : ""}`}
             >
-              <img
-                src={item.newPic}
-                alt={`New Image ${index + 1}`}
-                className="h-40 w-full rounded-xl object-cover"
-              />
-              <h3 className="mb-0.5 mt-2.5 font-semibold text-[#0d6efd]">
-                {item.title}
-              </h3>
+              <Link to={`/news/${item._id}`} key={index}>
+                <img
+                  src={item.newPic}
+                  alt={`New Image ${index + 1}`}
+                  className="h-40 w-full rounded-xl object-cover"
+                />
+                <h3 className="mb-0.5 mt-2.5 text-center font-semibold text-[#0d6efd]">
+                  {item.title}
+                </h3>
+              </Link>
               <span className="line-clamp-3 text-sm text-gray-700">
-                {item.description}
+                {(() => {
+                  const temp = document.createElement("div");
+                  temp.innerHTML = item.description;
+                  return temp.textContent || temp.innerText || "";
+                })()}
               </span>
             </div>
           ))}
