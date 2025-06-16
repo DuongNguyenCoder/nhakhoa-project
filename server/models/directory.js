@@ -14,7 +14,7 @@ var directorySchema = new mongoose.Schema(
     ],
     directoryPic: { type: String, required: true },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 //Export the model

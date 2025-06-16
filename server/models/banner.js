@@ -12,8 +12,12 @@ var bannerSchema = new mongoose.Schema(
       enum: ["ENABLE", "DISABLE"],
       default: "ENABLE",
     },
+    url: {
+      type: String,
+      required: false,
+    },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 module.exports = mongoose.model("Banner", bannerSchema);

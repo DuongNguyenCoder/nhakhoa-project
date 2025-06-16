@@ -12,6 +12,7 @@ const validateInfo = (schema) => (req, res, next) => {
     ...req.body,
     ...fileData,
   };
+  console.log("mobile:", req.body.mobile);
   const { error } = schema.validate(dataToValidate);
   if (error) {
     const message = error.details[0].message?.replaceAll(`\"`, "");

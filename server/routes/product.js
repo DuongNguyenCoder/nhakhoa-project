@@ -26,7 +26,6 @@ router.post(
       productPics: files,
       title: stringReq,
       description: stringReq,
-      category: stringReq,
       originalPrice: numberReq,
       salePrice: numberReq,
       quantity: numberReq,
@@ -36,9 +35,9 @@ router.post(
       brand: stringReq,
       origin: stringReq,
       introduce: stringReq,
-    })
+    }),
   ),
-  ctrl.addProductByAdmin
+  ctrl.addProductByAdmin,
 );
 
 router.put(
@@ -56,7 +55,7 @@ router.put(
       productPics: files,
       title: stringReq,
       description: stringReq,
-      category: stringReq,
+      category: Joi.string().optional(),
       originalPrice: numberReq,
       salePrice: numberReq,
       quantity: numberReq,
@@ -66,15 +65,15 @@ router.put(
       brand: stringReq,
       origin: stringReq,
       introduce: stringReq,
-    })
+    }),
   ),
-  ctrl.updateProductByAdmin
+  ctrl.updateProductByAdmin,
 );
 router.delete(
   "/delete-product/:id",
   verifyToken,
   isAdmin,
-  ctrl.deleteProductByAdmin
+  ctrl.deleteProductByAdmin,
 );
 router.get("", ctrl.getAll);
 router.get("/:id", ctrl.getOne);

@@ -9,7 +9,6 @@ var warrantieSchema = new mongoose.Schema(
     },
     durationMonths: {
       type: Number,
-      required: true,
     },
     //điều khoản bảo hành
     terms: {
@@ -17,7 +16,7 @@ var warrantieSchema = new mongoose.Schema(
       required: true,
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 module.exports = mongoose.model("Warrantie", warrantieSchema);

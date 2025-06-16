@@ -12,7 +12,6 @@ router.post(
   validateInfo(
     Joi.object({
       productId: stringReq,
-      durationMonths: numberReq,
       terms: stringReq,
     })
   ),
@@ -25,7 +24,6 @@ router.put(
   validateInfo(
     Joi.object({
       productId: stringReq,
-      durationMonths: numberReq,
       terms: stringReq,
     })
   ),

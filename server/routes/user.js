@@ -21,15 +21,15 @@ router.post(
       email,
       name: stringReq,
       password: stringReq,
-      mobile: stringReq,
-    }),
+      mobile: phone,
+    })
   ),
-  ctrl.signUp,
+  ctrl.signUp
 );
 router.post(
   "/sign-in",
   validateInfo(Joi.object({ email, password: stringReq })),
-  ctrl.signIn,
+  ctrl.signIn
 );
 router.put(
   "/update-profile",
@@ -42,10 +42,10 @@ router.put(
       name: stringReq,
       mobile: phone,
       address: string,
-    }),
+    })
   ),
 
-  ctrl.updatedProfile,
+  ctrl.updatedProfile
 );
 router.get("/log-out", verifyToken, ctrl.logOut);
 router.get("/current", verifyToken, ctrl.getCurrent);
@@ -65,9 +65,9 @@ router.post(
       password: stringReq,
       mobile: phone,
       role: stringReq,
-    }),
+    })
   ),
-  ctrl.createUserByAdmin,
+  ctrl.createUserByAdmin
 );
 router.put(
   "/update-user/:id",
@@ -83,9 +83,9 @@ router.put(
       mobile: phone,
       address: string,
       role: stringReq, //thêm dòng này
-    }),
+    })
   ),
-  ctrl.updateUserByAdmin,
+  ctrl.updateUserByAdmin
 );
 
 router.delete("/delete-user/:id", verifyToken, isAdmin, ctrl.deleteUserByAdmin);
@@ -94,19 +94,19 @@ router.post(
   "/forgot-password",
   verifyToken,
   validateInfo(Joi.object({ email })),
-  ctrl.forgotPassword,
+  ctrl.forgotPassword
 );
 router.post(
   "/check-code",
   verifyToken,
   validateInfo(Joi.object({ email, code: stringReq })),
-  ctrl.checkForgotPassCode,
+  ctrl.checkForgotPassCode
 );
 router.post(
   "/reset-password",
   verifyToken,
   validateInfo(Joi.object({ email, password: stringReq })),
-  ctrl.resetPassword,
+  ctrl.resetPassword
 );
 router.put(
   "/add-to-cart",
@@ -114,9 +114,9 @@ router.put(
   validateInfo(
     Joi.object({
       products,
-    }),
+    })
   ),
-  ctrl.addToCart,
+  ctrl.addToCart
 );
 router.put(
   "/remove-from-cart",
@@ -124,9 +124,9 @@ router.put(
   validateInfo(
     Joi.object({
       pId: stringReq,
-    }),
+    })
   ),
-  ctrl.removeFromCart,
+  ctrl.removeFromCart
 );
 router.put("/clear-cart", verifyToken, ctrl.clearCart);
 module.exports = router;

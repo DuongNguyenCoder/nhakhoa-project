@@ -8,9 +8,7 @@ const array = Joi.array().allow(null, "");
 const arrayReq = Joi.array().required();
 const email = Joi.string().email().required();
 const boolean = Joi.boolean();
-const phone = Joi.string()
-  .pattern(/^\d{10,}$/)
-  .required();
+const phone = Joi.string().required();
 
 const products = Joi.array()
   .items(
@@ -26,19 +24,7 @@ const product = Joi.object({
   quantity: numberReq,
 }).required();
 
-const category = Joi.array()
-  .items(
-    Joi.string().required().messages({
-      "string.empty": "Mục category không được để trống",
-      "any.required": "Yêu cầu có mục category",
-    })
-  )
-  .min(1)
-  .required()
-  .messages({
-    "array.min": "Cần ít nhất một category",
-    "any.required": "Danh sách category là bắt buộc",
-  });
+const category = Joi.array().items(Joi.string());
 
 const file = Joi.object({
   fieldname: Joi.string().required(),

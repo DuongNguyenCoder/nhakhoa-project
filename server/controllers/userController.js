@@ -25,7 +25,7 @@ const signIn = async (req, res) => {
 
 const signUp = async (req, res) => {
   const alreadyUser = await User.exists({ email: req.body.email });
-
+  console.log("kiểm tra: ", req.body.mobile);
   if (Boolean(alreadyUser)) throw new Error("người dùng đã tồn tại.");
 
   const newUser = await User.create(req.body);
