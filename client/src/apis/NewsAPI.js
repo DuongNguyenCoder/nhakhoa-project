@@ -5,6 +5,10 @@ export const apiAddNew = (data) =>
     url: "/api/new/add-new",
     method: "post",
     data,
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+    withCredentials: true,
   });
 export const apiUpdateNew = (id, data) =>
   axios({

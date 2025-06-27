@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { toast } from "react-toastify";
 import {
@@ -23,9 +22,12 @@ export default function CreateNew() {
     status: "ENABLE",
     newPic: null,
   });
+
   const navigate = useNavigate();
   const [previewImg, setPreviewImg] = useState(null);
   const [isFeatured, setIsFeatured] = useState(false);
+  const [pdfUrl, setPdfUrl] = useState(null);
+  const [pdfPreview, setPdfPreview] = useState(null);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -35,26 +37,34 @@ export default function CreateNew() {
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setForm((prev) => ({ ...prev, newPic: file }));
+      setForm((prev) => ({ ...prev, newPic: file}));
       setPreviewImg(URL.createObjectURL(file));
     }
   };
 
+  const handlePdfChange = (e) => {
+    const file = e.target.files[0];
+    console.log("test: ", file);
+    if (file && file.type === "application/pdf") {
+      setPdfUrl(file);
+      setPdfPreview(URL.createObjectURL(file));
+    } else {
+      toast.error("Vui lòng chọn đúng định dạng file PDF.");
+    }
+  };
+  console.log("kog:", form);
+
   const handleSubmit = async () => {
-    if (
-      !form.title ||
-      !form.description ||
-      !form.category ||
-      !form.newPic
-    ) {
-      return toast.error("Vui lòng nhập đầy đủ thông tin");
+    if (!form.title || !form.newPic || !pdfUrl) {
+      return toast.error("Vui lòng nhập đủ tiêu đề, ảnh và file PDF.");
     }
 
     try {
       const formData = new FormData();
-      for (let key in form) {
+      Object.keys(form).forEach((key) => {
         formData.append(key, form[key]);
-      }
+      });
+      formData.append("pdfUrl", pdfUrl);
 
       const res = await apiAddNew(formData);
       if (res.data?.success) {
@@ -65,16 +75,19 @@ export default function CreateNew() {
           category: "",
           status: "ENABLE",
           newPic: null,
+          pdfUrl: null,
         });
         setPreviewImg(null);
+        setPdfUrl(null);
+        setPdfPreview(null);
         setIsFeatured(false);
         navigate("/admin/news");
       } else {
-        toast.error("Tạo bài viết thất bại");
+        toast.error("Tạo bài viết thất bại.");
       }
     } catch (err) {
       console.error(err);
-      toast.error("Có lỗi xảy ra khi tạo bài viết");
+      toast.error("Có lỗi xảy ra khi tạo bài viết.");
     }
   };
 
@@ -102,8 +115,19 @@ export default function CreateNew() {
           <img
             src={previewImg}
             alt="preview"
-            className="mt-2 h-40 w-full rounded-lg border object-contain"
+            className="mt-2 h-48 w-full rounded-lg border object-contain"
           />
+        )}
+      </div>
+
+      {/* File PDF đính kèm */}
+      <div className="space-y-2">
+        <Label>File PDF (nội dung chính & tài liệu đính kèm)</Label>
+        <Input type="file" accept="application/pdf" onChange={handlePdfChange} />
+        {pdfPreview && (
+          <div className="mt-2 h-[400px] w-full overflow-hidden rounded border">
+            <embed src={pdfPreview} type="application/pdf" className="h-full w-full" />
+          </div>
         )}
       </div>
 
@@ -118,7 +142,6 @@ export default function CreateNew() {
             onChange={handleInputChange}
             disabled={isFeatured}
           />
-
           <div className="mt-2 flex items-center gap-2">
             <input
               type="checkbox"
@@ -144,9 +167,7 @@ export default function CreateNew() {
           <Label>Trạng thái</Label>
           <Select
             value={form.status}
-            onValueChange={(val) =>
-              setForm((prev) => ({ ...prev, status: val }))
-            }
+            onValueChange={(val) => setForm((prev) => ({ ...prev, status: val }))}
           >
             <SelectTrigger>
               <SelectValue placeholder="Chọn trạng thái" />
@@ -164,7 +185,7 @@ export default function CreateNew() {
         <Label>Nội dung chi tiết</Label>
         <DescriptionEditor
           value={form.description}
-          onChange={(value) => setForm({ ...form, description: value })}
+          onChange={(value) => setForm((prev) => ({ ...prev, description: value }))}
         />
       </div>
 

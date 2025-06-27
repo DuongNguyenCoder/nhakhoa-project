@@ -18,6 +18,7 @@ export const apiAddMethod = (data) =>
     url: "/api/method/add-method",
     method: "post",
     data,
+    withCredentials: true,
   });
 
 export const apiUpdateMethod = (id, data) =>

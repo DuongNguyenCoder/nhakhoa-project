@@ -61,7 +61,7 @@ const CreateProduct = () => {
     const files = Array.from(e.target.files);
     const previews = files.map((file) => URL.createObjectURL(file));
     setForm({ ...form, productPics: files });
-    setPreviews([...previews])
+    setPreviews([...previews]);
   };
 
   const handleSubmit = async (e) => {
@@ -87,31 +87,48 @@ const CreateProduct = () => {
     submitData.append("description", form.description);
 
     // Các file ảnh (append từng ảnh vào mảng productPics[])
+    // const imgSubmit = [];
+    // form.productPics.forEach((file) => {
+    //   imgSubmit.push(file);
+    // });
+    // console.log("imgteas: ", imgSubmit);
+    // submitData.append("productPics", imgSubmit)
     form.productPics.forEach((file) => {
       submitData.append("productPics", file);
     });
+    
     const formDataObj = {};
-submitData.forEach((value, key) => {
-  formDataObj[key] = value;
-});
+    submitData.forEach((value, key) => {
+      formDataObj[key] = value;
+    });
 
-for (let [key, value] of submitData.entries()) {
-  console.log(`${key}:`, value);
-}
+    for (let [key, value] of submitData.entries()) {
+      console.log(`${key}:`, value);
+    }
 
-    
-    
+  //   console.log("===== FORM DATA SEND =====");
+  // for (let pair of submitData.entries()) {
+  //   if (pair[1] instanceof File) {
+  //     console.log(`${pair[0]}: [File] name=${pair[1].name}, type=${pair[1].type}`);
+  //   } else {
+  //     console.log(`${pair[0]}:`, pair[1]);
+  //   }
+  // }
+
     try {
       const res = await apiAddProduct(submitData);
-      console.log("api ADDPRODUFUCT: ",res)
-    if (res.data.success) {
-      navigate("/admin/product");
-      toast.success("Thêm sản phẩm thành công!");
-    } else {
-      console.log("Lỗi thêm sản phẩm!");
-    }} catch(err) {
+      console.log("api ADDPRODUFUCT: ", res);
+      if (res.data.success) {
+        navigate("/admin/product");
+        toast.success("Thêm sản phẩm thành công!");
+        console.log("img: ", formDataObj)
+      } else {
+        console.log("Lỗi thêm sản phẩm!");
+      }
+    } catch (err) {
       console.error(err);
       toast.error("Vui lòng không được để trống!");
+      console.log("img: ", formDataObj)
     }
   };
 
@@ -248,10 +265,10 @@ for (let [key, value] of submitData.entries()) {
             >
               <option value="">-- Chọn phân mục --</option>
               {categories.map((cat) => (
-                  <option key={cat._id} value={cat._id}>
-                    {cat.title}
-                  </option>
-                ))}
+                <option key={cat._id} value={cat._id}>
+                  {cat.title}
+                </option>
+              ))}
             </select>
           </div>
 

@@ -84,7 +84,7 @@ const AuthButtons = () => {
       {!isMobile && showLoginModal && (
         <div
           ref={popupRef}
-          className="absolute right-0 top-full mt-2 w-[350px] md:w-[400px] rounded-lg bg-white shadow-xl p-4 z-50"
+          className="absolute z-[9999] right-0 top-full mt-2 w-[350px] md:w-[400px] rounded-lg bg-white shadow-xl p-4"
         >
           <LoginForm />
         </div>

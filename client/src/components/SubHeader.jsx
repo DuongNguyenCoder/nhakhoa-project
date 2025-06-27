@@ -12,6 +12,7 @@ const SubHeader = () => {
     const fetchMethods = async () => {
       await apiGetMethod()
         .then((rs) => {
+          console.log("aaa: ", rs);
           console.log("aa: ", rs.data);
           if (rs.data && rs.data.success) {
             setMethod(rs.data.data.slice(0, 4));

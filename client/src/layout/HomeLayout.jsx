@@ -11,23 +11,33 @@ import SupportWidget from '@/components/SupportWidget';
 
 const HomeLayout = () => {
   return (
-    <div className='flex flex-col min-h-screen items-center bg-gray-100'>
-      <div className='w-full'>
-        <TopHeader/>
-        <MainHeader/>
+    <div className="w-full bg-gray-100">
+      {/* Header */}
+      <TopHeader />
+      <MainHeader />
+      <div className="sticky top-0 z-50 bg-white shadow">
+        <MenuHeader />
       </div>
-      <div className='w-full h-auto md:mb-3'>
-        <BannerHome/>
+
+      {/* Banner */}
+      <div className="w-full h-auto md:mb-3">
+        <BannerHome />
       </div>
-      <main className='w-full flex-wrap px-3 lg:px-6 xl:px-9 2xl:px-12 mx-auto'>
-        <Outlet/>
+
+      {/* Main content */}
+      <main className="w-full flex-wrap px-3 lg:px-6 xl:px-9 2xl:px-12 mx-auto">
+        <Outlet />
       </main>
-      <div className='w-full mt-20'>
-      <Footer/>
+
+      {/* Footer */}
+      <div className="w-full mt-20">
+        <Footer />
       </div>
-      <SupportWidget/>
+
+      <SupportWidget />
     </div>
   );
 };
+
 
 export default HomeLayout

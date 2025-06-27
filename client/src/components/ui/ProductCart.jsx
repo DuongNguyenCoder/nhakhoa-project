@@ -1,11 +1,47 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+
 const ProductCard = ({ item }) => {
-  const navigate = useNavigate();
+  const hasPrice =
+    (item.originalPrice && item.originalPrice > 0) ||
+    (item.salePrice && item.salePrice > 0);
+
+  const renderPrice = () => {
+    if (hasPrice) {
+      return (
+        <div className="flex flex-col gap-1">
+          {item.originalPrice > 0 && item.salePrice > 0 && item.salePrice < item.originalPrice ? (
+            <>
+              <span className="text-sm text-gray-500 line-through">
+                {item.originalPrice.toLocaleString("vi-VN")}₫
+              </span>
+              <span className="text-base font-bold text-red-600">
+                {item.salePrice.toLocaleString("vi-VN")}₫
+              </span>
+            </>
+          ) : (
+            <span className="text-base font-bold text-red-600">
+              {(item.salePrice || item.originalPrice).toLocaleString("vi-VN")}₫
+            </span>
+          )}
+        </div>
+      );
+    } else {
+      return (
+        <a
+          href="tel:(+84 4) 3852 3643"
+          className="text-base font-bold text-red-600 hover:underline"
+        >
+          Liên hệ
+        </a>
+      );
+    }
+  };
+
   return (
     <div className="group flex flex-col overflow-hidden rounded-2xl bg-white shadow-md transition duration-300 hover:-translate-y-1 hover:shadow-xl">
       <Link to={`/products/${item._id}`} className="block w-full">
-        <figure className="relative w-full aspect-square overflow-hidden bg-gray-100">
+        <figure className="relative aspect-square w-full overflow-hidden bg-gray-100">
           <img
             src={item.productPics?.[0] || "/placeholder.jpg"}
             alt={item.title}
@@ -18,30 +54,24 @@ const ProductCard = ({ item }) => {
             {item.title}
           </h2>
           <p className="text-xs text-gray-500">
-            Thương hiệu: <span className="font-medium">{item.brand || "Đang cập nhật"}</span>
+            Thương hiệu:{" "}
+            <span className="font-medium">{item.brand || "Đang cập nhật"}</span>
           </p>
           <p className="text-xs text-gray-500">
-            Xuất xứ: <span className="font-medium">{item.origin || "Đang cập nhật"}</span>
+            Xuất xứ:{" "}
+            <span className="font-medium">{item.origin || "Đang cập nhật"}</span>
           </p>
         </div>
       </Link>
 
-      <div className="mt-auto flex items-center justify-between px-2 pb-4 text-sm font-normal">
-        <p className="text-gray-700">
-          Giá:
-          <a
-            href="tel:(+84 4) 3852 3643"
-            className="ml-1 font-bold text-red-600 hover:underline"
-          >
-            liên hệ
-          </a>
-        </p>
-        <button
-          onClick={() => navigate(`/products/${item._id}`)}
-          className="rounded-full bg-orange-400 px-4 font py-1.5 text-xs text-black shadow-md transition-all duration-300 hover:bg-orange-600 hover:text-white"
+      <div className="mt-auto flex items-center justify-between px-4 pb-4 text-sm">
+        {renderPrice()}
+        <Link
+          to={`/products/${item._id}`}
+          className="rounded-full bg-orange-400 px-4 py-1.5 text-xs font-medium text-black shadow-md transition-all duration-300 hover:bg-orange-600 hover:text-white"
         >
-          Thêm vào giỏ
-        </button>
+          Xem chi tiết
+        </Link>
       </div>
     </div>
   );

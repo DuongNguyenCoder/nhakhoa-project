@@ -10,6 +10,7 @@ import {
 } from "react-icons/fa";
 import logof from "../assets/logo_f.svg";
 import logoSale from "../assets/logoSaleNoti.png";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
@@ -36,24 +37,24 @@ const Footer = () => {
           <h2 className="mb-4 text-xl font-semibold">Hỗ trợ khách hàng</h2>
           <ul className="space-y-2 text-gray-200">
             <li>
-              <a href="#" className="transition hover:text-red-300">
+              <Link to="/news" className="transition hover:text-red-300">
                 Chính sách bảo mật
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="#" className="transition hover:text-red-300">
+              <Link to="/news" className="transition hover:text-red-300"> 
                 Chính sách đổi - trả
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="#" className="transition hover:text-red-300">
+              <Link to="/news" className="transition hover:text-red-300">
                 Chế độ bảo hành
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="#" className="transition hover:text-red-300">
+              <Link to="/news" className="transition hover:text-red-300">
                 Quy định giao - nhận
-              </a>
+              </Link>
             </li>
           </ul>
         </div>
@@ -71,24 +72,28 @@ const Footer = () => {
             <li className="flex items-center gap-2">
               <FaEnvelope /> info@minhdental.com
             </li>
+            <li>
             <a href="tel:(024)37100625" className="flex items-center gap-2 hover:text-red-300">
               <FaPhoneAlt /> (024) 3710 0625
             </a>
+            </li>
+            <li>
             <a href="tel:(024)32222788" className="flex items-center gap-2 hover:text-red-300">
               <FaPhoneAlt /> (024) 3222 2788
             </a>
+            </li>
             <li className="flex items-center gap-2">
               <FaClock /> T2 - CN (8h - 20h)
             </li>
           </ul>
           <div className="mt-4 flex gap-4 text-2xl">
-            <a href="#" className="transition hover:text-red-300">
+            <a href="/" className="transition hover:text-red-300">
               <FaFacebook />
             </a>
-            <a href="#" className="transition hover:text-red-300">
+            <a href="/" className="transition hover:text-red-300">
               <FaInstagram />
             </a>
-            <a href="#" className="transition hover:text-red-300">
+            <a href="/" className="transition hover:text-red-300">
               <FaYoutube />
             </a>
           </div>

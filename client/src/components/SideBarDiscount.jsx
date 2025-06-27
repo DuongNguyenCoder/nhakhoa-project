@@ -15,11 +15,45 @@ const SideBarDiscount = () => {
     fetchProducts();
   }, []);
 
+  const renderPrice = (product) => {
+    const hasPrice =
+      (product.originalPrice && product.originalPrice > 0) ||
+      (product.salePrice && product.salePrice > 0);
+
+    if (hasPrice) {
+      return (
+        <div className="flex flex-col items-center">
+          {product.originalPrice > 0 &&
+          product.salePrice > 0 &&
+          product.salePrice < product.originalPrice ? (
+            <>
+              <span className="text-xs lg:text-sm text-gray-500 line-through">
+                {product.originalPrice.toLocaleString("vi-VN")}₫
+              </span>
+              <span className="text-sm lg:text-base font-bold text-red-600">
+                {product.salePrice.toLocaleString("vi-VN")}₫
+              </span>
+            </>
+          ) : (
+            <span className="text-sm lg:text-base font-bold text-red-600">
+              {(product.salePrice || product.originalPrice).toLocaleString("vi-VN")}₫
+            </span>
+          )}
+        </div>
+      );
+    }
+    return (
+      <span className="mt-1 text-red-600 font-bold text-sm underline">
+        Giá: liên hệ
+      </span>
+    );
+  };
+
   return (
-    <div className="mt-6 flex w-full flex-col bg-gray-100 rounded-lg shadow-sm">
+    <div className="mt-6 flex w-full flex-col rounded-lg bg-gray-100 shadow-sm">
       {/* Header */}
-      <div className="flex h-10 w-full items-center justify-center bg-red-600 rounded-t-lg">
-        <h2 className="text-center text-sm font-bold text-white tracking-wide">
+      <div className="flex h-10 w-full items-center justify-center rounded-t-lg bg-red-600">
+        <h2 className="text-center text-sm font-bold tracking-wide text-white">
           HÀNG KHUYẾN MÃI
         </h2>
       </div>
@@ -31,20 +65,20 @@ const SideBarDiscount = () => {
           direction="vertical"
           slidesPerView={4}
           spaceBetween={12}
-          loop={true}
+          loop
           autoplay={{
             delay: 2500,
             disableOnInteraction: false,
             pauseOnMouseEnter: true,
           }}
           modules={[Autoplay]}
-          className="h-[850px] lg:h-[1260px] w-[95%] p-2"
+          className="h-[850px] w-[95%] p-2 lg:h-[1260px]"
         >
           {discountProducts.map((product) => (
             <SwiperSlide key={product._id}>
               <Link
                 to={`/products/${product._id}`}
-                className="relative flex h-52 lg:h-[310px] w-full flex-col items-center overflow-hidden rounded-md bg-white p-3 shadow transition hover:shadow-md hover:ring-2 hover:ring-red-400"
+                className="group relative flex h-52 w-full flex-col items-center overflow-hidden rounded-md bg-white p-3 shadow transition hover:shadow-md hover:ring-2 hover:ring-red-400 lg:h-[310px]"
               >
                 {/* Hover Overlay */}
                 <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/30 opacity-0 transition duration-300 group-hover:opacity-100 text-white font-semibold text-sm">
@@ -53,9 +87,9 @@ const SideBarDiscount = () => {
 
                 {/* Image */}
                 <img
-                  src={product.productPics[0]}
+                  src={product.productPics?.[0] || "/placeholder.jpg"}
                   alt={product.title}
-                  className="h-32 w-32 lg:h-40 lg:w-40 rounded object-cover transition-transform duration-300 group-hover:scale-105"
+                  className="h-32 w-32 rounded object-cover transition-transform duration-300 group-hover:scale-105 lg:h-40 lg:w-40"
                 />
 
                 {/* Info */}
@@ -63,15 +97,15 @@ const SideBarDiscount = () => {
                   <span className="mb-1 line-clamp-2 text-sm font-semibold text-gray-800 lg:text-base">
                     {product.title}
                   </span>
-                  <span className="text-gray-500 text-xs lg:text-sm">
-                    Thương hiệu: {product.brand}
+                  <span className="text-xs text-gray-500 lg:text-sm">
+                    Thương hiệu:{" "}
+                    <span className="font-medium">{product.brand || "Đang cập nhật"}</span>
                   </span>
-                  <span className="text-gray-500 text-xs lg:text-sm">
-                    Xuất xứ: {product.origin}
+                  <span className="text-xs text-gray-500 lg:text-sm">
+                    Xuất xứ:{" "}
+                    <span className="font-medium">{product.origin || "Đang cập nhật"}</span>
                   </span>
-                  <span className="mt-1 text-red-600 font-bold text-sm underline">
-                    Giá: liên hệ
-                  </span>
+                  {renderPrice(product)}
                 </div>
               </Link>
             </SwiperSlide>

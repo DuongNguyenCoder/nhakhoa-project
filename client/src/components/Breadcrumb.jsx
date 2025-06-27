@@ -24,7 +24,7 @@ const Breadcrumb = () => {
   const queryTitle = searchParams.get("title");
 
   return (
-    <nav className="w-full lg:h-20 h-16 bg-red-100 py-3 px-20 md:px-[100px] lg:px-[140px] shadow-sm mb-5">
+    <nav className="w-full lg:h-20 h-16 bg-red-100 py-3 px-2 sm:px-20 md:px-[100px] lg:px-[140px] shadow-sm mb-5">
       <div className="flex h-full items-center text-sm font-medium text-gray-700">
         {/* Trang chủ với icon */}
         <Link

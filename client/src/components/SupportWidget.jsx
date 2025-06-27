@@ -85,7 +85,7 @@ const SupportWidget = () => {
         >
           <div className="bg-red-500 w-full h-20 absolute inset-0 flex gap-3 items-center pl-4 rounded-t-lg">
             <div className="bg-white size-16 rounded-2xl">
-              <img src={logo} className="w-full h-full" />
+              <img src={logo} alt="" aria-hidden="true" className="w-full h-full" />
             </div>
             <div className="flex flex-col">
               <h3 className="font-medium text-base">minhdental.com</h3>
@@ -107,6 +107,8 @@ const SupportWidget = () => {
             <a
               href="tel:0915858282"
               className="bg-red-600 p-4 rounded-full transition hover:scale-110"
+              aria-label="Gọi 0915 858 282"
+              title="Hotline"
             >
               <PhoneIcon className="size-6 text-white" />
             </a>

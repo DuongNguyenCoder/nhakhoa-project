@@ -145,6 +145,7 @@ const Home = () => {
               value={selectDirectory}
               onChange={(e) => setSelectDirectory(e.target.value)}
               className="rounded border px-3 py-1"
+              aria-label="Chọn danh mục sản phẩm"
             >
               <option value="">Tất cả</option>
               {directories.map((dir) => (

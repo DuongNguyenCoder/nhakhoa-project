@@ -1,18 +1,12 @@
   import { NavLinks } from "@/data/NavLinks";
-  import React, { useEffect, useState } from "react";
-  import { Link, useLocation } from "react-router-dom";
+  import React from "react";
+  import { Link } from "react-router-dom";
   import NavBarMobile from "./ui/NavBarMobile";
   import CartShopping from "./ui/CartShopping";
   import SearchButton from "./buttons/SearchButton";
 
   const MenuHeader = () => {
-    const [isHomePage, setIsHomePage] = useState(false);
-    const location = useLocation();
-
-    useEffect(() => {
-      setIsHomePage(location.pathname !== "/");
-    }, [location.pathname]);
-
+    
     return (
       <div className="flex h-14 md:h-[60px] items-center border-b border-b-red-500 shadow-sm">
         <div className="flex h-full w-full items-center justify-between bg-gradient-to-r from-red-700 via-red-600 to-red-700 pr-4 pl-2 md:pl-6 md:pr-1.5 lg:pr-5">
