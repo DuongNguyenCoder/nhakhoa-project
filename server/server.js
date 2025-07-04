@@ -8,8 +8,8 @@ const cookieParser = require("cookie-parser");
 const app = express();
 const port = process.env.PORT || 8888;
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: "100mb" }));
+app.use(express.urlencoded({ limit: "100mb", extended: true }));
 app.use(
   cors({
     origin: "https://minhdental.com",
@@ -19,6 +19,7 @@ app.use(
   })
 );
 app.use(cookieParser());
+
 initRoutes(app);
 dbConnected();
 

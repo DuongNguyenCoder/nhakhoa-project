@@ -9,7 +9,7 @@ var newSchema = new mongoose.Schema(
     },
     description: {
       type: String,
-      required: true,
+      // required: true,
     },
     newPic: {
       type: String,
@@ -17,12 +17,15 @@ var newSchema = new mongoose.Schema(
     },
     category: {
       type: String,
-      required: true,
+      // required: true,
     },
     status: {
       type: String,
       enum: ["ENABLE", "DISABLE"],
       default: "DISABLE",
+    },
+    pdfUrl: {
+      type: String,
     },
   },
   { timestamps: true }

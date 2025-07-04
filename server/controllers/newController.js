@@ -2,19 +2,27 @@ const { v2 } = require("cloudinary");
 const New = require("../models/new");
 
 const addNew = async (req, res) => {
+  const { newPic, pdfUrl } = req.files;
   const newRecord = await New.create({
     ...req.body,
-    newPic: req.file.path,
+    newPic: newPic[0].path,
+    pdfUrl: pdfUrl[0].path,
   });
-  const uploadResponse = await v2.uploader.upload(req.file.path, {
+  const uploadResponse = await v2.uploader.upload(newPic[0].path, {
     public_id: `new_${newRecord._id}`,
     overwrite: true,
     folder: "app/new",
+  });
+  const uploadPdf = await v2.uploader.upload(pdfUrl[0].path, {
+    public_id: `pdf_${newRecord._id}`,
+    overwrite: true,
+    folder: "app/pdf",
   });
   const updatedRecord = await New.findByIdAndUpdate(
     newRecord._id,
     {
       newPic: uploadResponse.secure_url,
+      pdfUrl: uploadPdf.secure_url,
     },
     { new: true }
   );
@@ -26,14 +34,23 @@ const addNew = async (req, res) => {
   });
 };
 const updateNew = async (req, res) => {
-  const uploadResponse = await v2.uploader.upload(req.file.path, {
+  const uploadResponse = await v2.uploader.upload(req.files.newPic[0].path, {
     public_id: `new_${req.params.id}`,
     overwrite: true,
     folder: "app/new",
   });
+  const uploadPdf = await v2.uploader.upload(req.files.pdfUrl[0].path, {
+    public_id: `pdf_${req.params.id}`,
+    overwrite: true,
+    folder: "app/pdf",
+  });
   const response = await New.findByIdAndUpdate(
     req.params.id,
-    { ...req.body, newPic: uploadResponse.secure_url },
+    {
+      ...req.body,
+      newPic: uploadResponse.secure_url,
+      pdfUrl: uploadPdf.secure_url,
+    },
     {
       new: true,
     }

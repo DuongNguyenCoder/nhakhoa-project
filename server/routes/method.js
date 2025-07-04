@@ -11,11 +11,11 @@ router.post(
     Joi.object({
       title: stringReq,
       description: stringReq,
-    }),
+    })
   ),
   verifyToken,
   isAdmin,
-  ctrl.addMethod,
+  ctrl.addMethod
 );
 
 router.put(
@@ -24,17 +24,17 @@ router.put(
     Joi.object({
       title: stringReq,
       description: stringReq,
-    }),
+    })
   ),
   verifyToken,
   isAdmin,
-  ctrl.updateMethod,
+  ctrl.updateMethod
 );
 
 router.delete("/delete-method/:id", verifyToken, isAdmin, ctrl.deleteMethod);
 
 router.get("/:id", verifyToken, isAdmin, ctrl.getMethod);
 
-router.get("/", verifyToken, isAdmin, ctrl.getMethods);
+router.get("/", ctrl.getMethods);
 
 module.exports = router;

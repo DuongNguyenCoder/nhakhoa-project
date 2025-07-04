@@ -36,7 +36,7 @@ const file = Joi.object({
   filename: Joi.string().required(),
 }).required();
 
-const files = Joi.array().items(file).required();
+const files = Joi.alternatives().try(file, Joi.array().items(file)).required();
 
 module.exports = {
   string,

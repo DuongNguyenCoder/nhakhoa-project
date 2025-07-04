@@ -3,22 +3,25 @@ const ctrl = require("../controllers/newController");
 const Joi = require("joi");
 const validateInfo = require("../middlewares/validateInfo");
 const { verifyToken, isAdmin } = require("../middlewares/verifyToken");
-const { stringReq, file } = require("../middlewares/joiSchema");
+const { stringReq, file, string } = require("../middlewares/joiSchema");
 const { upload } = require("../configs/cloudinary");
-const category = require("../models/category");
 
 router.post(
   "/add-new",
   verifyToken,
   isAdmin,
-  upload.single("newPic"),
+  upload.fields([
+    { name: "newPic", maxCount: 1 },
+    { name: "pdfUrl", maxCount: 1 },
+  ]),
   validateInfo(
     Joi.object({
       title: stringReq,
-      description: stringReq,
+      description: string,
       status: stringReq,
-      category: stringReq,
+      category: string,
       newPic: file,
+      pdfUrl: file,
     })
   ),
   ctrl.addNew
@@ -27,14 +30,18 @@ router.put(
   "/update-new/:id",
   verifyToken,
   isAdmin,
-  upload.single("newPic"),
+  upload.fields([
+    { name: "newPic", maxCount: 1 },
+    { name: "pdfUrl", maxCount: 1 },
+  ]),
   validateInfo(
     Joi.object({
       title: stringReq,
-      description: stringReq,
+      description: string,
       status: stringReq,
-      category: stringReq,
+      category: string,
       newPic: file,
+      pdfUrl: file,
     })
   ),
   ctrl.updateNew
