@@ -27,15 +27,18 @@ const SideBarDiscount = () => {
           product.salePrice > 0 &&
           product.salePrice < product.originalPrice ? (
             <>
-              <span className="text-xs lg:text-sm text-gray-500 line-through">
+              <div className="flex gap-1 text-sm items-center">
+              <p>Giá gốc:</p>
+              <span className=" text-base text-gray-700 line-through">
                 {product.originalPrice.toLocaleString("vi-VN")}₫
               </span>
-              <span className="text-sm lg:text-base font-bold text-red-600">
+              </div>
+              <span className="text-[17.5px] text-center font-bold mt-0.5 text-red-600">
                 {product.salePrice.toLocaleString("vi-VN")}₫
               </span>
             </>
           ) : (
-            <span className="text-sm lg:text-base font-bold text-red-600">
+            <span className="text-base font-bold text-red-600">
               {(product.salePrice || product.originalPrice).toLocaleString("vi-VN")}₫
             </span>
           )}
@@ -72,13 +75,13 @@ const SideBarDiscount = () => {
             pauseOnMouseEnter: true,
           }}
           modules={[Autoplay]}
-          className="h-[850px] w-[95%] p-2 lg:h-[1260px]"
+          className="h-[1020px] w-[95%] p-2 lg:h-[1500px]"
         >
           {discountProducts.map((product) => (
             <SwiperSlide key={product._id}>
               <Link
                 to={`/products/${product._id}`}
-                className="group relative flex h-52 w-full flex-col items-center overflow-hidden rounded-md bg-white p-3 shadow transition hover:shadow-md hover:ring-2 hover:ring-red-400 lg:h-[310px]"
+                className="group relative flex lg:flex h-64 w-full lg:flex-col items-center overflow-hidden rounded-md bg-white p-3 shadow transition hover:shadow-md hover:ring-2 hover:ring-red-400 lg:h-[360px]"
               >
                 {/* Hover Overlay */}
                 <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/30 opacity-0 transition duration-300 group-hover:opacity-100 text-white font-semibold text-sm">
@@ -89,12 +92,12 @@ const SideBarDiscount = () => {
                 <img
                   src={product.productPics?.[0] || "/placeholder.jpg"}
                   alt={product.title}
-                  className="h-32 w-32 rounded object-cover transition-transform duration-300 group-hover:scale-105 lg:h-40 lg:w-40"
+                  className="h-40 w-40 rounded object-cover transition-transform duration-300 group-hover:scale-105 lg:h-44 lg:w-44"
                 />
 
                 {/* Info */}
                 <div className="mt-2 flex w-full flex-col items-center text-center">
-                  <span className="mb-1 line-clamp-2 text-sm font-semibold text-gray-800 lg:text-base">
+                  <span className="mb-1 line-clamp-2 font-semibold text-gray-800 text-base">
                     {product.title}
                   </span>
                   <span className="text-xs text-gray-500 lg:text-sm">
@@ -105,7 +108,7 @@ const SideBarDiscount = () => {
                     Xuất xứ:{" "}
                     <span className="font-medium">{product.origin || "Đang cập nhật"}</span>
                   </span>
-                  {renderPrice(product)}
+                  <div className="mt-1">{renderPrice(product)}</div>
                 </div>
               </Link>
             </SwiperSlide>

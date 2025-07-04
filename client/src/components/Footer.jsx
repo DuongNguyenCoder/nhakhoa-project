@@ -21,7 +21,7 @@ const Footer = () => {
           <div className="-mt-16 w-full">
             <img src={logof} alt="logo_footer" className="size-48" />
             <h2 className="-mt-7 mb-4 text-2xl font-bold">
-              CTY TNHH thương mại dịch vụ y - nha khoa Minh Phương
+              CÔNG TY TNHH THƯƠNG MẠI DỊCH VỤ Y - NHA KHOA MINH PHƯƠNG
             </h2>
           </div>
           <div className="flex w-full flex-col gap-1 text-gray-200">
@@ -87,13 +87,23 @@ const Footer = () => {
             </li>
           </ul>
           <div className="mt-4 flex gap-4 text-2xl">
-            <a href="/" className="transition hover:text-red-300">
+            <a href="https://www.facebook.com/nhakhoaminhphuong.net" target="_blank" rel="noopener noreferrer" className="transition hover:text-red-300 hover:scale-110">
               <FaFacebook />
             </a>
-            <a href="/" className="transition hover:text-red-300">
-              <FaInstagram />
+            <a
+              href="https://zalo.me/0915858282"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-full shadow-lg transition hover:scale-110"
+              title="Chat Zalo"
+            >
+              <img
+                src="https://page.widget.zalo.me/static/images/2.0/Logo.svg"
+                alt="Zalo"
+                className="size-6"
+              />
             </a>
-            <a href="/" className="transition hover:text-red-300">
+            <a href="/" className="transition hover:text-red-300 hover:scale-110">
               <FaYoutube />
             </a>
           </div>

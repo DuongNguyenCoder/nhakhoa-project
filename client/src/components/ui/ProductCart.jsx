@@ -10,12 +10,17 @@ const ProductCard = ({ item }) => {
     if (hasPrice) {
       return (
         <div className="flex flex-col gap-1">
-          {item.originalPrice > 0 && item.salePrice > 0 && item.salePrice < item.originalPrice ? (
+          {item.originalPrice > 0 &&
+          item.salePrice > 0 &&
+          item.salePrice < item.originalPrice ? (
             <>
-              <span className="text-sm text-gray-500 line-through">
+            <div className="flex gap-1 text-sm items-center">
+              <p>Giá gốc:</p>
+              <span className=" text-gray-600 line-through">
                 {item.originalPrice.toLocaleString("vi-VN")}₫
               </span>
-              <span className="text-base font-bold text-red-600">
+              </div>
+              <span className="text-base text-center font-bold text-red-600">
                 {item.salePrice.toLocaleString("vi-VN")}₫
               </span>
             </>
@@ -28,12 +33,15 @@ const ProductCard = ({ item }) => {
       );
     } else {
       return (
+        <div className="flex items-center text-base gap-1">
+          <p className="font-medium">Giá:</p>
         <a
           href="tel:(+84 4) 3852 3643"
-          className="text-base font-bold text-red-600 hover:underline"
+          className="font-bold text-red-600 hover:underline"
         >
           Liên hệ
         </a>
+        </div>
       );
     }
   };
@@ -59,20 +67,23 @@ const ProductCard = ({ item }) => {
           </p>
           <p className="text-xs text-gray-500">
             Xuất xứ:{" "}
-            <span className="font-medium">{item.origin || "Đang cập nhật"}</span>
+            <span className="font-medium">
+              {item.origin || "Đang cập nhật"}
+            </span>
           </p>
         </div>
       </Link>
 
-      <div className="mt-auto flex items-center justify-between px-4 pb-4 text-sm">
-        {renderPrice()}
-        <Link
-          to={`/products/${item._id}`}
-          className="rounded-full bg-orange-400 px-4 py-1.5 text-xs font-medium text-black shadow-md transition-all duration-300 hover:bg-orange-600 hover:text-white"
-        >
-          Xem chi tiết
-        </Link>
-      </div>
+      <div className="mt-auto flex flex-col items-center gap-3 px-4 pb-4 text-sm">
+  {renderPrice()}
+  <Link
+    to={`/products/${item._id}`}
+    className="w-full max-w-[200px] rounded-full bg-orange-400 px-4 py-2 text-xs font-medium text-black shadow-md transition-all duration-300 hover:bg-orange-600 hover:text-white text-center"
+  >
+    Xem chi tiết
+  </Link>
+</div>
+
     </div>
   );
 };

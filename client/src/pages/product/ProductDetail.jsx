@@ -252,7 +252,7 @@ const ProductDetail = () => {
           <div className="w-full border-b p-2">
             <h2 className="text-base font-medium">CHI TIẾT SẢN PHẨM</h2>
           </div>
-          <div className="prose w-full max-w-none px-4 py-6 md:px-6 xl:px-8">
+          <div className="prose w-full max-w-none break-words overflow-x-auto px-4 py-6 md:px-6 xl:px-8">
             <div>
               <div
                 dangerouslySetInnerHTML={{ __html: product.description }}
