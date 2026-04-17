@@ -21,7 +21,7 @@ import ProductByDirectoryPage from "@/pages/product/ProductByDirectoryPage";
 import ProductByCategoryPage from "@/pages/product/ProductByCategoryPage";
 import AuthPage from "@/pages/AuthPage";
 import ProfilePage from "@/pages/ProfilePage";
-import CheckoutStep1 from "@/pages/checkout/CheckOutStep1";
+import CheckoutStep1 from "@/pages/checkout/CheckoutStep1";
 import CheckoutStep2 from "@/pages/checkout/CheckoutStep2";
 import ThankYouPage from "@/pages/checkout/ThankYouPage";
 
@@ -60,7 +60,6 @@ import Method from "@/pages/admin/methods/methodsManagerPage";
 const AppRouter = () => {
   return (
     <Routes>
-
       {/* Home */}
       <Route element={<HomeLayout />}>
         <Route index element={<Home />} />
@@ -80,11 +79,19 @@ const AppRouter = () => {
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/check-out-step1" element={<CheckoutStep1 />} />
         <Route path="/check-out-step2" element={<CheckoutStep2 />} />
-        <Route path="/dang-nhap" element={<Navigate to="/auth/login" replace />} />
-        <Route path="/dang-ky" element={<Navigate to="/auth/register" replace />} />
-        <Route path="/quen-mat-khau" element={<Navigate to="/auth/forgot" replace />} />
+        <Route
+          path="/dang-nhap"
+          element={<Navigate to="/auth/login" replace />}
+        />
+        <Route
+          path="/dang-ky"
+          element={<Navigate to="/auth/register" replace />}
+        />
+        <Route
+          path="/quen-mat-khau"
+          element={<Navigate to="/auth/forgot" replace />}
+        />
       </Route>
-      
 
       {/* Default Pages */}
       <Route element={<DefaultLayout />}>
@@ -110,45 +117,45 @@ const AppRouter = () => {
         <Route path="banner/create" element={<CreateBanner />} />
         <Route path="banner/edit/:id" element={<EditBanner />} />
         {/* Product */}
-        <Route path="product" element={<ProductManagement/>}/>
-        <Route path="product/create" element={<CreateProduct/>}/>
-        <Route path="product/edit/:id" element={<EditProduct/>}/>
-        <Route path="directory" element={<Directory/>}/>
-        <Route path="directory/create" element={<CreateDirectory/>}/>
-        <Route path="directory/edit/:id" element={<EditDirectory/>}/>
-        <Route path="category" element={<Category/>}/>
-        <Route path="category/create" element={<CreateCategory/>}/>
-        <Route path="category/edit/:id" element={<EditCategory/>}/>
-        <Route path="partner" element={<PartnerPage/>}/>
+        <Route path="product" element={<ProductManagement />} />
+        <Route path="product/create" element={<CreateProduct />} />
+        <Route path="product/edit/:id" element={<EditProduct />} />
+        <Route path="directory" element={<Directory />} />
+        <Route path="directory/create" element={<CreateDirectory />} />
+        <Route path="directory/edit/:id" element={<EditDirectory />} />
+        <Route path="category" element={<Category />} />
+        <Route path="category/create" element={<CreateCategory />} />
+        <Route path="category/edit/:id" element={<EditCategory />} />
+        <Route path="partner" element={<PartnerPage />} />
         {/* END */}
 
         {/* NEWS */}
-        <Route path="news" element={<NewsManagerPage/>}/>
-        <Route path="news/create" element={<CreateNew/>}/>
-        <Route path="news/category" element={<NewsCategory/>}/>
-        <Route path="news/edit/:id" element={<EditNews/>}/>
+        <Route path="news" element={<NewsManagerPage />} />
+        <Route path="news/create" element={<CreateNew />} />
+        <Route path="news/category" element={<NewsCategory />} />
+        <Route path="news/edit/:id" element={<EditNews />} />
         {/* END */}
 
         {/* WARRANTY */}
-        <Route path="warranty" element={<WarrantyManagement/>}/>
-        <Route path="warranty/create" element={<CreateWarranty/>}/>
-        <Route path="warranty/edit/:id" element={<EditWarranty/>}/>
+        <Route path="warranty" element={<WarrantyManagement />} />
+        <Route path="warranty/create" element={<CreateWarranty />} />
+        <Route path="warranty/edit/:id" element={<EditWarranty />} />
         {/* END */}
 
         {/* ODERS */}
-        <Route path="orders" element={<Orders/>}/>
-        <Route path="orders/preview/:id" element={<PreviewOrder/>}/>
+        <Route path="orders" element={<Orders />} />
+        <Route path="orders/preview/:id" element={<PreviewOrder />} />
         {/* END */}
 
         {/* USERS */}
-        <Route path="users" element={<UserManagement/>}/>
-        <Route path="users/preview/:id" element={<PreviewUser/>}/>
+        <Route path="users" element={<UserManagement />} />
+        <Route path="users/preview/:id" element={<PreviewUser />} />
         {/* END */}
 
         {/* METHODS */}
-        <Route path="methods" element={<Method/>}/>
+        <Route path="methods" element={<Method />} />
         {/* END */}
-        <Route path="signup" element={<CreateUserPage/>}/>
+        <Route path="signup" element={<CreateUserPage />} />
       </Route>
       <Route path="*" element={<NotFound />} />
       <Route path="/thank-you" element={<ThankYouPage />} />
