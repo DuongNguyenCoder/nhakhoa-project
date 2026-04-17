@@ -13,7 +13,7 @@ jobs:
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.SERVER_IP }}
-          username: root
+          username: adminsvtech
           key: ${{ secrets.SSH_KEY }}
           script: |
             cd /var/www/minhdental/app
