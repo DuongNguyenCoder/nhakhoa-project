@@ -16,7 +16,7 @@ jobs:
           username: root
           key: ${{ secrets.SSH_KEY }}
           script: |
-            cd /var/www/minhdental
+            cd /var/www/minhdental/app
             git pull origin main
             docker compose down
             docker compose up -d --build
