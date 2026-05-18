@@ -8,7 +8,6 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: false,
   },
-  output: "standalone",
   images: {
     remotePatterns: [
       {
