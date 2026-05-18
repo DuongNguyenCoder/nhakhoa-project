@@ -13,7 +13,7 @@ services:
       - app-network
 
   frontend:
-    build: ./frontend
+    build: ./client
     container_name: minhdental-frontend
     restart: always
     env_file:
@@ -27,8 +27,9 @@ services:
     image: mongo:7
     container_name: minhdental-mongodb
     restart: always
+    command: ["--bind_ip_all"]
     ports:
-      - "27017:27017"
+      - "0.0.0.0:27017:27017"
     environment:
       MONGO_INITDB_ROOT_USERNAME: admin
       MONGO_INITDB_ROOT_PASSWORD: admin##123
