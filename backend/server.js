@@ -14,7 +14,7 @@ app.use(express.urlencoded({ limit: "100mb", extended: true }));
 // CORS configuration
 app.use(
   cors({
-    origin: "https://minhdental.com",
+    origin: ["http://localhost:3000", "https://minhdental.com"],
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],

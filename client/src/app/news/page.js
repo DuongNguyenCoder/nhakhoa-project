@@ -1,0 +1,14 @@
+"use client";
+
+import DefaultLayout from "@/layout/DefaultLayout";
+import News from "@/pages/News";
+import RouterLayout from "@/next/RouterLayout";
+import dynamic from "next/dynamic";
+
+export default function Page() {
+  return (
+    <RouterLayout layout={DefaultLayout}>
+      <News />
+    </RouterLayout>
+  );
+}

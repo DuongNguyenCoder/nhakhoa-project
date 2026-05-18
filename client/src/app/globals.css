@@ -1,0 +1,90 @@
+@import "tailwindcss";
+@source "../src";
+@source "../../frontend/src";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+  --card: #ffffff;
+  --card-foreground: #171717;
+  --popover: #ffffff;
+  --popover-foreground: #171717;
+  --primary: #171717;
+  --primary-foreground: #fafafa;
+  --secondary: #f5f5f4;
+  --secondary-foreground: #171717;
+  --muted: #f5f5f4;
+  --muted-foreground: #737373;
+  --accent: #f5f5f4;
+  --accent-foreground: #171717;
+  --destructive: #ef4444;
+  --destructive-foreground: #fafafa;
+  --border: #e5e5e5;
+  --input: #e5e5e5;
+  --ring: #171717;
+  --radius: 0.5rem;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.my-swiper .swiper-button-next,
+.my-swiper .swiper-button-prev {
+  color: #f97316;
+  height: 2.5rem;
+  width: 2.5rem;
+}
+
+.my-swiper .swiper-button-next:hover,
+.my-swiper .swiper-button-prev:hover {
+  color: #fb923c;
+}
+
+.my-swiper .swiper-pagination {
+  bottom: 1rem;
+  display: flex;
+  gap: 0.125rem;
+  justify-content: flex-end;
+  margin-right: 0.25rem;
+  position: absolute;
+  z-index: 10;
+}
+
+.my-swiper .swiper-pagination-bullet {
+  background: #a1a1aa;
+  height: 0.5rem;
+  opacity: 1;
+  width: 0.5rem;
+}
+
+.my-swiper .swiper-pagination-bullet-active {
+  background: #84cc16;
+}
