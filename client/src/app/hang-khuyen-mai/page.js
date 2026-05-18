@@ -6,7 +6,7 @@ import { apiGetAllProduct } from "@/apis/ProductAPI";
 import ProductCard from "@/components/ui/ProductCart";
 import Pagination from "@/components/ui/Pagination";
 import PageTitle from "@/components/pageTitle";
-import RouterLayout from "@/next/RouterLayout";
+import RouterLayout from "@/provider/RouterLayout";
 
 export default function Page() {
   const [products, setProducts] = useState([]);

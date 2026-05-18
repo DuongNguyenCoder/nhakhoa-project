@@ -2,7 +2,7 @@
 
 import DefaultLayout from "@/layout/DefaultLayout";
 import News from "@/pages/News";
-import RouterLayout from "@/next/RouterLayout";
+import RouterLayout from "@/provider/RouterLayout";
 import dynamic from "next/dynamic";
 
 export default function Page() {

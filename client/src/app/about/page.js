@@ -2,7 +2,7 @@
 
 import DefaultLayout from "@/layout/DefaultLayout";
 import About from "@/pages/About";
-import RouterLayout from "@/next/RouterLayout";
+import RouterLayout from "@/provider/RouterLayout";
 
 export default function Page() {
   return (

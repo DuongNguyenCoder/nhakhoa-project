@@ -3,8 +3,8 @@
 import { apiDeleteBanner, apiGetBanner } from "@/apis/BannerAPI";
 import DeleteConfirmDialog from "@/components/common/DeleteConfirmDialog";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const formatDate = (dateStr) => {
@@ -19,7 +19,7 @@ const formatDate = (dateStr) => {
 };
 
 export default function Page() {
-  const navigate = useNavigate();
+  const router = useRouter();
   const [dataBanner, setDataBanner] = useState([]);
 
   const fetchBanner = async () => {

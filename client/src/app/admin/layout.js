@@ -2,7 +2,7 @@
 
 import AdminLayout from "@/components/admin/AdminLayout";
 import AdminRoute from "@/routes/AdminRoute";
-import { OutletProvider } from "@/next/react-router-dom";
+import { OutletProvider } from "@/provider/react-router-dom";
 
 export default function Layout({ children }) {
   return (

@@ -30,7 +30,7 @@ const nextConfig = {
       "@": path.resolve(__dirname, "src"),
       "react-router-dom": path.resolve(
         __dirname,
-        "src/next/react-router-dom.jsx",
+        "src/provider/react-router-dom.jsx",
       ),
     };
 

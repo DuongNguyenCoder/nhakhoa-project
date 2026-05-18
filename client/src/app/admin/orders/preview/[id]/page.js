@@ -7,11 +7,11 @@ import {
   MapPinIcon,
   ClockIcon,
 } from "@heroicons/react/24/outline";
-import { useNavigate, useParams } from "react-router-dom";
 import { apiGetOneOrder, apiUpdateOrder } from "@/apis/OdersAPI";
 import { apiGetUserById } from "@/apis/adminAPI";
 import { apiGetOneProduct } from "@/apis/ProductAPI";
 import { toast } from "react-toastify";
+import { useParams, useRouter } from "next/navigation";
 
 const formatDate = (dateStr) => {
   const date = new Date(dateStr);
@@ -38,7 +38,7 @@ const statusLabel = {
 
 export default function Page() {
   const { id } = useParams();
-  const navigate = useNavigate();
+  const router = useRouter();
   const [order, setOrder] = useState(null);
   const [user, setUser] = useState({});
   const [product, setProduct] = useState([]);
@@ -278,7 +278,7 @@ export default function Page() {
           Cập nhật trạng thái
         </button>
         <button
-          onClick={() => navigate("/admin/orders")}
+          onClick={() => router.push("/admin/orders")}
           className="rounded-md bg-gray-100 px-4 py-2 text-sm text-gray-600 transition hover:bg-gray-200"
         >
           Quay lại

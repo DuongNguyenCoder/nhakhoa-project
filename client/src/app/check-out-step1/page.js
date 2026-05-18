@@ -2,14 +2,14 @@
 
 import AuthLayout from "@/layout/AuthLayout";
 import CheckoutStep1 from "@/pages/checkout/CheckoutStep1";
-import RouterLayout from "@/next/RouterLayout";
+import RouterLayout from "@/provider/RouterLayout";
 import { ArrowLeftStartOnRectangleIcon } from "@heroicons/react/24/outline";
-import { useNavigate } from "@/next/react-router-dom";
+import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
 
 export default function Page() {
   const { cartItems } = useSelector((state) => state.app);
-  const navigate = useNavigate();
+  const router = useRouter();
 
   const originalTotalPrice = cartItems.reduce((sum, item) => {
     return sum + item.product.originalPrice * item.quantity;
@@ -110,7 +110,7 @@ export default function Page() {
         </div>
 
         <button
-          onClick={() => navigate("/check-out-step2")}
+          onClick={() => router.push("/check-out-step2")}
           className={`rounded px-4 py-2 text-white ${
             cartItems.length === 0
               ? "cursor-not-allowed bg-gray-400"
@@ -123,7 +123,7 @@ export default function Page() {
       </div>
 
       <button
-        onClick={() => navigate("/")}
+        onClick={() => router.push("/")}
         className="mt-2 flex items-center gap-0.5"
       >
         <ArrowLeftStartOnRectangleIcon className="size-5" />

@@ -1,17 +1,17 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "react-toastify";
 import DescriptionEditor from "@/components/common/DescriptionEditor";
 import { apiGetNew, apiUpdateNew } from "@/apis/NewsAPI";
+import { useParams, useRouter } from "next/navigation";
 
 export default function Page() {
   const { id } = useParams();
-  const navigate = useNavigate();
+  const router = useRouter();
   const [form, setForm] = useState({
     title: "",
     description: "",
@@ -121,7 +121,7 @@ export default function Page() {
       const res = await apiUpdateNew(id, formData);
       if (res.data?.success) {
         toast.success("Cập nhật bài viết thành công");
-        navigate("/admin/news");
+        router.push("/admin/news");
       } else {
         toast.error("Cập nhật thất bại");
       }

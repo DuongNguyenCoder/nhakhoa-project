@@ -2,7 +2,7 @@
 
 import AuthLayout from "@/layout/AuthLayout";
 import ProfilePage from "@/pages/ProfilePage";
-import RouterLayout from "@/next/RouterLayout";
+import RouterLayout from "@/provider/RouterLayout";
 import { useSelector } from "react-redux";
 import ProfileForm from "@/components/auth/ProfileForm";
 

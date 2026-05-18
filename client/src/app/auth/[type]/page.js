@@ -6,7 +6,7 @@ import ForgotPasswordSimple from "@/components/auth/ForgotPassword";
 import { motion } from "framer-motion";
 import { ToastContainer } from "react-toastify";
 import { useParams } from "next/navigation";
-import RouterLayout from "@/next/RouterLayout";
+import RouterLayout from "@/provider/RouterLayout";
 
 export default function Page() {
   const params = useParams(); // 'login', 'register', 'forgot'

@@ -3,13 +3,13 @@
 import { apiAddOrder } from "@/apis/OdersAPI";
 import { apiClearCard, apiGetCurrent } from "@/apis/userAPI";
 import { setCurrentUser } from "@/redux/appSlice";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 export default function Page() {
-  const navigate = useNavigate();
+  const router = useRouter();
   const dispatch = useDispatch();
   const { cartItems } = useSelector((state) => state.app);
   const { currentUser } = useSelector((state) => state.app);
@@ -50,7 +50,7 @@ export default function Page() {
     const res = await apiAddOrder(orderData);
     if (res?.data?.success) {
       console.log("API ODERS: ", res);
-      navigate("/thank-you");
+      router.push("/thank-you");
       const resClearCart = await apiClearCard();
       console.log("resClearCart: ", resClearCart);
       if (resClearCart.data.success) {

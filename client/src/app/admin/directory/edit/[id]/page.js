@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -9,10 +8,11 @@ import { Label } from "@/components/ui/label";
 import DeleteConfirmDialog from "@/components/common/DeleteConfirmDialog";
 import { apiGetDirectory, apiUpdateDirectory } from "@/apis/DirectoryAPI";
 import { apiGetCategory } from "@/apis/CategoryAPI";
+import { useParams, useRouter } from "next/navigation";
 
 export default function Page() {
   const { id } = useParams();
-  const navigate = useNavigate();
+  const router = useRouter();
 
   // State form
   const [form, setForm] = useState({
@@ -99,7 +99,7 @@ export default function Page() {
     console.log("Directories: ", res);
     if (res.data.success) {
       toast.success("Cập nhật thành công!");
-      navigate("/admin/directory");
+      router.push("/admin/directory");
     } else {
       toast.error("Cập nhật thất bại.");
       console.log("Lỗi cập nhật Directory!");
@@ -113,7 +113,10 @@ export default function Page() {
         <h2 className="text-2xl font-semibold text-gray-800">
           Chỉnh sửa danh mục
         </h2>
-        <Button variant="outline" onClick={() => navigate("/admin/directory")}>
+        <Button
+          variant="outline"
+          onClick={() => router.push("/admin/directory")}
+        >
           Hủy
         </Button>
       </div>
@@ -181,7 +184,7 @@ export default function Page() {
         <div className="flex justify-end space-x-3 pt-4">
           <Button
             variant="outline"
-            onClick={() => navigate("/admin/directory")}
+            onClick={() => router.push("/admin/directory")}
           >
             Hủy
           </Button>

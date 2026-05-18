@@ -2,7 +2,7 @@
 
 import DefaultLayout from "@/layout/DefaultLayout";
 import BaoHanh from "@/pages/BaoHanh";
-import RouterLayout from "@/next/RouterLayout";
+import RouterLayout from "@/provider/RouterLayout";
 
 export default function Page() {
   return (

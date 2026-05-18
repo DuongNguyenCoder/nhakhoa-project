@@ -2,7 +2,7 @@
 
 import HomeLayout from "@/layout/HomeLayout";
 import Home from "@/components/home/Home";
-import RouterLayout from "@/next/RouterLayout";
+import RouterLayout from "@/provider/RouterLayout";
 
 export default function Page() {
   return (
