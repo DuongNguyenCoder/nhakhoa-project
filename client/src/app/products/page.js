@@ -1,6 +1,6 @@
 "use client";
 
-import Products from "@/pages/product/Products";
+import Products from "@/components/pages/product/Products";
 
 export default function Page() {
   return <Products />;

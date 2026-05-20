@@ -8,14 +8,14 @@ const ACTIONS = [
   {
     id: "facebook",
     label: "Facebook",
-    href: "https://facebook.com",
+    href: "https://www.facebook.com/nhakhoaminhphuong.net",
     icon: Facebook,
     className: "bg-[#1877F2] hover:bg-[#1666D9]",
   },
   {
     id: "zalo",
     label: "Zalo",
-    href: "https://zalo.me",
+    href: "https://zalo.me/0913783696",
     icon: MessageCircle,
     className: "bg-[#2563EB] hover:bg-[#1D4ED8]",
   },

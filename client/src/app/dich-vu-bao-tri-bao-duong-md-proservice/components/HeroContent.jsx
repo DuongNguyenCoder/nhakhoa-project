@@ -1,24 +1,5 @@
 import React from "react";
 
-// --- Nút Liên hệ Refactor theo Tone Đỏ #B71C1C ---
-function ButtonOnDark({ className, state = "Default" }) {
-  const isHover = state === "Hover";
-  return (
-    <button
-      className={
-        className ||
-        `relative rounded-full transition-all duration-300 ${isHover ? "bg-[#8e1616] scale-105" : "bg-[#B71C1C]"}`
-      }
-    >
-      <div className="flex flex-row items-center justify-center size-full px-8 py-4">
-        <p className="font-['SVN-Avenir_Next',sans-serif] font-bold leading-none relative shrink-0 text-[14px] uppercase text-white tracking-wider whitespace-nowrap">
-          Kết nối với chuyên gia ngay
-        </p>
-      </div>
-    </button>
-  );
-}
-
 // --- Phần Text & 2 Ô nổi bật (USP Cards) ---
 function HeroContent() {
   return (
@@ -82,7 +63,10 @@ function HeroContent() {
       {/* USP Cards */}
       <div className="flex flex-col sm:flex-row gap-4 w-full">
         {/* Card 1 */}
-        <div className="relative flex-1 bg-[#F8F9FA] border-l-4 border-[#B71C1C] p-5 rounded-r-xl shadow-sm hover:shadow-md transition-shadow">
+        <a
+          href="#section-maintenance-package"
+          className="relative flex-1 bg-[#F8F9FA] border-l-4 border-[#B71C1C] p-5 rounded-r-xl shadow-sm hover:shadow-md transition-shadow"
+        >
           <img
             src="https://leyfeolxdr.ufs.sh/f/DKQnMo5A7EdzkrROyiSCqOdapIF8KWEbv2en3ZUg5y7B1u6Q"
             alt="tick"
@@ -96,7 +80,7 @@ function HeroContent() {
             </span>
             <span className="text-[#B71C1C] text-[26px]">499K</span>
           </p>
-        </div>
+        </a>
 
         {/* Card 2 */}
         <div className="relative flex-1 bg-[#F8F9FA] border-l-4 border-[#B71C1C] p-5 rounded-r-xl shadow-sm hover:shadow-md transition-shadow">
@@ -126,7 +110,6 @@ export default function MainHeroContent() {
       data-name="Hero Block"
     >
       <HeroContent />
-      {/* <ButtonOnDark className="bg-[#B71C1C] relative rounded-full shrink-0 shadow-lg shadow-[#b71c1c]/20" /> */}
     </div>
   );
 }

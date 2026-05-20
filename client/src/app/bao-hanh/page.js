@@ -1,7 +1,7 @@
 "use client";
 
 import DefaultLayout from "@/layout/DefaultLayout";
-import BaoHanh from "@/pages/BaoHanh";
+import BaoHanh from "@/components/pages/BaoHanh";
 import RouterLayout from "@/provider/RouterLayout";
 
 export default function Page() {

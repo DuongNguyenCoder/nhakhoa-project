@@ -345,7 +345,10 @@ export default function DentalSOSPopup({ open = true, onClose }) {
                     transition-all duration-300
                   "
                 >
-                  <div className="flex flex-col items-center text-center">
+                  <a
+                    href="tel:0913783696"
+                    className="flex flex-col items-center text-center"
+                  >
                     <Phone
                       size={26}
                       className="mb-2.5 group-hover:rotate-12 transition"
@@ -359,10 +362,11 @@ export default function DentalSOSPopup({ open = true, onClose }) {
                       KỸ THUẬT
                     </div>
 
-                    <div className="mt-1.5 text-[11px] text-white/85">
-                      Hotline hỗ trợ nhanh
+                    <div className="mt-1 text-[12px] text-white/85">
+                      Hotline giờ hành&nbsp;chính <br />
+                      (8:00 - 17:30)
                     </div>
-                  </div>
+                  </a>
                 </button>
 
                 {/* zalo */}
@@ -382,7 +386,11 @@ export default function DentalSOSPopup({ open = true, onClose }) {
                     transition-all duration-300
                   "
                 >
-                  <div className="flex flex-col items-center text-center">
+                  <a
+                    href="https://zalo.me/0913783696"
+                    target="_blank"
+                    className="flex flex-col items-center text-center"
+                  >
                     <MessageCircle
                       size={26}
                       className="mb-2.5 group-hover:scale-110 transition"
@@ -399,7 +407,7 @@ export default function DentalSOSPopup({ open = true, onClose }) {
                     <div className="mt-1.5 text-[11px] text-white/85">
                       Chat ngay trên Zalo
                     </div>
-                  </div>
+                  </a>
                 </button>
               </div>
             </div>
@@ -442,7 +450,10 @@ export default function DentalSOSPopup({ open = true, onClose }) {
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-[#FFF5F5] to-transparent opacity-70" />
 
-                <div className="relative flex items-center justify-center gap-3">
+                <a
+                  href="tel:0913219800"
+                  className="relative flex items-center justify-center gap-3"
+                >
                   <div
                     className="
                       w-11 h-11
@@ -463,13 +474,13 @@ export default function DentalSOSPopup({ open = true, onClose }) {
                       className="
                         text-[10px]
                         uppercase
-                        tracking-[0.12em]
+                        tracking-[0.08em]
                         font-bold
-                        text-[#888]
+                        text-[#717070]
                         mb-1
                       "
                     >
-                      Hotline hỗ trợ 24/7
+                      Hotline hỗ trợ sau giờ hành&nbsp;chính (17:30 - 23:00)
                     </div>
 
                     <div
@@ -484,10 +495,10 @@ export default function DentalSOSPopup({ open = true, onClose }) {
                         text-[#B71C1C]
                       "
                     >
-                      09XX XXX XXX
+                      0913219800
                     </div>
                   </div>
-                </div>
+                </a>
               </button>
             </div>
           </div>

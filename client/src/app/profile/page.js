@@ -1,7 +1,7 @@
 "use client";
 
 import AuthLayout from "@/layout/AuthLayout";
-import ProfilePage from "@/pages/ProfilePage";
+import ProfilePage from "@/components/pages/ProfilePage";
 import RouterLayout from "@/provider/RouterLayout";
 import { useSelector } from "react-redux";
 import ProfileForm from "@/components/auth/ProfileForm";

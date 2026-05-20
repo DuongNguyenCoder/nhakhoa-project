@@ -1,7 +1,7 @@
 "use client";
 
 import AuthLayout from "@/layout/AuthLayout";
-import CheckoutStep1 from "@/pages/checkout/CheckoutStep1";
+import CheckoutStep1 from "@/components/pages/checkout/CheckoutStep1";
 import RouterLayout from "@/provider/RouterLayout";
 import { ArrowLeftStartOnRectangleIcon } from "@heroicons/react/24/outline";
 import { useRouter } from "next/navigation";

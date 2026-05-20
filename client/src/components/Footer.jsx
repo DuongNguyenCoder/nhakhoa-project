@@ -8,10 +8,8 @@ import {
   FaInstagram,
   FaYoutube,
 } from "react-icons/fa";
-import logof from "../assets/logo_f.svg";
-import logoSale from "../assets/logoSaleNoti.png";
-import { Link } from "react-router-dom";
 import Image from "next/image";
+import Link from "next/link";
 
 const Footer = () => {
   return (
@@ -22,7 +20,7 @@ const Footer = () => {
           <div className="-mt-16 w-full">
             <div className="relative w-48 h-48 overflow-hidden">
               <Image
-                src={logof}
+                src="/assets/logo_f.svg"
                 alt="logo_footer"
                 fill
                 className="object-contain"
@@ -38,7 +36,7 @@ const Footer = () => {
             <p>Nơi đăng ký: Tại sở Kế hoạch và đầu tư Hà Nội</p>
           </div>
           <img
-            src={logoSale}
+            src="/assets/logoSaleNoti.png"
             alt="logoSaleNoti"
             className="w-auto h-14 mt-2 lg:mx-auto"
           />
@@ -49,22 +47,22 @@ const Footer = () => {
           <h2 className="mb-4 text-xl font-semibold">Hỗ trợ khách hàng</h2>
           <ul className="space-y-2 text-gray-200">
             <li>
-              <Link to="/news" className="transition hover:text-red-300">
+              <Link href="/news" className="transition hover:text-red-300">
                 Chính sách bảo mật
               </Link>
             </li>
             <li>
-              <Link to="/news" className="transition hover:text-red-300">
+              <Link href="/news" className="transition hover:text-red-300">
                 Chính sách đổi - trả
               </Link>
             </li>
             <li>
-              <Link to="/news" className="transition hover:text-red-300">
+              <Link href="/news" className="transition hover:text-red-300">
                 Chế độ bảo hành
               </Link>
             </li>
             <li>
-              <Link to="/news" className="transition hover:text-red-300">
+              <Link href="/news" className="transition hover:text-red-300">
                 Quy định giao - nhận
               </Link>
             </li>
@@ -122,18 +120,20 @@ const Footer = () => {
               className="rounded-full shadow-lg transition hover:scale-110"
               title="Chat Zalo"
             >
-              <img
-                src="https://page.widget.zalo.me/static/images/2.0/Logo.svg"
-                alt="Zalo"
-                className="size-6"
+              <Image
+                src="https://leyfeolxdr.ufs.sh/f/DKQnMo5A7EdzZ3HHbAqEysSfHn0tuFAVMz8kOxYlj6vhL1RW"
+                alt="Icon Zalo"
+                width={24}
+                height={24}
+                className="object-contain object-center overflow-hidden"
               />
             </a>
-            <a
+            <Link
               href="/"
               className="transition hover:text-red-300 hover:scale-110"
             >
               <FaYoutube />
-            </a>
+            </Link>
           </div>
         </div>
 

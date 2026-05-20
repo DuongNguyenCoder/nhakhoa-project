@@ -52,6 +52,7 @@ export default function ServiceSection() {
 
   return (
     <section
+      id="service-section"
       className="
         w-full
         max-w-[1200px]

@@ -1,6 +1,6 @@
 "use client";
 
-import ThankYouPage from "@/pages/checkout/ThankYouPage";
+import ThankYouPage from "@/components/pages/checkout/ThankYouPage";
 
 export default function Page() {
   return <ThankYouPage />;

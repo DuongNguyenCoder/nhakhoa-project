@@ -22,6 +22,7 @@ export default function SectionMaintenancePackage() {
 
   return (
     <section
+      id="section-maintenance-package"
       className="
         max-w-7xl
         mx-auto

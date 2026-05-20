@@ -8,7 +8,6 @@ import React, { useEffect, useRef, useState } from "react";
 import CartShopping from "./ui/CartShopping";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import logo from "../assets/logo.svg";
 
 const SupportWidget = () => {
   const { cartItems } = useSelector((state) => state.app);
@@ -85,7 +84,12 @@ const SupportWidget = () => {
         >
           <div className="bg-red-500 w-full h-20 absolute inset-0 flex gap-3 items-center pl-4 rounded-t-lg">
             <div className="bg-white size-16 rounded-2xl">
-              <img src={logo} alt="" aria-hidden="true" className="w-full h-full" />
+              <img
+                src="/assets/logo.svg"
+                alt="logo Minhdental"
+                aria-hidden="true"
+                className="w-full h-full"
+              />
             </div>
             <div className="flex flex-col">
               <h3 className="font-medium text-base">minhdental.com</h3>
@@ -94,10 +98,10 @@ const SupportWidget = () => {
           </div>
 
           <div className="mt-20">
+            <h5>Chào Bác sĩ!</h5>
             <h5>
-              Chào Bác sĩ!
+              Để được hỗ trợ mọi vấn đề (thắc mắc) kịp thời và nhanh chóng.
             </h5>
-            <h5>Để được hỗ trợ mọi vấn đề (thắc mắc) kịp thời và nhanh chóng.</h5>
             <h5>
               Bác sĩ vui lòng gửi tin nhắn về các kênh Chat hoặc liên hệ Hotline
               phía bên dưới!

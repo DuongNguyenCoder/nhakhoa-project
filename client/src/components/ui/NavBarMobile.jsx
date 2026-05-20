@@ -1,12 +1,16 @@
 import React, { Fragment, useEffect, useRef, useState } from "react";
 import { NavLinks } from "@/data/NavLinks";
 import { enableBodyScroll, disableBodyScroll } from "body-scroll-lock";
-import { Dialog, DialogPanel, Transition, TransitionChild } from "@headlessui/react";
+import {
+  Dialog,
+  DialogPanel,
+  Transition,
+  TransitionChild,
+} from "@headlessui/react";
 import { Link } from "react-router-dom";
 import { XCircleIcon } from "@heroicons/react/24/outline";
-import logo from "../../assets/logo.svg";
 import AuthButtons from "../buttons/AuthButtons";
-import CartShopping from "./CartShopping";
+import Image from "next/image";
 
 const NavBarMobile = () => {
   const [navShow, setNavShow] = useState(false);
@@ -88,10 +92,12 @@ const NavBarMobile = () => {
                 className="flex h-full flex-col items-start overflow-y-auto"
               >
                 <div className="flex h-16 w-full items-center py-1 justify-between bg-red-500 px-3 shadow-lg rounded-tl-2xl">
-                  <img
-                    src={logo}
+                  <Image
+                    src="/assets/logo.svg"
                     alt="logo"
-                    className="h-14 w-14 rounded-full bg-red-100 p-1"
+                    width={56}
+                    height={56}
+                    className="rounded-full bg-red-100 p-1"
                   />
                   <XCircleIcon
                     onClick={onToggleNav}
@@ -125,10 +131,17 @@ const NavBarMobile = () => {
                     <h2 className="font-bold text-xl text-white">CONTACT</h2>
                   </div>
                   <span className="text-base font-medium px-2.5 text-white">
-                    Hotline: <a href="tel:(+84 4) 3852 3643">(+84 4) 3852 3643</a>
+                    Hotline:{" "}
+                    <a href="tel:(+84 4) 3852 3643">(+84 4) 3852 3643</a>
                   </span>
                   <span className="text-base font-medium px-2.5 text-white">
-                    Mail: <a href="mailto:vatlieunhakhoaminh@gmail.com" className="flex flex-wrap">vatlieunhakhoaminh@gmail.com</a>
+                    Mail:{" "}
+                    <a
+                      href="mailto:vatlieunhakhoaminh@gmail.com"
+                      className="flex flex-wrap"
+                    >
+                      vatlieunhakhoaminh@gmail.com
+                    </a>
                   </span>
                 </div>
               </nav>

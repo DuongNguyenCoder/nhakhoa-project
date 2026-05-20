@@ -1,6 +1,31 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
+
+const ACTIONS = [
+  {
+    id: "facebook",
+    label: "Facebook",
+    href: "https://www.facebook.com/nhakhoaminhphuong.net",
+    icon: "https://leyfeolxdr.ufs.sh/f/DKQnMo5A7Edz5wZqiUhV30TaGuKbkydmc7nXf2eh85rp9M4z",
+    className: "bg-[#1877F2] hover:bg-[#1666D9]",
+  },
+  {
+    id: "zalo",
+    label: "Zalo",
+    href: "https://zalo.me/0913783696",
+    icon: "https://leyfeolxdr.ufs.sh/f/DKQnMo5A7EdzZ3HHbAqEysSfHn0tuFAVMz8kOxYlj6vhL1RW",
+    className: "bg-[#2563EB] hover:bg-[#1D4ED8]",
+  },
+  {
+    id: "Youtube",
+    label: "Youtube",
+    href: "https://www.youtube.com/@minhdental8516",
+    icon: "https://leyfeolxdr.ufs.sh/f/DKQnMo5A7Edz8j9UVhEebhVLFrNYDMauso51PdH96xj4CRKX",
+    className: "bg-[#2563EB] hover:bg-[#1D4ED8]",
+  },
+];
 
 /* ─── Accordion item (mobile) ───────────────────────── */
 function AccordionItem({ title, children }) {
@@ -69,20 +94,21 @@ export default function Footer() {
 
             {/* Social */}
             <div className="flex gap-3">
-              {["F", "Z", "Y"].map((s, i) => (
-                <div
+              {ACTIONS.map((s, i) => (
+                <a
                   key={i}
-                  className="
-          w-9 h-9 xl:w-10 xl:h-10
-          rounded-full bg-[#E24B4A]
-          flex items-center justify-center
-          text-white text-sm font-bold
-          hover:opacity-80 cursor-pointer
-          transition
-        "
+                  href={s.href}
+                  target="_blank"
+                  className="relative w-9 h-9 xl:w-10 xl:h-10 rounded-full flex items-center justify-center hover:opacity-80 cursor-pointer transition overflow-hidden"
                 >
-                  {s}
-                </div>
+                  <Image
+                    src={s.icon}
+                    alt={`Icon ${s.label}`}
+                    loading="lazy"
+                    fill
+                    className="object-contain object-center"
+                  />
+                </a>
               ))}
             </div>
           </div>
@@ -116,21 +142,21 @@ export default function Footer() {
 
           {/* ── Column 4 ── */}
           <AccordionItem title="Liên hệ">
-            <div className="text-sm text-gray-400 space-y-2 leading-relaxed">
+            <div className="text-sm text-gray-400 space-y-2 leading-relaxed flex flex-col">
               <div>
                 Số 41 ngõ 38 Phương Mai,
                 <br />
                 Đống Đa, Hà Nội
               </div>
 
-              <div>
+              <a href="tel:0913783696">
                 Hotline:{" "}
-                <span className="text-white font-semibold">0900 000 000</span>
-              </div>
+                <span className="text-white font-semibold">0913 783 696</span>
+              </a>
 
-              <div>
-                Email: <span className="text-white">contact@minhdental.vn</span>
-              </div>
+              <a href="mailto:info@minhdental.com" target="_blank">
+                Email: <span className="text-white">info@minhdental.com</span>
+              </a>
             </div>
           </AccordionItem>
         </div>

@@ -1,21 +1,28 @@
 import React from "react";
-import logo from "../assets/logo.svg";
 import CartShopping from "./ui/CartShopping";
 import SearchBar from "./ui/SearchBar";
 import SubHeader from "./SubHeader";
-import { Link } from "react-router-dom";
 import Image from "next/image";
+import Link from "next/link";
 
 const MainHeader = () => {
   return (
     <header className="w-full bg-gray-100">
       {/* Logo + Slogan + Search */}
-      <div className="flex flex-wrap items-center justify-between gap-4 px-2 py-2 md:px-6">
+      <div className="grid lg:grid-cols-4 content-center justify-self-center gap-4 p-2 md:px-6">
         {/* Logo + Slogan */}
-        <div className="flex items-center gap-x-3">
-          <Link to="/" className="flex items-center gap-x-2">
-            <div className="w-25 md:w-30 xl:w-35 h-25 md:h-27.5 xl:h-30 relative">
-              <Image src={logo} alt="logo" fill className="object-contain" />
+        <div className="w-full lg:col-span-3 flex items-center justify-center sm:justify-normal  gap-x-3">
+          <Link
+            href="/"
+            className="flex flex-col-reverse sm:flex-row items-center gap-2"
+          >
+            <div className="w-28 sm:w-36 xl:w-44 aspect-[3/2] relative">
+              <Image
+                src="/assets/logo.svg"
+                alt="logo"
+                fill
+                className="object-contain"
+              />
             </div>
             <span className="text-xl font-bold italic tracking-wide text-red-700 md:text-2xl xl:text-3xl">
               Đối Tác Tin Cậy Của Nha Sĩ
@@ -24,7 +31,7 @@ const MainHeader = () => {
         </div>
 
         {/* Search */}
-        <div className="flex flex-1 items-center justify-end">
+        <div className="hidden lg:flex flex-1 items-center justify-end">
           <SearchBar />
         </div>
       </div>

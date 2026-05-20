@@ -10,6 +10,7 @@ export default function HeroSection() {
           src="https://leyfeolxdr.ufs.sh/f/DKQnMo5A7EdzsoslYiTCrQDgKVYa12HOj0ULuoncFkEAhm7z"
           alt="minhdental Proservice"
           fill
+          priority
           className="object-cover object-center"
         />
       </div>

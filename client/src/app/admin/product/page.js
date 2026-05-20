@@ -1,6 +1,6 @@
 "use client";
 
-import ProductManagement from "@/pages/admin/product/ProductManegement";
+import ProductManagement from "@/components/pages/admin/product/ProductManegement";
 
 export default function Page() {
   return <ProductManagement />;

@@ -1,6 +1,6 @@
 "use client";
 
-import CreateCategory from "@/pages/admin/product/category/CreateCategory";
+import CreateCategory from "@/components/pages/admin/product/category/CreateCategory";
 
 export default function Page() {
   return <CreateCategory />;

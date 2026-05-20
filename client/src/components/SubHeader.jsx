@@ -1,8 +1,4 @@
 import React, { useEffect, useState } from "react";
-import shipping from "../assets/icon-shipping.png";
-import pay from "../assets/icon-pay.png";
-import support from "../assets/icon-support.png";
-import warranty from "../assets/icon-warranty.png";
 import { apiGetMethod } from "@/apis/methodAPI";
 
 const SubHeader = () => {
@@ -26,7 +22,16 @@ const SubHeader = () => {
   }, []);
   console.log("method: ", methods);
 
-  const icons = [shipping, pay, support, warranty];
+  if (!methods) {
+    return null;
+  }
+
+  const icons = [
+    "/assets/icon-shipping.png",
+    "/assets/icon-pay.png",
+    "/assets/icon-support.png",
+    "/assets/icon-warranty.png",
+  ];
 
   return (
     <div className="h-50% hidden w-full md:block">

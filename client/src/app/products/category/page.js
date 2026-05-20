@@ -1,6 +1,6 @@
 "use client";
 
-import ProductByCategoryPage from "@/pages/product/ProductByCategoryPage";
+import ProductByCategoryPage from "@/components/pages/product/ProductByCategoryPage";
 
 export default function Page() {
   return <ProductByCategoryPage />;

@@ -5,7 +5,7 @@ import React from "react";
 import MenuHeader from "@/components/MenuHeader";
 import Banner from "@/components/Banner";
 import BannerHome from "@/components/home/BannerHome";
-import { Outlet } from "react-router-dom";
+import { Outlet } from "@/provider/react-router-dom";
 import Footer from "@/components/Footer";
 import SupportWidget from "@/components/SupportWidget";
 

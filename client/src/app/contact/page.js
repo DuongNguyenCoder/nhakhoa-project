@@ -1,7 +1,7 @@
 "use client";
 
 import DefaultLayout from "@/layout/DefaultLayout";
-import Contact from "@/pages/Contact";
+import Contact from "@/components/pages/Contact";
 import RouterLayout from "@/provider/RouterLayout";
 
 export default function Page() {
