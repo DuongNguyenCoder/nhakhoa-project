@@ -30,7 +30,7 @@ export default function DentalSOSPopup({ open = true, onClose }) {
         className="
           relative
           w-full
-          max-w-[1080px]
+          max-w-250
 
           max-h-[92vh]
           overflow-hidden
@@ -74,39 +74,27 @@ export default function DentalSOSPopup({ open = true, onClose }) {
           className="
             grid
             grid-cols-1
-            xl:grid-cols-[1.05fr_0.95fr]
+            md:grid-cols-[1.05fr_0.95fr]
 
             max-h-[92vh]
             overflow-y-auto
           "
         >
           {/* LEFT IMAGE */}
-          <div
-            className="
-              relative
-              bg-[#F4F4F4]
-
-              h-[180px]
-              sm:h-[240px]
-              lg:h-[320px]
-              xl:min-h-[620px]
-              xl:h-auto
-            "
-          >
+          <div className="relative bg-[#F4F4F4] aspect-[4/5] h-full">
             <Image
-              src="https://leyfeolxdr.ufs.sh/f/DKQnMo5A7EdzFYC5S2RJoRLI6PiZldH7kSJrAGyw3YONj04B"
+              src="/assets/image-popup-proservice.png"
               alt="Dental clinic"
               fill
-              className="object-contain object-center"
+              className="object-cover object-center"
             />
 
             {/* overlay */}
-            <div className="absolute inset-0 bg-gradient-to-tr from-black/15 to-transparent" />
+            <div className="absolute inset-0 bg-linear-to-tr from-black/15 to-transparent" />
 
             {/* MOBILE STATUS */}
             <div
               className="
-                xl:hidden
                 absolute top-3 right-3 z-30
 
                 inline-flex items-center gap-2
@@ -152,7 +140,7 @@ export default function DentalSOSPopup({ open = true, onClose }) {
                   {/* desktop status */}
                   <div
                     className="
-                      hidden xl:inline-flex
+                      hidden
                       items-center gap-2
                       w-fit
 
@@ -176,7 +164,7 @@ export default function DentalSOSPopup({ open = true, onClose }) {
                   </div>
 
                   {/* mobile button */}
-                  <div className="xl:hidden flex flex-col items-center text-center">
+                  <div className="lg:hidden flex flex-col items-center text-center">
                     <button
                       onClick={onClose}
                       className="
@@ -232,7 +220,7 @@ export default function DentalSOSPopup({ open = true, onClose }) {
                   </div>
 
                   {/* heading */}
-                  <div className="flex items-center gap-3">
+                  <div className="hidden lg:flex items-center gap-3">
                     <div
                       className="
                         shrink-0
@@ -264,17 +252,16 @@ export default function DentalSOSPopup({ open = true, onClose }) {
                         uppercase
                       "
                     >
-                      THIẾT BỊ ĐANG
-                      <br />
-                      GẶP SỰ CỐ?
+                      THIẾT BỊ ĐANG GẶP&nbsp;SỰ&nbsp;CỐ?
                     </h2>
                   </div>
                 </div>
               </div>
 
               {/* description */}
-              <p
-                className="
+              <div className="hidden lg:block">
+                <p
+                  className="
                   text-[14px]
                   sm:text-[15px]
 
@@ -283,29 +270,29 @@ export default function DentalSOSPopup({ open = true, onClose }) {
 
                   mb-4 xl:mb-6
                 "
-              >
-                DỊCH VỤ BẢO TRÌ - BẢO DƯỠNG THIẾT BỊ PHÒNG KHÁM NHA KHOA
-              </p>
+                >
+                  DỊCH VỤ BẢO TRÌ - BẢO DƯỠNG THIẾT BỊ PHÒNG KHÁM NHA KHOA
+                </p>
 
-              {/* bullet */}
-              <div className="space-y-2.5 mb-5 xl:mb-8">
-                {[
-                  "Đội ngũ kỹ thuật viên dày dặn kinh nghiệm",
-                  "Có mặt trong vòng 24h (Cam kết chất lượng dịch vụ)",
-                ].map((item) => (
-                  <div key={item} className="flex items-start gap-3">
-                    <span
-                      className="
+                {/* bullet */}
+                <div className="space-y-2.5 mb-5 xl:mb-8">
+                  {[
+                    "Đội ngũ kỹ thuật viên dày dặn kinh nghiệm",
+                    "Có mặt trong vòng 24h (Cam kết chất lượng dịch vụ)",
+                  ].map((item) => (
+                    <div key={item} className="flex items-start gap-3">
+                      <span
+                        className="
                         mt-[7px]
                         w-2 h-2
                         rounded-full
                         bg-[#B71C1C]
                         shrink-0
                       "
-                    />
+                      />
 
-                    <span
-                      className="
+                      <span
+                        className="
                         text-[13px]
                         sm:text-[14px]
 
@@ -313,11 +300,12 @@ export default function DentalSOSPopup({ open = true, onClose }) {
                         font-medium
                         text-[#222]
                       "
-                    >
-                      {item}
-                    </span>
-                  </div>
-                ))}
+                      >
+                        {item}
+                      </span>
+                    </div>
+                  ))}
+                </div>
               </div>
 
               {/* CTA */}
@@ -474,13 +462,14 @@ export default function DentalSOSPopup({ open = true, onClose }) {
                       className="
                         text-[10px]
                         uppercase
-                        tracking-[0.08em]
+                        tracking-[0.06em]
                         font-bold
                         text-[#717070]
                         mb-1
                       "
                     >
-                      Hotline hỗ trợ sau giờ hành&nbsp;chính (17:30 - 23:00)
+                      Hotline hỗ trợ sau giờ hành&nbsp;chính <br /> (17:30 -
+                      23:00)
                     </div>
 
                     <div

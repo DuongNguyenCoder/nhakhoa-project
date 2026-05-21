@@ -4,6 +4,7 @@ import { apiGetCurrent, apiSignIn } from "@/apis/userAPI";
 import { useNavigate } from "react-router-dom";
 import { setIsSignIn, setCurrentUser } from "@/redux/appSlice";
 import { useDispatch } from "react-redux";
+import Link from "next/link";
 
 export default function LoginForm() {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -18,16 +19,16 @@ export default function LoginForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-  
+
     try {
-      const res = await apiSignIn(formData);  
+      const res = await apiSignIn(formData);
       if (res?.data?.success) {
         dispatch(setIsSignIn(true));
         const currentUserRes = await apiGetCurrent();
         if (currentUserRes?.data?.data) {
           console.log("CurrentUser: ", currentUserRes);
           dispatch(setCurrentUser(currentUserRes.data.data));
-          if(currentUserRes.data.data.role === "ADMIN"){
+          if (currentUserRes.data.data.role === "ADMIN") {
             navigate("/admin/dashboard");
           } else {
             navigate("/");
@@ -41,16 +42,6 @@ export default function LoginForm() {
       setError("Lỗi đăng nhập. Vui lòng thử lại.");
     }
   };
-
-  // useEffect(() => {
-  //   const updateCartItems = async () => {
-  //     const res = await apiGetCurrent();
-  //     if(res?.data?.data){
-  //       dispatch(setCartItems(res.data.data.cart));
-  //     }
-  //   }
-  //   updateCartItems();
-  // }, [res.data.data.cart])
 
   return (
     <div className="w-full max-w-md bg-white p-8 rounded-2xl shadow-xl">
@@ -66,7 +57,10 @@ export default function LoginForm() {
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+          <label
+            htmlFor="email"
+            className="block text-sm font-medium text-gray-700"
+          >
             Email hoặc Tên đăng nhập
           </label>
           <input
@@ -81,7 +75,10 @@ export default function LoginForm() {
         </div>
 
         <div>
-          <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+          <label
+            htmlFor="password"
+            className="block text-sm font-medium text-gray-700"
+          >
             Mật khẩu
           </label>
           <input
@@ -100,9 +97,12 @@ export default function LoginForm() {
             <input type="checkbox" className="mr-2" />
             Ghi nhớ đăng nhập
           </label>
-          <a href="/auth/forgot" className="text-sm text-lime-600 hover:underline">
+          <Link
+            href="/auth/forgot"
+            className="text-sm text-lime-600 hover:underline"
+          >
             Quên mật khẩu?
-          </a>
+          </Link>
         </div>
 
         <button

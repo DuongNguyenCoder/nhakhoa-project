@@ -1,23 +1,24 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Siren, Facebook, MessageCircle } from "lucide-react";
+import { Siren } from "lucide-react";
 import { usePopup } from "../popup/PopupProvider";
+import Image from "next/image";
 
 const ACTIONS = [
   {
-    id: "facebook",
-    label: "Facebook",
-    href: "https://www.facebook.com/nhakhoaminhphuong.net",
-    icon: Facebook,
-    className: "bg-[#1877F2] hover:bg-[#1666D9]",
+    id: "messenger",
+    label: "Messenger",
+    href: "https://m.me/1176036212252711",
+    icon: "/icons/messenger.png",
+    // className: "bg-[#1877F2] hover:bg-[#1666D9]",
   },
   {
     id: "zalo",
     label: "Zalo",
     href: "https://zalo.me/0913783696",
-    icon: MessageCircle,
-    className: "bg-[#2563EB] hover:bg-[#1D4ED8]",
+    icon: "/icons/zalo.png",
+    // className: "bg-[#2563EB] hover:bg-[#1D4ED8]",
   },
 ];
 
@@ -45,7 +46,7 @@ export default function FloatingSidebar() {
         right-4
         bottom-5
         z-[9997]
-
+        border border-red-100/30 p-2 rounded-4xl bg-red-100/25
         flex flex-col gap-2.5
 
         transition-all duration-500
@@ -80,9 +81,17 @@ export default function FloatingSidebar() {
             key={item.id}
             label={item.label}
             href={item.href}
-            className={item.className}
+            // className={item.className}
           >
-            <Icon size={18} />
+            {/* <Icon size={18} /> */}
+            {/* <div className="relative w-10 h-10"> */}
+            <Image
+              src={Icon}
+              alt={item.label}
+              fill
+              className="object-contain object-center"
+            />
+            {/* </div> */}
           </SidebarButton>
         );
       })}
@@ -105,7 +114,7 @@ function SidebarButton({
         group
         relative
 
-        w-12 h-12
+        w-10 h-10 sm:w-12 sm:h-12
         rounded-full
 
         flex items-center justify-center
@@ -131,7 +140,9 @@ function SidebarButton({
         />
       )}
 
-      <span className="relative z-10">{children}</span>
+      <span className="relative w-full h-full flex items-center justify-center overflow-hidden z-10">
+        {children}
+      </span>
 
       {/* tooltip desktop */}
       <div

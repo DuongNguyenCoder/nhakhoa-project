@@ -57,9 +57,14 @@ const Home = () => {
     filteredFeaturedProducts.length / productsPerPage,
   );
 
-  useEffect(() => {
+  // useEffect(() => {
+  //   setCurrentPage(1);
+  // }, [selectDirectory]);
+
+  const handleSelectDiretory = (e) => {
+    setSelectDirectory(e.target.value);
     setCurrentPage(1);
-  }, [selectDirectory]);
+  };
 
   const handlePageChange = useCallback((page) => setCurrentPage(page), []);
 
@@ -136,7 +141,7 @@ const Home = () => {
               </div>
               <select
                 value={selectDirectory}
-                onChange={(e) => setSelectDirectory(e.target.value)}
+                onChange={(e) => handleSelectDiretory(e)}
                 className="w-full max-w-full rounded border px-3 py-1 md:w-72"
                 aria-label="Chọn danh mục sản phẩm"
               >

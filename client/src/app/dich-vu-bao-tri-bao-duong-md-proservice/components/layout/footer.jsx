@@ -6,23 +6,23 @@ import { useState } from "react";
 const ACTIONS = [
   {
     id: "facebook",
-    label: "Facebook",
-    href: "https://www.facebook.com/nhakhoaminhphuong.net",
-    icon: "https://leyfeolxdr.ufs.sh/f/DKQnMo5A7Edz5wZqiUhV30TaGuKbkydmc7nXf2eh85rp9M4z",
+    label: "Messenger",
+    href: "https://m.me/1176036212252711",
+    icon: "/icons/messenger.png",
     className: "bg-[#1877F2] hover:bg-[#1666D9]",
   },
   {
     id: "zalo",
     label: "Zalo",
     href: "https://zalo.me/0913783696",
-    icon: "https://leyfeolxdr.ufs.sh/f/DKQnMo5A7EdzZ3HHbAqEysSfHn0tuFAVMz8kOxYlj6vhL1RW",
+    icon: "/icons/zalo.png",
     className: "bg-[#2563EB] hover:bg-[#1D4ED8]",
   },
   {
     id: "Youtube",
     label: "Youtube",
     href: "https://www.youtube.com/@minhdental8516",
-    icon: "https://leyfeolxdr.ufs.sh/f/DKQnMo5A7Edz8j9UVhEebhVLFrNYDMauso51PdH96xj4CRKX",
+    icon: "/icons/youtube.png",
     className: "bg-[#2563EB] hover:bg-[#1D4ED8]",
   },
 ];
@@ -64,21 +64,20 @@ export default function Footer() {
         {/* Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* ── Column 1 ── */}
-          <div className="max-w-sm">
+          <div className="w-full md:max-w-sm flex flex-col items-center md:items-start">
             {/* Logo */}
-            <img
-              src="https://leyfeolxdr.ufs.sh/f/DKQnMo5A7EdzYYB69afSamfgHpvDNqn8zc5bUMohC3r9WITE"
-              alt="Minh Dental"
-              className="
-      w-auto object-contain rounded-md
-      h-14 md:h-16 xl:h-18
-      mb-3
-    "
-            />
+            <div className="relative aspect-square w-22 sm:w-28 rounded-2xl overflow-hidden mb-3">
+              <Image
+                src="/assets/logo-minhdental.png"
+                alt="Logo Minh Dental"
+                fill
+                className="object-cover"
+              />
+            </div>
 
             {/* Brand name */}
-            <div className="text-white font-extrabold text-[20px] sm:text-[22px] xl:text-[24px] leading-tight">
-              Minh Dental
+            <div className="text-white font-extrabold text-[20px] sm:text-[22px] xl:text-[24px] leading-tight mb-1">
+              Minh Dental Proservice
             </div>
 
             {/* Subtitle */}
@@ -99,7 +98,7 @@ export default function Footer() {
                   key={i}
                   href={s.href}
                   target="_blank"
-                  className="relative w-9 h-9 xl:w-10 xl:h-10 rounded-full flex items-center justify-center hover:opacity-80 cursor-pointer transition overflow-hidden"
+                  className="relative w-9 h-9 xl:w-10 xl:h-10 rounded-full flex items-center justify-center hover:opacity-80 cursor-pointer transition-transform"
                 >
                   <Image
                     src={s.icon}
