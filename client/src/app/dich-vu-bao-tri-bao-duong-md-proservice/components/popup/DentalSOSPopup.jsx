@@ -7,6 +7,8 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 
+export const revalidate = 3600;
+
 export default function DentalSOSPopup({ open = true, onClose }) {
   if (!open) return null;
 

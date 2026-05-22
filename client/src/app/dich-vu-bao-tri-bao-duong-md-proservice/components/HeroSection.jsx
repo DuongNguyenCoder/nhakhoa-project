@@ -1,6 +1,8 @@
 import Image from "next/image";
 import MainHeroContent from "./HeroContent";
 
+export const revalidate = 3600;
+
 export default function HeroSection() {
   return (
     <section className="max-w-7xl grid grid-cols-1 lg:grid-cols-5 w-full mx-auto items-center justify-center py-16 gap-10">

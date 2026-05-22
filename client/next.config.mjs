@@ -5,6 +5,15 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  async redirects() {
+    return [
+      {
+        source: "/qr/proservice",
+        destination: "/dich-vu-bao-tri-bao-duong-md-proservice",
+        permanent: true,
+      },
+    ];
+  },
   typescript: {
     ignoreBuildErrors: false,
   },

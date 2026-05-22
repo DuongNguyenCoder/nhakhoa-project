@@ -2,6 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
+export const revalidate = 3600;
+
 export default function Header() {
   return (
     <header className="sticky top-0 left-0 w-full bg-white/95 backdrop-blur-md z-50 border-b border-gray-100">
@@ -10,7 +12,7 @@ export default function Header() {
         <Link href="/" className="flex items-center">
           <div className="relative w-16 md:w-20 xl:w-24 h-16 md:h-20 xl:h-24 overflow-hidden shrink-0">
             <Image
-              src="https://leyfeolxdr.ufs.sh/f/DKQnMo5A7EdzYYB69afSamfgHpvDNqn8zc5bUMohC3r9WITE"
+              src="/assets/logo-minhdental.png"
               alt="Logo Minh Dental"
               fill
               className="object-contain transition-transform duration-300 hover:scale-105
