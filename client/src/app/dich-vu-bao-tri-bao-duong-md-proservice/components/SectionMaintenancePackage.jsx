@@ -305,7 +305,9 @@ export default function SectionMaintenancePackage() {
 
                 {/* CTA */}
                 <div className="w-full flex items-center justify-center">
-                  <button
+                  <a
+                    href="https://m.me/1176036212252711"
+                    target="_blank"
                     className={`
                     w-44
 
@@ -325,7 +327,7 @@ export default function SectionMaintenancePackage() {
                   >
                     Nhận chiết khấu
                     <ArrowRight size={18} />
-                  </button>
+                  </a>
                 </div>
 
                 {/* divider */}
@@ -539,9 +541,10 @@ export default function SectionMaintenancePackage() {
                 text-[#5B4545]
               "
             >
-              - Giá dịch vụ chưa bao gồm VAT và chi phí lắp đặt linh kiện thay
-              thế. <br />- Chính sách hỗ trợ áp dụng trong phạm vi nội thành Hà
-              Nội (bán kính 10–15km).
+              1. Giá dịch vụ chưa bao gồm VAT.
+              <br />
+              2. Áp dụng trong phạm vi nội thành Hà Nội (bán kính 20km từ trụ sở
+              công ty).
             </p>
           </div>
         </div>

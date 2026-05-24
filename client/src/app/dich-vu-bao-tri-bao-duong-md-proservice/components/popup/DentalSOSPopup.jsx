@@ -85,7 +85,7 @@ export default function DentalSOSPopup({ open = true, onClose }) {
           {/* LEFT IMAGE */}
           <div className="relative bg-[#F4F4F4] aspect-[4/5] h-full">
             <Image
-              src="/assets/image-popup-proservice.png"
+              src="/assets/image-popup-sos-md-proservice.png"
               alt="Dental clinic"
               fill
               className="object-cover object-center"
@@ -486,7 +486,7 @@ export default function DentalSOSPopup({ open = true, onClose }) {
                         text-[#B71C1C]
                       "
                     >
-                      0913219800
+                      0859 593 686
                     </div>
                   </div>
                 </a>
