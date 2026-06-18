@@ -1,8 +1,8 @@
 import { apiDeleteBanner, apiGetBanner } from "@/apis/BannerAPI";
 import DeleteConfirmDialog from "@/components/common/DeleteConfirmDialog";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const formatDate = (dateStr) => {
@@ -17,7 +17,7 @@ const formatDate = (dateStr) => {
 };
 
 const Banner = () => {
-  const navigate = useNavigate();
+  const router = useRouter();
   const [dataBanner, setDataBanner] = useState([]);
 
   const fetchBanner = async () => {
@@ -51,7 +51,7 @@ const Banner = () => {
     <div className="p-6">
       <div className="mb-4 flex items-center justify-between">
         <h2 className="text-xl font-semibold">Danh sách banner</h2>
-        <Button onClick={() => navigate("/admin/banner/create")}>
+        <Button onClick={() => router.push("/admin/banner/create")}>
           + Tạo mới
         </Button>
       </div>

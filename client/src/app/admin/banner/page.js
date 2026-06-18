@@ -53,7 +53,7 @@ export default function Page() {
     <div className="p-6">
       <div className="mb-4 flex items-center justify-between">
         <h2 className="text-xl font-semibold">Danh sách banner</h2>
-        <Button onClick={() => navigate("/admin/banner/create")}>
+        <Button onClick={() => router.push("/admin/banner/create")}>
           + Tạo mới
         </Button>
       </div>
@@ -107,7 +107,7 @@ export default function Page() {
               <div className="flex gap-2 self-start">
                 <Button
                   variant="outline"
-                  onClick={() => navigate(`/admin/banner/edit/${item._id}`)}
+                  onClick={() => router.push(`/admin/banner/edit/${item._id}`)}
                 >
                   Chỉnh sửa
                 </Button>

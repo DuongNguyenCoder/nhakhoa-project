@@ -1,6 +1,7 @@
 import { apiAddBanner } from "@/apis/BannerAPI";
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { LoaderCircle } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { toast } from "react-toastify";
 
 const CreateBanner = () => {
@@ -8,7 +9,8 @@ const CreateBanner = () => {
   const [url, setUrl] = useState("");
   const [bannerPic, setBannerPic] = useState(null);
   const [previewImg, setPreviewImg] = useState(null);
-  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -26,26 +28,29 @@ const CreateBanner = () => {
     const formData = new FormData();
     formData.append("status", status);
     formData.append("bannerPic", bannerPic);
-    formData.append("url", url)
+    formData.append("url", url);
 
     if (!url.trim()) {
       toast.warning("Vui lòng nhập liên kết cho banner!");
       return;
     }
-  
+
     if (!bannerPic) {
       toast.warning("Vui lòng chọn hình ảnh cho banner!");
       return;
     }
 
     try {
+      setLoading(true);
       const res = await apiAddBanner(formData);
-      if(res.data.success){
-        navigate("/admin/banner");
+      if (res.data.success) {
+        router.push("/admin/banner");
         toast.success("Thêm thành công!");
       }
     } catch (error) {
       console.error("Lỗi tạo banner:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -59,7 +64,9 @@ const CreateBanner = () => {
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Status Select */}
           <div>
-            <label className="block mb-1 font-medium text-gray-700">Trạng thái</label>
+            <label className="block mb-1 font-medium text-gray-700">
+              Trạng thái
+            </label>
             <select
               value={status}
               onChange={(e) => setStatus(e.target.value)}
@@ -70,9 +77,11 @@ const CreateBanner = () => {
             </select>
           </div>
 
-           {/* URL input */}
-           <div>
-            <label className="block mb-1 font-medium text-gray-700">Liên kết khi nhấp vào banner</label>
+          {/* URL input */}
+          <div>
+            <label className="block mb-1 font-medium text-gray-700">
+              Liên kết khi nhấp vào banner
+            </label>
             <input
               type="text"
               value={url}
@@ -84,7 +93,9 @@ const CreateBanner = () => {
 
           {/* Upload Image */}
           <div>
-            <label className="block mb-1 font-medium text-gray-700">Chọn hình banner</label>
+            <label className="block mb-1 font-medium text-gray-700">
+              Chọn hình banner
+            </label>
             <input
               type="file"
               accept="image/*"
@@ -114,9 +125,13 @@ const CreateBanner = () => {
           {/* Submit Button */}
           <button
             type="submit"
-            className="w-full bg-slate-950 text-white py-3 rounded-xl font-semibold hover:bg-slate-800 transition duration-200"
+            className="w-full items-center text-center bg-slate-950 text-white py-3 rounded-xl font-semibold hover:bg-slate-800 transition duration-200"
           >
-            Thêm Banner
+            {loading ? (
+              <LoaderCircle className="size-4.5 animate-spin" />
+            ) : (
+              "Thêm Banner"
+            )}
           </button>
         </form>
       </div>
