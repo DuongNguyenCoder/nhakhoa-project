@@ -20,6 +20,7 @@ services:
       dockerfile: dockerfile
       args:
         - NEXT_PUBLIC_BACKEND_URL=https://api.minhdental.com
+        - NEXT_PUBLIC_API_URL=https://api.minhdental.com/api
     container_name: minhdental-frontend
     restart: always
     env_file:
