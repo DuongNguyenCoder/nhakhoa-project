@@ -181,9 +181,8 @@ export default function PopupConsultationForm() {
             className="object-cover rounded-xl transition-transform overflow-hidden border border-red-200"
             priority
           />
+          {/* <div className="absolute inset-0 bg-linear-to-t from-[#9c1d22]/80 via-[#9c1d22]/30 to-transparent" /> */}
         </div>
-
-        <div className="absolute inset-0 bg-gradient-to-t from-[#9c1d22]/80 via-[#9c1d22]/30 to-transparent" />
 
         <div className=" text-[#9c1d22]">
           <h3 className="text-[22px] text-center font-bold leading-snug">

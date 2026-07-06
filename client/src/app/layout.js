@@ -3,6 +3,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import AppProviders from "../provider/AppProviders";
 import { ToastContainer } from "react-toastify";
+import { Inter } from "next/font/google";
 
 const organizationSchema = {
   "@context": "https://schema.org",
@@ -41,9 +42,15 @@ const organizationSchema = {
   ],
 };
 
+const inter = Inter({
+  subsets: ["latin", "vietnamese"],
+  display: "swap",
+  variable: "--font-inter",
+});
+
 export default function RootLayout({ children }) {
   return (
-    <html lang="vi">
+    <html lang="vi" className={inter.variable}>
       <body>
         <script
           type="application/ld+json"
