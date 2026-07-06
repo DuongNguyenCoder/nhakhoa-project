@@ -5,19 +5,19 @@ import {
   NewspaperIcon,
   ClipboardDocumentListIcon,
 } from "@heroicons/react/24/outline";
-import { useNavigate } from "react-router-dom";
 
 import { apiGetAllUsers } from "@/apis/adminAPI";
 import { apiGetNew } from "@/apis/NewsAPI";
 import { apiGetAllOrder } from "@/apis/OdersAPI";
 import { apiGetAllProduct } from "@/apis/ProductAPI";
+import { useRouter } from "next/navigation";
 
 const DashboardHome = () => {
   const [products, setProducts] = useState([]);
   const [orders, setOrders] = useState([]);
   const [news, setNews] = useState([]);
   const [users, setUsers] = useState([]);
-  const navigate = useNavigate();
+  const router = useRouter();
 
   useEffect(() => {
     apiGetAllProduct({ limit: 9999 }).then((rs) => {
@@ -73,7 +73,9 @@ const DashboardHome = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
-      <h1 className="mb-6 text-3xl font-bold text-gray-800">Tổng Quan Hệ Thống</h1>
+      <h1 className="mb-6 text-3xl font-bold text-gray-800">
+        Tổng Quan Hệ Thống
+      </h1>
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {stats.map((item, index) => (
           <div
@@ -89,7 +91,9 @@ const DashboardHome = () => {
             )}
 
             <div>
-              <h3 className="text-lg font-semibold text-gray-600">{item.title}</h3>
+              <h3 className="text-lg font-semibold text-gray-600">
+                {item.title}
+              </h3>
               <p className={`mt-1 text-3xl font-bold text-${item.color}-600`}>
                 {item.value}
               </p>

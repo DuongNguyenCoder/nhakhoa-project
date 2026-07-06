@@ -1,18 +1,20 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { apiAddProduct } from "@/apis/ProductAPI";
 import { toast } from "react-toastify";
 import { apiGetDirectory } from "@/apis/DirectoryAPI";
 import { apiGetCategory } from "@/apis/CategoryAPI";
 import DescriptionBuilder from "@/components/common/DescriptionBuilder";
+import { useRouter } from "next/navigation";
+import slugify from "slugify";
 
 const CreateProduct = () => {
-  const navigate = useNavigate();
+  const router = useRouter();
   const [directories, setDirectories] = useState([]);
   const [categories, setCategoriest] = useState([]);
   const [form, setForm] = useState({
     title: "",
+    slug: "",
     originalPrice: "",
     salePrice: "",
     quantity: "",
@@ -39,6 +41,17 @@ const CreateProduct = () => {
   }, []);
 
   useEffect(() => {
+    const computedSlug = slugify(form.title || "", {
+      lower: true,
+      strict: true,
+    });
+
+    if (form.slug !== computedSlug) {
+      setForm((prev) => ({ ...prev, slug: computedSlug }));
+    }
+  }, [form.title]);
+
+  useEffect(() => {
     setInitialized(true);
   }, []);
 
@@ -59,6 +72,7 @@ const CreateProduct = () => {
     const submitData = new FormData();
 
     submitData.append("title", form.title);
+    submitData.append("slug", form.slug);
     submitData.append("originalPrice", form.originalPrice);
     submitData.append("salePrice", form.salePrice);
     submitData.append("quantity", form.quantity);
@@ -77,7 +91,7 @@ const CreateProduct = () => {
     try {
       const res = await apiAddProduct(submitData);
       if (res.data.success) {
-        navigate("/admin/product");
+        router.push("/admin/product");
         toast.success("Thêm sản phẩm thành công!");
       } else {
         toast.error("Lỗi thêm sản phẩm!");
@@ -92,7 +106,7 @@ const CreateProduct = () => {
     <div className="mx-auto max-w-6xl p-6">
       <div className="mb-6 flex items-center justify-between">
         <h2 className="text-3xl font-bold text-gray-800">Tạo sản phẩm mới</h2>
-        <Button onClick={() => navigate(-1)} variant="outline">
+        <Button onClick={() => router.push(-1)} variant="outline">
           ← Quay lại
         </Button>
       </div>
@@ -114,6 +128,19 @@ const CreateProduct = () => {
                 value={form.title}
                 onChange={handleInputChange}
                 className="mt-1 w-full rounded border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Đường dẫn xem trước
+              </label>
+              <input
+                type="text"
+                name="slug"
+                value={form.slug ? `/san-pham/${form.slug}` : ""}
+                disabled
+                className="mt-1 w-full rounded border border-gray-200 bg-gray-100 px-3 py-2 text-gray-600"
               />
             </div>
 

@@ -1,13 +1,14 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { apiAddDirectory } from "@/apis/DirectoryAPI";
 import { toast } from "react-toastify";
 import { apiGetCategory } from "@/apis/CategoryAPI";
+import { useRouter } from "next/navigation";
 
 const CreateDirectory = () => {
-  const navigate = useNavigate();
+  const router = useRouter();
+
   const [previewImg, setPreviewImg] = useState(null);
   const [allCategories, setAllCategories] = useState([]);
 
@@ -19,12 +20,12 @@ const CreateDirectory = () => {
 
   useEffect(() => {
     const fetchCategories = async () => {
-        const res = await apiGetCategory();
-        if (res.data.success) {
-          setAllCategories(res.data.data);
-        } else {
-          console.log("Lỗi tải category!");
-        }       
+      const res = await apiGetCategory();
+      if (res.data.success) {
+        setAllCategories(res.data.data);
+      } else {
+        console.log("Lỗi tải category!");
+      }
     };
     fetchCategories();
   }, []);
@@ -67,26 +68,30 @@ const CreateDirectory = () => {
       submitData.append("category[]", id);
     });
 
-    await apiAddDirectory(submitData).then((rs) => {
-      if (rs.data && rs.data.success) {
-        navigate("/admin/directory");
-        toast.success("Thêm thành công!");
-      } else {
-        toast.warning("Vui lòng điền đầy đủ tất cả thông tin!")
-        console.log("Lỗi thêm Directory!");
-      }
-    }
-    ).catch((err) => {
-      toast.warning("Vui lòng chọn ít nhất 1 phân mục!");
-      console.log(err);
-    })
+    await apiAddDirectory(submitData)
+      .then((rs) => {
+        if (rs.data && rs.data.success) {
+          router.push("/admin/directory");
+          toast.success("Thêm thành công!");
+        } else {
+          toast.warning("Vui lòng điền đầy đủ tất cả thông tin!");
+          console.log("Lỗi thêm Directory!");
+        }
+      })
+      .catch((err) => {
+        toast.warning("Vui lòng chọn ít nhất 1 phân mục!");
+        console.log(err);
+      });
   };
 
   return (
     <div className="p-6 max-w-2xl mx-auto">
       <div className="mb-6 flex items-center justify-between">
         <h2 className="text-xl font-semibold">Tạo danh mục sản phẩm</h2>
-        <Button variant="outline" onClick={() => navigate("/admin/directory")}>
+        <Button
+          variant="outline"
+          onClick={() => router.push("/admin/directory")}
+        >
           Quay lại
         </Button>
       </div>

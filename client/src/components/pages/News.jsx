@@ -2,13 +2,13 @@
 
 import React, { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
-import { useNavigate } from "react-router-dom";
 
 import { apiGetNew } from "@/apis/NewsAPI";
 import PageTitle from "@/components/pageTitle";
+import { useRouter } from "next/navigation";
 
 const News = () => {
-  const navigate = useNavigate();
+  const router = useRouter();
 
   const [allNews, setAllNews] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -123,7 +123,9 @@ const News = () => {
                 {newsList.map((news) => (
                   <article
                     key={news._id}
-                    onClick={() => navigate(`/news/${news._id}`)}
+                    onClick={() =>
+                      router.push(`/tin-tuc-va-khuyen-mai/${news.slug}`)
+                    }
                     className="group cursor-pointer overflow-hidden rounded-[28px] border border-gray-100 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
                   >
                     {/* Image */}

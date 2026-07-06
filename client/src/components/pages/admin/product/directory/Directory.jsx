@@ -1,9 +1,9 @@
 import { Button } from "@/components/ui/button";
-import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { apiDeleteDirectory, apiGetDirectory } from "@/apis/DirectoryAPI";
 import { toast } from "react-toastify";
 import DeleteConfirmDialog from "@/components/common/DeleteConfirmDialog";
+import { useRouter } from "next/navigation";
 
 const formatDate = (dateStr) => {
   const date = new Date(dateStr);
@@ -17,7 +17,8 @@ const formatDate = (dateStr) => {
 };
 
 const Directory = () => {
-  const navigate = useNavigate();
+  const router = useRouter();
+
   const [directories, setDirectories] = useState([]);
 
   const fetchDirectory = async () => {
@@ -47,7 +48,7 @@ const Directory = () => {
     <div className="p-6">
       <div className="mb-6 flex items-center justify-between">
         <h2 className="text-xl font-semibold">Danh mục sản phẩm</h2>
-        <Button onClick={() => navigate("/admin/directory/create")}>
+        <Button onClick={() => router.push("/admin/directory/create")}>
           + Tạo danh mục
         </Button>
       </div>
@@ -87,7 +88,9 @@ const Directory = () => {
               <div className="flex gap-2">
                 <Button
                   variant="outline"
-                  onClick={() => navigate(`/admin/directory/edit/${item._id}`)}
+                  onClick={() =>
+                    router.push(`/admin/directory/edit/${item._id}`)
+                  }
                 >
                   Chỉnh sửa
                 </Button>

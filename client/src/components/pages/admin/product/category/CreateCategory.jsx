@@ -1,19 +1,19 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { apiAddCategory } from "@/apis/CategoryAPI";
+import { useRouter } from "next/navigation";
 
 const CreateCategory = () => {
-  const navigate = useNavigate();
+  const router = useRouter();
   const [title, setTitle] = useState("");
 
   const handleSubmit = async () => {
-    const res = await apiAddCategory({title: title});
+    const res = await apiAddCategory({ title: title });
     if (res.data.success) {
       toast.success("Tạo phân mục thành công!");
-      navigate("/admin/category");
+      router.push("/admin/category");
     } else {
       console.log("Lỗi tạo category!");
     }
@@ -24,7 +24,10 @@ const CreateCategory = () => {
       {/* Header */}
       <div className="mb-6 flex items-center justify-between">
         <h2 className="text-2xl font-bold text-gray-800">Tạo phân mục</h2>
-        <Button variant="outline" onClick={() => navigate("/admin/category")}>
+        <Button
+          variant="outline"
+          onClick={() => router.push("/admin/category")}
+        >
           Quay lại
         </Button>
       </div>

@@ -1,24 +1,23 @@
 // src/pages/NotFound.jsx
-import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import React, { useEffect } from "react";
+import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 
 const NotFound = () => {
-  const navigate = useNavigate();
+  const router = useRouter();
 
   useEffect(() => {
-    const timer = setTimeout(() => navigate('/'), 5000);
+    const timer = setTimeout(() => router.push("/"), 5000);
     return () => clearTimeout(timer);
-  }, [navigate]);
+  }, [router]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-red-100 to-yellow-50 flex flex-col items-center justify-center text-center p-6 relative overflow-hidden">
-
       {/* Vòng tròn hiệu ứng nền */}
       <motion.div
         initial={{ scale: 0 }}
         animate={{ scale: 3 }}
-        transition={{ duration: 5, ease: 'easeOut' }}
+        transition={{ duration: 5, ease: "easeOut" }}
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-red-100 rounded-full opacity-30"
       />
 
@@ -52,7 +51,7 @@ const NotFound = () => {
       <motion.button
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
-        onClick={() => navigate('/')}
+        onClick={() => router.push("/")}
         className="mt-8 px-6 py-2 text-white bg-red-500 hover:bg-red-600 rounded-lg text-sm font-medium shadow-md transition"
       >
         Quay về trang chủ

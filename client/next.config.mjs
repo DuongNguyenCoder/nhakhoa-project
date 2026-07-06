@@ -14,6 +14,10 @@ const nextConfig = {
       },
     ];
   },
+  cacheComponents: true,
+  turbopack: {
+    // ...
+  },
   typescript: {
     ignoreBuildErrors: false,
   },
@@ -31,19 +35,19 @@ const nextConfig = {
       },
     ],
   },
-  webpack(config) {
-    // config.cache = false;
-    config.resolve.alias = {
-      ...config.resolve.alias,
-      "@": path.resolve(__dirname, "src"),
-      "react-router-dom": path.resolve(
-        __dirname,
-        "src/provider/react-router-dom.jsx",
-      ),
-    };
+  // webpack(config) {
+  //   // config.cache = false;
+  //   config.resolve.alias = {
+  //     ...config.resolve.alias,
+  //     "@": path.resolve(__dirname, "src"),
+  //     "react-router-dom": path.resolve(
+  //       __dirname,
+  //       "src/provider/react-router-dom.jsx",
+  //     ),
+  //   };
 
-    return config;
-  },
+  //   return config;
+  // },
 };
 
 export default nextConfig;

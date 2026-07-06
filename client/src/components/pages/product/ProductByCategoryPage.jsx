@@ -2,7 +2,7 @@ import { apiGetAllProduct } from "@/apis/ProductAPI";
 import Pagination from "@/components/ui/Pagination";
 import ProductCard from "@/components/ui/ProductCart";
 import React, { useEffect, useMemo, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation } from "../../../provider/react-router-dom";
 
 const useQuery = () => {
   const { search } = useLocation();
@@ -18,8 +18,8 @@ const ProductByCategoryPage = () => {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }, [categoryId]);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [categoryId]);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -40,7 +40,9 @@ const ProductByCategoryPage = () => {
   return (
     <div className="w-full">
       <div className="w-full border-b border-b-blue-300 uppercase tracking-wider mb-4">
-      <h1 className="text-xl font-bold text-blue-600 shadow-lg">{categoryTitle}</h1>
+        <h1 className="text-xl font-bold text-blue-600 shadow-lg">
+          {categoryTitle}
+        </h1>
       </div>
       <div className="w-full px-5 md:px-0 grid grid-cols-2 gap-5 md:grid-cols-3 xl:grid-cols-4">
         {products.map((product) => (

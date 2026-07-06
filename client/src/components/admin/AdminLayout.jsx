@@ -2,7 +2,7 @@
 import React from "react";
 import Sidebar from "./SideBar";
 import Header from "./Header";
-import { Outlet } from "react-router-dom";
+import { Outlet } from "../../provider/react-router-dom";
 
 const AdminLayout = () => {
   return (
@@ -17,6 +17,5 @@ const AdminLayout = () => {
     </div>
   );
 };
-
 
 export default AdminLayout;

@@ -43,7 +43,7 @@ const CreateBanner = () => {
     try {
       setLoading(true);
       const res = await apiAddBanner(formData);
-      if (res.data.success) {
+      if (res?.data?.success) {
         router.push("/admin/banner");
         toast.success("Thêm thành công!");
       }

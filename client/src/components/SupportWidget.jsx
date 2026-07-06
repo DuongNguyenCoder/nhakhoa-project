@@ -1,3 +1,5 @@
+"use client";
+
 import { PhoneIcon, ShoppingCartIcon } from "@heroicons/react/24/solid";
 import {
   ChatBubbleOvalLeftIcon,
@@ -7,7 +9,7 @@ import {
 import React, { useEffect, useRef, useState } from "react";
 import CartShopping from "./ui/CartShopping";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useRouter } from "next/navigation";
 
 const SupportWidget = () => {
   const { cartItems } = useSelector((state) => state.app);
@@ -15,7 +17,7 @@ const SupportWidget = () => {
   const [showHotline, setShowHotline] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
   const hotlineRef = useRef(null);
-  const navigate = useNavigate();
+  const router = useRouter();
   const [showCart, setShowCart] = useState(false);
 
   useEffect(() => {
@@ -51,7 +53,7 @@ const SupportWidget = () => {
 
   const handleCartClick = () => {
     if (window.innerWidth < 768) {
-      navigate("/check-out-step1");
+      router.push("/check-out-step1");
     } else {
       setShowCart(!showCart);
     }

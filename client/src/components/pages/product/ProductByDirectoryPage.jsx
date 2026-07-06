@@ -1,7 +1,7 @@
 import { apiGetAllProduct } from "@/apis/ProductAPI";
 import ProductCard from "@/components/ui/ProductCart";
 import React, { useEffect, useMemo, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "../../../provider/react-router-dom";
 import Pagination from "@/components/ui/Pagination";
 import { apiGetDirectory } from "@/apis/DirectoryAPI";
 import { CubeIcon } from "@heroicons/react/24/solid";
@@ -100,7 +100,7 @@ const ProductByDirectoryPage = () => {
                 key={item._id}
                 onClick={() =>
                   navigate(
-                    `/products/directory?directory=${item._id}&title=${encodeURIComponent(item.title)}`,
+                    `/san-pham/directory?directory=${item._id}&title=${encodeURIComponent(item.title)}`,
                   )
                 }
                 className="group cursor-pointer overflow-hidden rounded-xl bg-gray-50 shadow-md transition duration-300 hover:shadow-lg"

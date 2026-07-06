@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { Navigate } from "react-router-dom";
+import { Navigate } from "../provider/react-router-dom";
 
 const AdminRoute = ({ children }) => {
   const { currentUser, isSignIn } = useSelector((state) => state.app);

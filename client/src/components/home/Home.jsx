@@ -1,89 +1,43 @@
 "use client";
 
-import { apiGetDirectory } from "@/apis/DirectoryAPI";
-import { apiGetNew } from "@/apis/NewsAPI";
-import { apiGetPartner } from "@/apis/PartnerAPI";
-import { apiGetAllProduct } from "@/apis/ProductAPI";
-import ProductCard from "@/components/ui/ProductCart";
+import { apiGetDirectory } from "../../apis/DirectoryAPI";
+import { apiGetNew } from "../../apis/NewsAPI";
 import {
   GiftIcon,
   HandThumbUpIcon,
   ShieldCheckIcon,
   TagIcon,
 } from "@heroicons/react/24/outline";
-import {
-  ArrowRightCircleIcon,
-  NewspaperIcon,
-  StarIcon,
-  UserGroupIcon,
-} from "@heroicons/react/24/solid";
-import React, { useCallback, useEffect, useState } from "react";
-import {
-  Autoplay,
-  Navigation,
-  Pagination as SwiperPagination,
-} from "swiper/modules";
-import Pagination from "@/components/ui/Pagination";
-import { Swiper, SwiperSlide } from "swiper/react";
-import PageTitle from "@/components/pageTitle";
+import { ArrowRightCircleIcon } from "@heroicons/react/24/solid";
+import { useEffect, useState } from "react";
+import PageTitle from "../../components/pageTitle";
 import Link from "next/link";
 import BannerHome from "./BannerHome";
+import ProductGrid from "./product-grid";
+import PartnerSlider from "./partner-slider";
+import Reveal from "../ui/Reveal";
+import { Separator } from "../ui/separator";
+import PopupConsultationForm from "../common/PopupConsultationForm";
 
 const Home = () => {
-  const [dataProduct, setDataProduct] = useState([]);
   const [directories, setDirectories] = useState([]);
-  const [selectDirectory, setSelectDirectory] = useState("");
   const [dataNew, setDataNew] = useState([]);
-  const [logoPartner, setLogoPartner] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const productsPerPage = 10;
 
   const dataTinNoiBat = dataNew.filter(
     (item) => item.category === "Tin tức nổi bật",
   );
 
-  const filteredFeaturedProducts = dataProduct.filter(
-    (p) =>
-      p.isFeatured &&
-      (!selectDirectory || String(p.directory._id) === selectDirectory),
-  );
-  const indexOfLastProduct = currentPage * productsPerPage;
-  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const currentProducts = filteredFeaturedProducts.slice(
-    indexOfFirstProduct,
-    indexOfLastProduct,
-  );
-  const totalPages = Math.ceil(
-    filteredFeaturedProducts.length / productsPerPage,
-  );
-
-  // useEffect(() => {
-  //   setCurrentPage(1);
-  // }, [selectDirectory]);
-
-  const handleSelectDiretory = (e) => {
-    setSelectDirectory(e.target.value);
-    setCurrentPage(1);
-  };
-
-  const handlePageChange = useCallback((page) => setCurrentPage(page), []);
-
   useEffect(() => {
     const fetchAll = async () => {
       try {
-        const [newsRes, partnersRes, directoriesRes, productsRes] =
-          await Promise.all([
-            apiGetNew(),
-            apiGetPartner(),
-            apiGetDirectory(),
-            apiGetAllProduct({ limit: 9999 }),
-          ]);
+        const [newsRes, directoriesRes] = await Promise.all([
+          apiGetNew(),
+          apiGetDirectory(),
+        ]);
 
         if (newsRes?.data?.data) setDataNew(newsRes.data.data);
-        if (partnersRes?.data?.data) setLogoPartner(partnersRes.data.data);
         if (directoriesRes?.data?.data)
           setDirectories(directoriesRes.data.data);
-        if (productsRes?.data?.data) setDataProduct(productsRes.data.data);
       } catch (error) {
         console.error("Lỗi khi fetch dữ liệu:", error);
       }
@@ -101,166 +55,105 @@ const Home = () => {
   return (
     <>
       <PageTitle title="Trang Chủ - Minh Dental" />
-      <div className="mx-auto mt-5 min-h-screen items-center md:mx-2 lg:mx-5 xl:mx-8">
-        <div className="mt-4 grid grid-cols-1 gap-4 rounded-2xl bg-gradient-to-r from-red-500 via-red-600 to-red-500 px-6 py-6 text-white md:grid-cols-2 lg:flex lg:justify-between">
-          <div className="flex items-center gap-3">
-            <GiftIcon className="h-7 w-7 md:h-8 md:w-8" />
-            <span className="text-lg font-semibold lg:text-xl">
-              Đa dạng sản phẩm
-            </span>
-          </div>
-          <div className="flex items-center gap-3">
-            <TagIcon className="h-7 w-7 md:h-8 md:w-8" />
-            <span className="text-lg font-semibold lg:text-xl">
-              Thương hiệu uy tín
-            </span>
-          </div>
-          <div className="flex items-center gap-3">
-            <ShieldCheckIcon className="h-7 w-7 md:h-8 md:w-8" />
-            <span className="text-lg font-semibold lg:text-xl">
-              Chính hãng, xuất VAT đầy đủ
-            </span>
-          </div>
-          <div className="flex items-center gap-3">
-            <HandThumbUpIcon className="h-7 w-7 md:h-8 md:w-8" />
-            <span className="text-lg font-semibold lg:text-xl">
-              Giá siêu tốt cho membership
-            </span>
-          </div>
-        </div>
+      <div className="w-full h-auto">
+        <BannerHome />
+      </div>
 
-        {/* Hiển thị sản phẩm nổi bật theo Directory */}
-        {dataProduct.some((p) => p.isFeatured) && (
-          <div className="mt-6 w-full rounded-3xl bg-white p-6">
-            <div className="mb-4 flex flex-wrap items-center justify-between gap-1.5 px-3">
-              <div className="flex items-center gap-2">
-                <StarIcon className="size-7 text-yellow-400" />
-                <h2 className="text-base font-bold text-slate-800 md:text-lg">
-                  SẢN PHẨM NỔI BẬT - HOT DEAL
-                </h2>
+      <Reveal
+        rootMargin="-36px"
+        duration={0.9}
+        y={20}
+        threshold={1}
+        className="mt-12 px-3"
+      >
+        <div className="rounded-2xl max-w-7xl mx-auto border border-[#9c1d22]/10 bg-[#9c1d22]/95 p-3 xs:p-4 lg:p-5 shadow-sm">
+          <div className="grid grid-cols-1 gap-3 xs:grid-cols-2 lg:grid-cols-4">
+            {/* Item */}
+            <div className="flex items-center gap-3 rounded-xl bg-white/8 px-4 py-4 backdrop-blur-sm">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/12">
+                <GiftIcon className="h-5 w-5 text-white" />
               </div>
-              <select
-                value={selectDirectory}
-                onChange={(e) => handleSelectDiretory(e)}
-                className="w-full max-w-full rounded border px-3 py-1 md:w-72"
-                aria-label="Chọn danh mục sản phẩm"
-              >
-                <option value="">Tất cả</option>
-                {directories.map((dir) => (
-                  <option key={dir._id} value={dir._id}>
-                    {dir.title}
-                  </option>
-                ))}
-              </select>
+
+              <span className="text-sm font-medium leading-snug text-white xs:text-[15px] lg:text-base">
+                Đa dạng sản phẩm
+              </span>
             </div>
 
-            {/* Tạo danh sách sản phẩm đã lọc */}
-            {filteredFeaturedProducts.length > 0 ? (
-              <div className="grid w-full grid-cols-2 gap-x-5 gap-y-6 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5">
-                {currentProducts.map((product) => (
-                  <ProductCard key={product._id} item={product} />
-                ))}
+            {/* Item */}
+            <div className="flex items-center gap-3 rounded-xl bg-white/8 px-4 py-4 backdrop-blur-lg">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/12">
+                <TagIcon className="h-5 w-5 text-white" />
               </div>
-            ) : (
-              <div className="py-4 text-center italic text-gray-600">
-                Không có sản phẩm nổi bật nào trong danh mục này.
+
+              <span className="text-sm font-medium leading-snug text-white xs:text-[15px] lg:text-base">
+                Thương hiệu uy tín
+              </span>
+            </div>
+
+            {/* Item */}
+            <div className="flex items-center gap-3 rounded-xl bg-white/8 px-4 py-4 backdrop-blur-sm">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/12">
+                <ShieldCheckIcon className="h-5 w-5 text-white" />
               </div>
-            )}
 
-            <Pagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              onPageChange={handlePageChange}
-            />
-          </div>
-        )}
+              <span className="text-sm font-medium leading-snug text-white xs:text-[15px] lg:text-base">
+                Chính hãng, xuất VAT đầy đủ
+              </span>
+            </div>
 
-        <div className="mx-2 my-3.5 w-full p-6">
-          <div className="flex flex-wrap justify-center gap-4">
-            {dataNew.slice(0, 3).map((item, index) => (
-              <Link
-                href={`/news/${item._id}`}
-                key={index}
-                className={`w-[90%] md:w-[48%] lg:w-[32%] ${index === 2 ? "md:mx-auto" : ""} h-52 md:h-56`}
-              >
-                <img
-                  src={item.newPic}
-                  alt={`New Image ${index + 1}`}
-                  className="h-full w-full rounded-2xl border-[2px] border-yellow-400 object-cover"
-                />
-              </Link>
-            ))}
+            {/* Item */}
+            <div className="flex items-center gap-3 rounded-xl bg-white/8 px-4 py-4 backdrop-blur-sm">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/12">
+                <HandThumbUpIcon className="h-5 w-5 text-white" />
+              </div>
+
+              <span className="text-sm font-medium leading-snug text-white xs:text-[15px] lg:text-base">
+                Giá tốt cho membership
+              </span>
+            </div>
           </div>
         </div>
-        <div className="w-full rounded-3xl bg-white px-4 py-6">
-          <div className="mb-3 flex w-full items-center gap-2 px-5 py-1">
-            <UserGroupIcon className="size-7 text-slate-900" />
-            <h2 className="text-base font-bold text-slate-800 md:text-lg">
-              ĐỐI TÁC
-            </h2>
-          </div>
-          <div className="mb-4 w-full px-4">
-            <h3 className="text-lg font-medium text-gray-600">
-              Minh Dental hợp tác chặt chẽ với nhiều đơn vị cung cấp trang thiết
-              bị Nha khoa đến từ các thương hiệu nổi tiếng và lâu năm trên thế
-              giới như: Cingol, Jindel, Baolai…, nhằm đảm bảo mang đến cho khách
-              hàng nguồn hàng uy tín và chất lượng cao.
-            </h3>
-          </div>
-          <div className="w-full">
-            <Swiper
-              key={logoPartner.length}
-              modules={[Navigation, SwiperPagination, Autoplay]}
-              spaceBetween={10}
-              slidesPerView={2}
-              loop={true}
-              autoplay={{
-                delay: 2500,
-                disableOnInteraction: false, // Không tắt autoplay khi user tương tác
-                pauseOnMouseEnter: false, // Không dừng khi hover
-                stopOnLastSlide: false, // Cho loop
-                waitForTransition: false,
-              }}
-              navigation={true}
-              breakpoints={{
-                0: {
-                  slidesPerView: 2,
-                },
-                768: {
-                  slidesPerView: 3,
-                },
-                1024: {
-                  slidesPerView: 4,
-                },
-              }}
-            >
-              {logoPartner.map((logo, index) => (
-                <SwiperSlide key={logo._id}>
-                  <div className="mx-auto flex h-[155px] w-[155px] items-center justify-center rounded-full bg-gray-200 shadow-sm">
-                    <img
-                      src={logo.partnerPic}
-                      alt={`Logo Partner ${index + 1}`}
-                      className="h-[140px] w-[140px] rounded-full object-contain"
-                    />
-                  </div>
-                </SwiperSlide>
-              ))}
-            </Swiper>
-          </div>
-        </div>
-        <div className="mt-6 w-full rounded-3xl bg-white p-6">
+      </Reveal>
+
+      <div className="max-w-7xl mx-auto w-full px-4">
+        {/* Hiển thị sản phẩm nổi bật theo Directory */}
+        <Reveal
+          rootMargin="-80px"
+          duration={0.9}
+          y={20}
+          threshold={1}
+          className="mt-12"
+        >
+          <ProductGrid directories={directories} />
+        </Reveal>
+
+        <Reveal
+          rootMargin="-50px"
+          duration={0.8}
+          y={40}
+          threshold={1}
+          className="mt-16"
+        >
+          <PartnerSlider />
+        </Reveal>
+
+        <Separator className="border-[0.5px] border-gray-200/60 my-16" />
+
+        <div className="w-full rounded-3xl bg-white">
           {/* Header */}
-          <div className="mb-3 flex w-full items-center gap-2 p-1">
-            <NewspaperIcon className="size-7 text-slate-900" />
-            <h2 className="text-base font-bold text-slate-800 md:text-lg">
-              TIN TỨC NỔI BẬT - HOT NEW
+          <div className="text-center">
+            <h2 className="text-xl font-bold uppercase tracking-wide text-[#9c1d22] md:text-2xl lg:text-3xl">
+              TIN TỨC NỔI BẬT
             </h2>
+
+            <div className="mx-auto mt-2 h-[3px] w-20 rounded-full bg-[#9c1d22]" />
           </div>
-          <div className="mb-6 grid grid-cols-1 gap-4 md:grid-cols-3 xl:grid-cols-4">
+
+          <div className="mb-6 grid grid-cols-1 gap-4 md:grid-cols-3 xl:grid-cols-4 mt-10 ">
             {dataTinNoiBat.slice(0, 4).map((item, index) => (
               <Link
                 key={item._id}
-                href={`/news/${item._id}`}
+                href={`/tin-tuc-va-khuyen-mai/${item.slug}`}
                 className="group flex flex-col overflow-hidden rounded-xl border border-gray-200 shadow-sm transition hover:shadow-md"
               >
                 {/* Mobile layout: image left, text right */}
@@ -308,12 +201,27 @@ const Home = () => {
 
           {/* Link xem thêm */}
           <div className="flex flex-nowrap items-center justify-center gap-1.5 font-serif text-blue-700">
-            <Link href="/news" className="text-[17px] hover:underline">
+            <Link
+              href="/tin-tuc-va-khuyen-mai"
+              className="text-[17px] hover:underline"
+            >
               Xem thêm bản tin
             </Link>
             <ArrowRightCircleIcon className="mt-0.5 size-[18px]" />
           </div>
         </div>
+
+        <Reveal
+          threshold={1}
+          rootMargin="-56px"
+          duration={0.8}
+          y={40}
+          className="mt-12 mb-8"
+        >
+          <section className="max-w-6xl mx-auto">
+            <PopupConsultationForm />
+          </section>
+        </Reveal>
       </div>
     </>
   );

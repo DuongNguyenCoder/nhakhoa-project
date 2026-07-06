@@ -1,10 +1,12 @@
+import Link from "next/link";
 import React from "react";
-import { Link } from "react-router-dom";
 
 const ProductCard = ({ item }) => {
   const hasPrice =
     (item.originalPrice && item.originalPrice > 0) ||
     (item.salePrice && item.salePrice > 0);
+
+  console.log(item);
 
   const renderPrice = () => {
     if (hasPrice) {
@@ -14,11 +16,11 @@ const ProductCard = ({ item }) => {
           item.salePrice > 0 &&
           item.salePrice < item.originalPrice ? (
             <>
-            <div className="flex gap-1 text-sm items-center">
-              <p>Giá gốc:</p>
-              <span className=" text-gray-600 line-through">
-                {item.originalPrice.toLocaleString("vi-VN")}₫
-              </span>
+              <div className="flex gap-1 text-sm items-center">
+                <p>Giá gốc:</p>
+                <span className=" text-gray-600 line-through">
+                  {item.originalPrice.toLocaleString("vi-VN")}₫
+                </span>
               </div>
               <span className="text-base text-center font-bold text-red-600">
                 {item.salePrice.toLocaleString("vi-VN")}₫
@@ -35,12 +37,12 @@ const ProductCard = ({ item }) => {
       return (
         <div className="flex items-center text-base gap-1">
           <p className="font-medium">Giá:</p>
-        <a
-          href="tel:(+84 4) 3852 3643"
-          className="font-bold text-red-600 hover:underline"
-        >
-          Liên hệ
-        </a>
+          <a
+            href="tel:(+84 4) 3852 3643"
+            className="font-bold text-red-600 hover:underline"
+          >
+            Liên hệ
+          </a>
         </div>
       );
     }
@@ -48,7 +50,7 @@ const ProductCard = ({ item }) => {
 
   return (
     <div className="group flex flex-col overflow-hidden rounded-2xl bg-white shadow-md transition duration-300 hover:-translate-y-1 hover:shadow-xl">
-      <Link to={`/products/${item._id}`} className="block w-full">
+      <Link href={`/san-pham/${item.slug}`} className="block w-full">
         <figure className="relative aspect-square w-full overflow-hidden bg-gray-100">
           <img
             src={item.productPics?.[0] || "/placeholder.jpg"}
@@ -75,15 +77,14 @@ const ProductCard = ({ item }) => {
       </Link>
 
       <div className="mt-auto flex flex-col items-center gap-3 px-4 pb-4 text-sm">
-  {renderPrice()}
-  <Link
-    to={`/products/${item._id}`}
-    className="w-full max-w-[200px] rounded-full bg-orange-400 px-4 py-2 text-xs font-medium text-black shadow-md transition-all duration-300 hover:bg-orange-600 hover:text-white text-center"
-  >
-    Xem chi tiết
-  </Link>
-</div>
-
+        {renderPrice()}
+        <Link
+          href={`/san-pham/${item.slug}`}
+          className="w-full max-w-[200px] rounded-full bg-orange-400 px-4 py-2 text-xs font-medium text-black shadow-md transition-all duration-300 hover:bg-orange-600 hover:text-white text-center"
+        >
+          Xem chi tiết
+        </Link>
+      </div>
     </div>
   );
 };

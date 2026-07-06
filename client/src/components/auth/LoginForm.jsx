@@ -1,15 +1,15 @@
 // src/components/LoginForm.jsx
 import { useState } from "react";
-import { apiGetCurrent, apiSignIn } from "@/apis/userAPI";
-import { useNavigate } from "react-router-dom";
-import { setIsSignIn, setCurrentUser } from "@/redux/appSlice";
+import { apiGetCurrent, apiSignIn } from "../../apis/userAPI";
+import { setIsSignIn, setCurrentUser } from "../../redux/appSlice";
 import { useDispatch } from "react-redux";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function LoginForm() {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
-  const navigate = useNavigate();
+  const router = useRouter();
   const dispatch = useDispatch();
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -29,9 +29,9 @@ export default function LoginForm() {
           console.log("CurrentUser: ", currentUserRes);
           dispatch(setCurrentUser(currentUserRes.data.data));
           if (currentUserRes.data.data.role === "ADMIN") {
-            navigate("/admin/dashboard");
+            router.push("/admin/dashboard");
           } else {
-            navigate("/");
+            router.push("/");
           }
         }
       } else {

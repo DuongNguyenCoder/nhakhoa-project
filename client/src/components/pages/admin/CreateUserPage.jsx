@@ -1,12 +1,12 @@
 import { apiAddUser } from "@/apis/adminAPI";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const roles = ["ADMIN", "USER"];
 
 const CreateUserPage = () => {
-  const navigate = useNavigate();
+  const router = useRouter();
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -45,7 +45,7 @@ const CreateUserPage = () => {
       .then((res) => {
         if (res.data.success) {
           toast.success("Tạo tài khoản thành công!");
-          navigate("/admin/users");
+          router.push("/admin/users");
         } else {
           toast.error(res.data.mes || "Tạo tài khoản thất bại!");
         }
@@ -84,7 +84,9 @@ const CreateUserPage = () => {
         </div>
 
         <div>
-          <label className="block text-gray-600 font-medium mb-1">Mật khẩu</label>
+          <label className="block text-gray-600 font-medium mb-1">
+            Mật khẩu
+          </label>
           <input
             type="password"
             name="password"
@@ -96,7 +98,9 @@ const CreateUserPage = () => {
         </div>
 
         <div>
-          <label className="block text-gray-600 font-medium mb-1">Số điện thoại</label>
+          <label className="block text-gray-600 font-medium mb-1">
+            Số điện thoại
+          </label>
           <input
             type="tel"
             name="mobile"
@@ -108,7 +112,9 @@ const CreateUserPage = () => {
         </div>
 
         <div>
-          <label className="block text-gray-600 font-medium mb-1">Chức vụ</label>
+          <label className="block text-gray-600 font-medium mb-1">
+            Chức vụ
+          </label>
           <select
             name="role"
             value={form.role}
@@ -124,7 +130,9 @@ const CreateUserPage = () => {
         </div>
 
         <div>
-          <label className="block text-gray-600 font-medium mb-1">Ảnh đại diện</label>
+          <label className="block text-gray-600 font-medium mb-1">
+            Ảnh đại diện
+          </label>
           <input
             type="file"
             name="profilePic"

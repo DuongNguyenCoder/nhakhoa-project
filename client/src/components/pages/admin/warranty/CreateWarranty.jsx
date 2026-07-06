@@ -4,13 +4,13 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
 import { apiAddWarranty } from "@/apis/WarrantyAPI";
 import { apiGetAllProduct } from "@/apis/ProductAPI";
 import { Label } from "@/components/ui/label";
+import { useRouter } from "next/navigation";
 
 export default function CreateWarranty() {
-  const navigate = useNavigate();
+  const router = useRouter();
   const [products, setProducts] = useState([]);
   const [form, setForm] = useState({
     productId: "",
@@ -47,7 +47,7 @@ export default function CreateWarranty() {
       .then((res) => {
         if (res.data && res.data.success) {
           toast.success("Tạo bảo hành thành công!");
-          navigate("/admin/warranty");
+          router.push("/admin/warranty");
         } else {
           console.log("Lỗi Add warranty!");
         }
@@ -59,7 +59,9 @@ export default function CreateWarranty() {
 
   return (
     <div className="max-w-3xl mx-auto p-6">
-      <h1 className="text-3xl font-bold text-gray-800 mb-6">Tạo bảo hành mới</h1>
+      <h1 className="text-3xl font-bold text-gray-800 mb-6">
+        Tạo bảo hành mới
+      </h1>
 
       <Card className="shadow-md rounded-2xl">
         <CardContent className="space-y-6 p-6">
@@ -111,7 +113,10 @@ export default function CreateWarranty() {
 
           {/* Action buttons */}
           <div className="flex justify-end gap-3 pt-4">
-            <Button variant="outline" onClick={() => navigate("/admin/warranty")}>
+            <Button
+              variant="outline"
+              onClick={() => router.push("/admin/warranty")}
+            >
               Hủy
             </Button>
             <Button onClick={handleSubmit}>Tạo bảo hành</Button>

@@ -1,8 +1,10 @@
+"use client";
+
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import { apiGetAllProduct } from "@/apis/ProductAPI";
+import Link from "next/link";
 
 const SideBarDiscount = () => {
   const [discountProducts, setDiscountProducts] = useState([]);
@@ -28,10 +30,10 @@ const SideBarDiscount = () => {
           product.salePrice < product.originalPrice ? (
             <>
               <div className="flex gap-1 text-sm items-center">
-              <p>Giá gốc:</p>
-              <span className=" text-base text-gray-700 line-through">
-                {product.originalPrice.toLocaleString("vi-VN")}₫
-              </span>
+                <p>Giá gốc:</p>
+                <span className=" text-base text-gray-700 line-through">
+                  {product.originalPrice.toLocaleString("vi-VN")}₫
+                </span>
               </div>
               <span className="text-[17.5px] text-center font-bold mt-0.5 text-red-600">
                 {product.salePrice.toLocaleString("vi-VN")}₫
@@ -39,7 +41,10 @@ const SideBarDiscount = () => {
             </>
           ) : (
             <span className="text-base font-bold text-red-600">
-              {(product.salePrice || product.originalPrice).toLocaleString("vi-VN")}₫
+              {(product.salePrice || product.originalPrice).toLocaleString(
+                "vi-VN",
+              )}
+              ₫
             </span>
           )}
         </div>
@@ -80,7 +85,7 @@ const SideBarDiscount = () => {
           {discountProducts.map((product) => (
             <SwiperSlide key={product._id}>
               <Link
-                to={`/products/${product._id}`}
+                href={`/san-pham/${product.slug}`}
                 className="group relative flex lg:flex h-64 w-full lg:flex-col items-center overflow-hidden rounded-md bg-white p-3 shadow transition hover:shadow-md hover:ring-2 hover:ring-red-400 lg:h-[360px]"
               >
                 {/* Hover Overlay */}
@@ -102,11 +107,15 @@ const SideBarDiscount = () => {
                   </span>
                   <span className="text-xs text-gray-500 lg:text-sm">
                     Thương hiệu:{" "}
-                    <span className="font-medium">{product.brand || "Đang cập nhật"}</span>
+                    <span className="font-medium">
+                      {product.brand || "Đang cập nhật"}
+                    </span>
                   </span>
                   <span className="text-xs text-gray-500 lg:text-sm">
                     Xuất xứ:{" "}
-                    <span className="font-medium">{product.origin || "Đang cập nhật"}</span>
+                    <span className="font-medium">
+                      {product.origin || "Đang cập nhật"}
+                    </span>
                   </span>
                   <div className="mt-1">{renderPrice(product)}</div>
                 </div>

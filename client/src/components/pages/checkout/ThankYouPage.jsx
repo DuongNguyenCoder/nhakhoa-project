@@ -1,17 +1,23 @@
+"use client";
 import { motion } from "framer-motion";
 import { FaCheckCircle } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
 import Confetti from "react-confetti";
 import { useWindowSize } from "react-use";
+import { useRouter } from "next/navigation";
 
 const ThankYouPage = () => {
-  const navigate = useNavigate();
+  const router = useRouter();
   const { width, height } = useWindowSize(); // Lấy kích thước cửa sổ
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-100 to-green-300 relative overflow-hidden">
       {/* Confetti pháo hoa */}
-      <Confetti width={width} height={height} numberOfPieces={300} recycle={false} />
+      <Confetti
+        width={width}
+        height={height}
+        numberOfPieces={300}
+        recycle={false}
+      />
 
       <motion.div
         className="bg-white rounded-3xl shadow-2xl p-10 max-w-xl w-full text-center z-10"
@@ -31,13 +37,14 @@ const ThankYouPage = () => {
           Cảm ơn bạn đã đặt hàng!
         </h2>
         <p className="text-gray-600 mb-6">
-          Đơn hàng của bạn đã được ghi nhận thành công. Chúng tôi sẽ liên hệ để xác nhận và giao hàng trong thời gian sớm nhất. 💚
+          Đơn hàng của bạn đã được ghi nhận thành công. Chúng tôi sẽ liên hệ để
+          xác nhận và giao hàng trong thời gian sớm nhất. 💚
         </p>
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           className="px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded-xl font-semibold shadow-md transition"
-          onClick={() => navigate("/")}
+          onClick={() => router.push("/")}
         >
           Về trang chủ
         </motion.button>

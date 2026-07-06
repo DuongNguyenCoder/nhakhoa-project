@@ -1,20 +1,19 @@
-import ProductListBar from "@/components/ui/ProductListBar";
-import MainHeader from "@/components/MainHeader";
-import TopHeader from "@/components/TopHeader";
+import ProductListBar from "../components/ui/ProductListBar";
+import MainHeader from "../components/layout/MainHeader";
+import TopHeader from "../components/layout/TopHeader";
 import React from "react";
-import MenuHeader from "@/components/MenuHeader";
-import Banner from "@/components/Banner";
-import BannerHome from "@/components/home/BannerHome";
-import { Outlet } from "@/provider/react-router-dom";
-import Footer from "@/components/Footer";
-import SupportWidget from "@/components/SupportWidget";
+import MenuHeader from "../components/layout/MenuHeader";
+import Banner from "../components/Banner";
+import BannerHome from "../components/home/BannerHome";
+import { Outlet } from "../provider/react-router-dom";
+import Footer from "../components/layout/Footer";
+import SupportWidget from "../components/SupportWidget";
 
 const HomeLayout = () => {
   return (
     <div className="w-full bg-gray-100">
       {/* Header */}
-      <TopHeader />
-      <MainHeader />
+
       <div className="sticky top-0 z-50 bg-white shadow">
         <MenuHeader />
       </div>
@@ -33,8 +32,6 @@ const HomeLayout = () => {
       <div className="w-full mt-20">
         <Footer />
       </div>
-
-      <SupportWidget />
     </div>
   );
 };

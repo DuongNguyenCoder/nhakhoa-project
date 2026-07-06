@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { apiSignUp } from "@/apis/userAPI";
-import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 
 const RegisterForm = () => {
-  const navigate = useNavigate();
+  const router = useRouter();
   const [formData, setFormData] = useState({
     email: "",
     name: "",
@@ -46,17 +46,19 @@ const RegisterForm = () => {
       mobile: formData.mobile.trim(),
     };
 
-    apiSignUp(payload).then((res) => {
-      console.log("RESPONSE API SIGN UP: ", res)
-    if (res?.data?.success) {
-      toast.success(res.data.mes);
-      navigate("/dang-nhap");
-    } else {
-      toast.error(res.response.data.mes);
-    }
-    }).catch((err) => {
-      console.log("Lỗi: ", err)
-    })
+    apiSignUp(payload)
+      .then((res) => {
+        console.log("RESPONSE API SIGN UP: ", res);
+        if (res?.data?.success) {
+          toast.success(res.data.mes);
+          router.push("/dang-nhap");
+        } else {
+          toast.error(res.response.data.mes);
+        }
+      })
+      .catch((err) => {
+        console.log("Lỗi: ", err);
+      });
   };
 
   return (
@@ -77,10 +79,14 @@ const RegisterForm = () => {
               type="email"
               placeholder="Email"
               value={formData.email}
-              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, email: e.target.value })
+              }
               className="bg-amber-50 focus:ring-2 focus:ring-amber-400"
             />
-            {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
+            {errors.email && (
+              <p className="text-red-500 text-sm">{errors.email}</p>
+            )}
           </div>
 
           <div className="space-y-2">
@@ -88,10 +94,14 @@ const RegisterForm = () => {
               type="text"
               placeholder="Họ tên"
               value={formData.name}
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, name: e.target.value })
+              }
               className="bg-amber-50 focus:ring-2 focus:ring-amber-400"
             />
-            {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
+            {errors.name && (
+              <p className="text-red-500 text-sm">{errors.name}</p>
+            )}
           </div>
 
           <div className="space-y-2">
@@ -99,10 +109,14 @@ const RegisterForm = () => {
               type="text"
               placeholder="Số điện thoại"
               value={formData.mobile}
-              onChange={(e) => setFormData({ ...formData, mobile: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, mobile: e.target.value })
+              }
               className="bg-amber-50 focus:ring-2 focus:ring-amber-400"
             />
-            {errors.mobile && <p className="text-red-500 text-sm">{errors.mobile}</p>}
+            {errors.mobile && (
+              <p className="text-red-500 text-sm">{errors.mobile}</p>
+            )}
           </div>
 
           <div className="space-y-2">
@@ -110,7 +124,9 @@ const RegisterForm = () => {
               type="password"
               placeholder="Mật khẩu"
               value={formData.password}
-              onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, password: e.target.value })
+              }
               className="bg-amber-50 focus:ring-2 focus:ring-amber-400"
             />
             {errors.password && (

@@ -1,13 +1,15 @@
-import useIsMobile from "@/hooks/useIsMobile";
+"use client";
+
+import useIsMobile from "../../hooks/useIsMobile";
 import { IdentificationIcon } from "@heroicons/react/24/outline";
 import React, { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import LoginForm from "../auth/LoginForm";
-import { setIsSignOut } from "@/redux/appSlice";
+import { setIsSignOut } from "../../redux/appSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { useRouter } from "next/navigation";
 
 const AuthButtons = () => {
-  const navigate = useNavigate();
+  const router = useRouter();
   const isMobile = useIsMobile();
   const [showLoginModal, setShowLoginModal] = useState(false);
   const popupRef = useRef(null);
@@ -19,12 +21,12 @@ const AuthButtons = () => {
 
   const handleLogOut = () => {
     dispatch(setIsSignOut());
-    navigate("/");
+    router.push("/");
   };
 
   const handleLoginClick = () => {
     if (isMobile) {
-      navigate("/auth/login");
+      router.push("/auth/login");
     } else {
       setShowLoginModal(true);
     }
@@ -52,7 +54,7 @@ const AuthButtons = () => {
       {isLoggedIn ? (
         <div className="flex items-center gap-4">
           <button
-            onClick={() => navigate("/profile")}
+            onClick={() => router.push("/profile")}
             className="font-medium hover:text-primary transition-colors text-base md:text-sm"
           >
             Xin chào, {firstName}
@@ -67,7 +69,7 @@ const AuthButtons = () => {
       ) : (
         <div className="flex items-center gap-3">
           <button
-            onClick={() => navigate("/auth/register")}
+            onClick={() => router.push("/auth/register")}
             className="hover:text-primary transition-colors font-medium text-base md:text-sm"
           >
             Đăng ký

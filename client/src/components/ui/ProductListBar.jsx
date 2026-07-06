@@ -1,11 +1,8 @@
-import {
-  PlusCircleIcon,
-  MinusCircleIcon,
-} from "@heroicons/react/24/solid";
+import { PlusCircleIcon, MinusCircleIcon } from "@heroicons/react/24/solid";
 import React, { useState, useReducer, useEffect } from "react";
-import { apiGetDirectory } from "@/apis/DirectoryAPI";
-import { Link } from "react-router-dom";
+import { apiGetDirectory } from "../../apis/DirectoryAPI";
 import { ArrowRightCircleIcon } from "@heroicons/react/24/outline";
+import Link from "next/link";
 
 const ProductListBar = () => {
   // API GET DIRECTORY
@@ -45,7 +42,7 @@ const ProductListBar = () => {
             >
               <div className="flex items-center gap-x-1">
                 <Link
-                  to={`/products/directory?directory=${item._id}&title=${encodeURIComponent(item.title)}`}
+                  href={`/san-pham/directory?directory=${item._id}&title=${encodeURIComponent(item.title)}`}
                   className="flex items-center gap-1.5 text-wrap text-sm font-medium uppercase tracking-wide text-gray-800"
                 >
                   {item.directoryPic && (
@@ -68,10 +65,13 @@ const ProductListBar = () => {
               <div className="bg-orange-100 px-6 py-4 shadow-inner">
                 <ul className="list-inside space-y-2">
                   {item.category.map((child) => (
-                    <li key={child._id} className="flex items-center gap-1 border-b border-b-gray-300">
+                    <li
+                      key={child._id}
+                      className="flex items-center gap-1 border-b border-b-gray-300"
+                    >
                       <ArrowRightCircleIcon className="size-5" />
                       <Link
-                        to={`/products/category?category=${child._id}&title=${encodeURIComponent(child.title)}`}
+                        href={`/san-pham/category?category=${child._id}&title=${encodeURIComponent(child.title)}`}
                         className="text-[17px] font-normal text-slate-900 hover:text-ellipsis hover:text-[17px] hover:font-medium hover:text-red-600"
                       >
                         {child.title}

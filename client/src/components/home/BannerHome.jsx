@@ -25,18 +25,6 @@ const BannerHome = () => {
     return dataBanner.filter((banner) => banner.status === "ENABLE");
   }, [dataBanner]);
   return (
-    // <div className='relative md:flex w-full h-full xl:gap-4 xl:px-6 shadow-fuchsia-200 shadow-lg'>
-    //     <div className='w-full px-10 md:px-0 mt-5 md:mt-0 md:w-[30%] lg:w-[28%] h-full flex'>
-    //         <div className='w-full h-full'>
-    //         <SideBar/>
-    //         </div>
-    //     </div>
-    //     <div className='lg:w-[72%] md:w-[70%] hidden md:flex h-auto'>
-    //         <Banner/>
-    //     </div>
-    // </div>
-
-    // Code sau khi chỉnh lần 1
     <div className="w-full">
       <div className="w-full h-[300px] sm:h-[350px] md:h-[450px] lg:h-[500px] shadow-lg xl:h-[580px] relative">
         <Swiper

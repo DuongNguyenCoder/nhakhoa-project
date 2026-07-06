@@ -8,11 +8,11 @@ import { apiDeleteNew, apiGetNew } from "@/apis/NewsAPI";
 import { toast } from "react-toastify";
 import DeleteConfirmDialog from "@/components/common/DeleteConfirmDialog";
 import Pagination from "@/components/ui/Pagination";
-import { useNavigate } from "react-router-dom";
 import { Input } from "@/components/ui/input";
+import { useRouter } from "next/navigation";
 
 export default function NewsManagerPage() {
-  const navigate = useNavigate();
+  const router = useRouter();
   const [newsList, setNewsList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
@@ -24,7 +24,7 @@ export default function NewsManagerPage() {
     const timer = setTimeout(() => {
       setDebouncedSearchTerm(searchTerm);
     }, 500); // thời gian debounce
-  
+
     return () => clearTimeout(timer);
   }, [searchTerm]);
 
@@ -35,7 +35,10 @@ export default function NewsManagerPage() {
   const fetchNews = async () => {
     setLoading(true);
     try {
-      const res = await apiGetNew({page: currentPage, search: debouncedSearchTerm});
+      const res = await apiGetNew({
+        page: currentPage,
+        search: debouncedSearchTerm,
+      });
       if (res.data?.success) {
         setNewsList(res.data.data);
         setTotalPages(res.data.pagination.totalPages);
@@ -48,19 +51,19 @@ export default function NewsManagerPage() {
   };
 
   const handleDelete = async (id) => {
-    await apiDeleteNew(id).then((rs) => {
-      if(rs.data && rs.data.success){
-        fetchNews();
-        toast.warning("Xóa thành công!");
-      } else {
-        console.log("Lỗi delete news!");
-      }
-    }).catch((err) => {
-      console.log("Lỗi: ", err);
-    })
+    await apiDeleteNew(id)
+      .then((rs) => {
+        if (rs.data && rs.data.success) {
+          fetchNews();
+          toast.warning("Xóa thành công!");
+        } else {
+          console.log("Lỗi delete news!");
+        }
+      })
+      .catch((err) => {
+        console.log("Lỗi: ", err);
+      });
   };
-
-
 
   const formatDate = (isoString) => {
     const date = new Date(isoString);
@@ -87,7 +90,7 @@ export default function NewsManagerPage() {
           />
         </div>
         <Button
-          onClick={() => navigate("/admin/news/create")}
+          onClick={() => router.push("/admin/news/create")}
           className="bg-primary text-white hover:bg-primary/90"
         >
           Thêm tin mới
@@ -123,7 +126,7 @@ export default function NewsManagerPage() {
                     {item.title}
                   </h2>
                   <p className="line-clamp-2 text-sm text-gray-600">
-                  {(() => {
+                    {(() => {
                       const temp = document.createElement("div");
                       temp.innerHTML = item.description;
                       return temp.textContent || temp.innerText || "";
@@ -131,11 +134,15 @@ export default function NewsManagerPage() {
                   </p>
                   <div className="flex items-center justify-between text-sm text-gray-500">
                     <div className="flex flex-col text-[12.5px] gap-0.5">
-                    <span>Ngày tạo: {formatDate(item.createdAt)}</span>
-                    <span>Cập nhật gần nhất: {formatDate(item.updatedAt)}</span>
+                      <span>Ngày tạo: {formatDate(item.createdAt)}</span>
+                      <span>
+                        Cập nhật gần nhất: {formatDate(item.updatedAt)}
+                      </span>
                     </div>
                     <Badge
-                      variant={item.status === "ENABLE" ? "default" : "destructive"}
+                      variant={
+                        item.status === "ENABLE" ? "default" : "destructive"
+                      }
                     >
                       {item.status}
                     </Badge>
@@ -144,22 +151,32 @@ export default function NewsManagerPage() {
                     <Button variant="ghost" size="icon">
                       <Eye className="h-5 w-5 text-blue-500" />
                     </Button>
-                    <Button onClick={() => navigate(`/admin/news/edit/${item._id}`)} variant="ghost" size="icon">
+                    <Button
+                      onClick={() =>
+                        router.push(`/admin/news/edit/${item._id}`)
+                      }
+                      variant="ghost"
+                      size="icon"
+                    >
                       <Pencil className="h-5 w-5 text-yellow-500" />
                     </Button>
                     <DeleteConfirmDialog
                       onConfirm={() => handleDelete(item._id)}
                     >
-                    <Button variant="ghost" size="icon">
-                      <Trash2 className="h-5 w-5 text-red-500" />
-                    </Button>
+                      <Button variant="ghost" size="icon">
+                        <Trash2 className="h-5 w-5 text-red-500" />
+                      </Button>
                     </DeleteConfirmDialog>
                   </div>
                 </CardContent>
               </Card>
             ))}
       </div>
-      <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={(page) => setCurrentPage(page)}/>
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={(page) => setCurrentPage(page)}
+      />
     </div>
   );
 }

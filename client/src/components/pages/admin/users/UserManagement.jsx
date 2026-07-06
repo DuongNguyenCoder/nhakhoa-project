@@ -9,12 +9,13 @@ import {
 import Pagination from "@/components/ui/Pagination";
 import { toast } from "react-toastify";
 import DeleteConfirmDialog from "@/components/common/DeleteConfirmDialog";
-import { useNavigate } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
 const UserManagement = () => {
-  const navigate = useNavigate();
+  const router = useRouter();
+
   const [users, setUsers] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
@@ -22,7 +23,10 @@ const UserManagement = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const res = await apiGetAllUsers({ page: currentPage, search: searchKeyword });
+      const res = await apiGetAllUsers({
+        page: currentPage,
+        search: searchKeyword,
+      });
       if (res.data?.success) {
         setUsers(res.data.data);
         setTotalPages(res.data.pagination.totalPages);
@@ -109,7 +113,7 @@ const UserManagement = () => {
             {/* Actions */}
             <div className="mt-4 flex gap-4">
               <button
-                onClick={() => navigate(`/admin/users/preview/${user._id}`)}
+                onClick={() => router.push(`/admin/users/preview/${user._id}`)}
                 className="rounded-md bg-blue-100 px-4 py-2 text-sm text-blue-700 transition hover:bg-blue-200"
               >
                 Xem chi tiết

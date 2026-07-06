@@ -1,8 +1,13 @@
-import { useState } from "react";
+"use client";
+
+import { useEffect, useRef, useState, useTransition } from "react";
+import { useForm } from "react-hook-form";
+import slugify from "slugify";
+import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { toast } from "react-toastify";
 import {
   Select,
   SelectContent,
@@ -10,188 +15,216 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { apiAddNew } from "@/apis/NewsAPI";
 import DescriptionEditor from "@/components/common/DescriptionEditor";
-import { useNavigate } from "react-router-dom";
+import { createNewsAction } from "@/app/admin/news/create/actions";
+
+const defaultValues = {
+  title: "",
+  slug: "",
+  description: "",
+  category: "",
+  status: "ENABLE",
+  newPic: null,
+};
 
 export default function CreateNew() {
-  const [form, setForm] = useState({
-    title: "",
-    description: "",
-    category: "",
-    status: "ENABLE",
-    newPic: null,
+  const router = useRouter();
+  const [previewImg, setPreviewImg] = useState("");
+  const [isFeatured, setIsFeatured] = useState(false);
+  const [isPending, startTransition] = useTransition();
+  const lastAutoSlugRef = useRef("");
+
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    reset,
+    formState: { errors },
+  } = useForm({
+    defaultValues,
   });
 
-  const navigate = useNavigate();
-  const [previewImg, setPreviewImg] = useState(null);
-  const [isFeatured, setIsFeatured] = useState(false);
-  const [pdfUrl, setPdfUrl] = useState(null);
-  const [pdfPreview, setPdfPreview] = useState(null);
+  const title = watch("title");
+  const slug = watch("slug");
+  const currentSlug = slugify(title || "", { lower: true, strict: true });
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
-  };
+  useEffect(() => {
+    if (!title?.trim()) {
+      setValue("slug", "", { shouldDirty: true });
+      lastAutoSlugRef.current = "";
+      return;
+    }
+
+    if (!slug?.trim() || slug === lastAutoSlugRef.current) {
+      setValue("slug", currentSlug, { shouldDirty: true });
+    }
+
+    lastAutoSlugRef.current = currentSlug;
+  }, [title, slug, currentSlug, setValue]);
 
   const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setForm((prev) => ({ ...prev, newPic: file}));
-      setPreviewImg(URL.createObjectURL(file));
-    }
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setValue("newPic", file, { shouldDirty: true });
+    setPreviewImg(URL.createObjectURL(file));
   };
 
-  const handlePdfChange = (e) => {
-    const file = e.target.files[0];
-    console.log("test: ", file);
-    if (file && file.type === "application/pdf") {
-      setPdfUrl(file);
-      setPdfPreview(URL.createObjectURL(file));
-    } else {
-      toast.error("Vui lòng chọn đúng định dạng file PDF.");
-    }
-  };
-  console.log("kog:", form);
-
-  const handleSubmit = async () => {
-    if (!form.title || !form.newPic || !pdfUrl) {
-      return toast.error("Vui lòng nhập đủ tiêu đề, ảnh và file PDF.");
+  const onSubmit = async (values) => {
+    if (!values.title?.trim()) {
+      toast.error("Vui lòng nhập tiêu đề bài viết.");
+      return;
     }
 
-    try {
-      const formData = new FormData();
-      Object.keys(form).forEach((key) => {
-        formData.append(key, form[key]);
-      });
-      formData.append("pdfUrl", pdfUrl);
+    if (!values.newPic) {
+      toast.error("Vui lòng chọn ảnh đại diện.");
+      return;
+    }
 
-      const res = await apiAddNew(formData);
-      if (res.data?.success) {
-        toast.success("Tạo tin tức thành công!");
-        setForm({
-          title: "",
-          description: "",
-          category: "",
-          status: "ENABLE",
-          newPic: null,
-          pdfUrl: null,
-        });
-        setPreviewImg(null);
-        setPdfUrl(null);
-        setPdfPreview(null);
-        setIsFeatured(false);
-        navigate("/admin/news");
-      } else {
-        toast.error("Tạo bài viết thất bại.");
+    const formData = new FormData();
+    formData.append("title", values.title.trim());
+    formData.append("slug", values.slug?.trim() || currentSlug);
+    formData.append("description", values.description || "");
+    formData.append("category", values.category || "");
+    formData.append("status", values.status || "ENABLE");
+    formData.append("newPic", values.newPic);
+
+    startTransition(async () => {
+      try {
+        const result = await createNewsAction(formData);
+
+        if (result?.success) {
+          toast.success(result.message || "Tạo tin tức thành công!");
+          reset(defaultValues);
+          setPreviewImg("");
+          setIsFeatured(false);
+          router.push("/admin/news");
+          return;
+        }
+
+        toast.error(result?.message || "Tạo bài viết thất bại.");
+      } catch (error) {
+        console.error(error);
+        toast.error("Có lỗi xảy ra khi tạo bài viết.");
       }
-    } catch (err) {
-      console.error(err);
-      toast.error("Có lỗi xảy ra khi tạo bài viết.");
-    }
+    });
   };
 
   return (
     <div className="mx-auto max-w-4xl space-y-6 p-6">
       <h1 className="text-3xl font-bold text-gray-800">Tạo bài viết mới</h1>
 
-      {/* Tiêu đề */}
-      <div className="space-y-2">
-        <Label htmlFor="title">Tiêu đề</Label>
-        <Input
-          id="title"
-          name="title"
-          placeholder="Nhập tiêu đề bài viết"
-          value={form.title}
-          onChange={handleInputChange}
-        />
-      </div>
-
-      {/* Hình ảnh đại diện */}
-      <div className="space-y-2">
-        <Label>Ảnh đại diện</Label>
-        <Input type="file" accept="image/*" onChange={handleImageChange} />
-        {previewImg && (
-          <img
-            src={previewImg}
-            alt="preview"
-            className="mt-2 h-48 w-full rounded-lg border object-contain"
-          />
-        )}
-      </div>
-
-      {/* File PDF đính kèm */}
-      <div className="space-y-2">
-        <Label>File PDF (nội dung chính & tài liệu đính kèm)</Label>
-        <Input type="file" accept="application/pdf" onChange={handlePdfChange} />
-        {pdfPreview && (
-          <div className="mt-2 h-[400px] w-full overflow-hidden rounded border">
-            <embed src={pdfPreview} type="application/pdf" className="h-full w-full" />
-          </div>
-        )}
-      </div>
-
-      {/* Danh mục và trạng thái */}
-      <div className="flex flex-col gap-4 md:flex-row">
-        <div className="flex-1 space-y-2">
-          <Label>Loại tin tức</Label>
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+        <div className="space-y-2">
+          <Label htmlFor="title">Tiêu đề</Label>
           <Input
-            name="category"
-            placeholder="Nhập loại tin tức (VD: Y học cổ truyền...)"
-            value={isFeatured ? "Tin tức nổi bật" : form.category}
-            onChange={handleInputChange}
-            disabled={isFeatured}
+            id="title"
+            placeholder="Nhập tiêu đề bài viết"
+            {...register("title", { required: "Vui lòng nhập tiêu đề" })}
           />
-          <div className="mt-2 flex items-center gap-2">
-            <input
-              type="checkbox"
-              id="featuredNews"
-              checked={isFeatured}
-              onChange={(e) => {
-                const checked = e.target.checked;
-                setIsFeatured(checked);
-                setForm((prev) => ({
-                  ...prev,
-                  category: checked ? "Tin tức nổi bật" : "",
-                }));
-              }}
-              className="h-4 w-4 accent-blue-600 transition"
+          {errors.title && (
+            <p className="text-sm text-red-500">{errors.title.message}</p>
+          )}
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="slug">Slug</Label>
+          <Input
+            id="slug"
+            placeholder="slug-bai-viet"
+            {...register("slug", { required: "Vui lòng nhập slug" })}
+          />
+          {currentSlug && (
+            <p className="text-sm text-gray-500">
+              Xem trước:
+              <a
+                href={`/tin-tuc-va-khuyen-mai/${slug || currentSlug}`}
+                target="_blank"
+                rel="noreferrer"
+                className="ml-1 text-blue-600 underline"
+              >
+                /tin-tuc-va-khuyen-mai/{slug || currentSlug}
+              </a>
+            </p>
+          )}
+          {errors.slug && (
+            <p className="text-sm text-red-500">{errors.slug.message}</p>
+          )}
+        </div>
+
+        <div className="space-y-2">
+          <Label>Ảnh đại diện</Label>
+          <Input type="file" accept="image/*" onChange={handleImageChange} />
+          {previewImg && (
+            <img
+              src={previewImg}
+              alt="preview"
+              className="mt-2 h-48 w-full rounded-lg border object-contain"
             />
-            <Label htmlFor="featuredNews" className="cursor-pointer text-sm text-gray-700">
-              Đặt làm <strong>Tin tức nổi bật</strong>
-            </Label>
+          )}
+        </div>
+
+        <div className="flex flex-col gap-4 md:flex-row">
+          <div className="flex-1 space-y-2">
+            <Label>Loại tin tức</Label>
+            <Input
+              placeholder="Nhập loại tin tức (VD: Y học cổ truyền...)"
+              {...register("category")}
+              disabled={isFeatured}
+              value={isFeatured ? "Tin tức nổi bật" : watch("category")}
+              onChange={(e) => setValue("category", e.target.value)}
+            />
+            <div className="mt-2 flex items-center gap-2">
+              <input
+                type="checkbox"
+                id="featuredNews"
+                checked={isFeatured}
+                onChange={(e) => {
+                  const checked = e.target.checked;
+                  setIsFeatured(checked);
+                  setValue("category", checked ? "Tin tức nổi bật" : "");
+                }}
+                className="h-4 w-4 accent-blue-600 transition"
+              />
+              <Label
+                htmlFor="featuredNews"
+                className="cursor-pointer text-sm text-gray-700"
+              >
+                Đặt làm <strong>Tin tức nổi bật</strong>
+              </Label>
+            </div>
+          </div>
+
+          <div className="flex-1 space-y-2">
+            <Label>Trạng thái</Label>
+            <Select
+              value={watch("status")}
+              onValueChange={(val) => setValue("status", val)}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Chọn trạng thái" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="ENABLE">Kích hoạt</SelectItem>
+                <SelectItem value="DISABLE">Tạm ẩn</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
         </div>
 
-        <div className="flex-1 space-y-2">
-          <Label>Trạng thái</Label>
-          <Select
-            value={form.status}
-            onValueChange={(val) => setForm((prev) => ({ ...prev, status: val }))}
-          >
-            <SelectTrigger>
-              <SelectValue placeholder="Chọn trạng thái" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="ENABLE">Kích hoạt</SelectItem>
-              <SelectItem value="DISABLE">Tạm ẩn</SelectItem>
-            </SelectContent>
-          </Select>
+        <div className="space-y-2">
+          <Label>Nội dung chi tiết</Label>
+          <DescriptionEditor
+            value={watch("description")}
+            onChange={(value) => setValue("description", value)}
+          />
         </div>
-      </div>
 
-      {/* Nội dung chi tiết */}
-      <div className="space-y-2">
-        <Label>Nội dung chi tiết</Label>
-        <DescriptionEditor
-          value={form.description}
-          onChange={(value) => setForm((prev) => ({ ...prev, description: value }))}
-        />
-      </div>
-
-      <Button onClick={handleSubmit} className="mt-4 w-full">
-        Tạo bài viết
-      </Button>
+        <Button type="submit" className="mt-4 w-full" disabled={isPending}>
+          {isPending ? "Đang tạo..." : "Tạo bài viết"}
+        </Button>
+      </form>
     </div>
   );
 }

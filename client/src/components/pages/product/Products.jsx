@@ -1,14 +1,16 @@
+"use client";
+
 import { apiGetAllProduct } from "@/apis/ProductAPI";
 import SideBar from "@/components/SideBar";
 import ProductCard from "@/components/ui/ProductCart";
-import ProductSlider from "@/components/ui/ProductSlider";
+// import ProductSlider from "@/components/ui/ProductSlider";
 import React, { useEffect, useState, useCallback, useRef } from "react";
 import Pagination from "@/components/ui/Pagination";
 import { CubeIcon } from "@heroicons/react/24/solid";
 import { debounce } from "lodash";
 import { apiGetDirectory } from "@/apis/DirectoryAPI";
-import { useNavigate } from "react-router-dom";
 import PageTitle from "@/components/pageTitle";
+import { useRouter } from "next/navigation";
 
 const Products = () => {
   const [dataProduct, setDataProduct] = useState([]);
@@ -16,7 +18,7 @@ const Products = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
   const [dataDirectory, setDataDirectory] = useState([]);
-  const navigate = useNavigate();
+  const router = useRouter();
   const inputRef = useRef(null); // tạo ref
 
   const getAPIProduct = async (page = 1, search = "") => {
@@ -89,8 +91,8 @@ const Products = () => {
               <div
                 key={item._id}
                 onClick={() =>
-                  navigate(
-                    `/products/directory?directory=${item._id}&title=${encodeURIComponent(item.title)}`,
+                  router.push(
+                    `/san-pham/directory?directory=${item._id}&title=${encodeURIComponent(item.title)}`,
                   )
                 }
                 className="group cursor-pointer rounded-xl overflow-hidden shadow-md hover:shadow-lg transition duration-300 bg-gray-50"

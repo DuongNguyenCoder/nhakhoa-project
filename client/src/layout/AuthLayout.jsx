@@ -1,8 +1,8 @@
-import TopHeader from "@/components/TopHeader";
-import MainHeader from "@/components/MainHeader";
-import MenuHeader from "@/components/MenuHeader";
+import TopHeader from "@/components/layout/TopHeader";
+import MainHeader from "@/components/layout/MainHeader";
+import MenuHeader from "@/components/layout/MenuHeader";
 import React from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet } from "../provider/react-router-dom";
 
 const AuthLayout = () => {
   return (

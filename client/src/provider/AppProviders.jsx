@@ -5,8 +5,8 @@ import { Provider, useDispatch, useSelector } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { persistor, store } from "@/redux/store";
-import { setCartItems } from "@/redux/appSlice";
+import { persistor, store } from "../redux/store";
+import { setCartItems } from "../redux/appSlice";
 
 function CartSync() {
   const { currentUser } = useSelector((state) => state.app);

@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Table } from "@/components/ui/table";
 import Pagination from "@/components/ui/Pagination";
 import { apiDeleteProduct, apiGetAllProduct } from "@/apis/ProductAPI";
 import DeleteConfirmDialog from "@/components/common/DeleteConfirmDialog";
 import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 const ProductManagement = () => {
-  const navigate = useNavigate();
+  const router = useRouter();
   const [products, setProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
@@ -16,8 +16,11 @@ const ProductManagement = () => {
   const [searchTerm, setSearchTerm] = useState("");
 
   const fetchProducts = async () => {
-    const res = await apiGetAllProduct({ page: currentPage, title: searchTerm });
-    
+    const res = await apiGetAllProduct({
+      page: currentPage,
+      title: searchTerm,
+    });
+
     if (res.data.success) {
       setProducts(res.data.data);
       setTotalPages(res.data.pagination.totalPages);
@@ -59,8 +62,13 @@ const ProductManagement = () => {
     <div className="p-6 max-w-7xl mx-auto space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-semibold text-gray-800">Quản lý sản phẩm</h2>
-        <Button onClick={() => navigate("/admin/product/create")} variant="outline">
+        <h2 className="text-2xl font-semibold text-gray-800">
+          Quản lý sản phẩm
+        </h2>
+        <Button
+          onClick={() => router.push("/admin/product/create")}
+          variant="outline"
+        >
           + Thêm sản phẩm
         </Button>
       </div>
@@ -93,8 +101,12 @@ const ProductManagement = () => {
               <th className="p-4 text-left">Phân mục</th>
               <th className="p-4 text-center">Nổi bật</th>
               <th className="p-4 text-center">Thanh lý</th>
-              <th className="p-4 text-left text-xs font-normal text-gray-500">Tạo lúc</th>
-              <th className="p-4 text-left text-xs font-normal text-gray-500">Cập nhật</th>
+              <th className="p-4 text-left text-xs font-normal text-gray-500">
+                Tạo lúc
+              </th>
+              <th className="p-4 text-left text-xs font-normal text-gray-500">
+                Cập nhật
+              </th>
               <th className="p-4 text-center">Hành động</th>
             </tr>
           </thead>
@@ -109,12 +121,16 @@ const ProductManagement = () => {
                   />
                 </td>
                 <td className="p-4 font-medium">{product.title}</td>
-                <td className="p-4">{product.directory?.title || "Không có"}</td>
+                <td className="p-4">
+                  {product.directory?.title || "Không có"}
+                </td>
                 <td className="p-4">{product.category?.title || "Không có"}</td>
                 <td className="p-4 text-center">
                   <span
                     className={`text-sm font-medium px-2 py-1 rounded ${
-                      product.isFeatured ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-500"
+                      product.isFeatured
+                        ? "bg-green-100 text-green-700"
+                        : "bg-gray-100 text-gray-500"
                     }`}
                   >
                     {product.isFeatured ? "Có" : "Không"}
@@ -123,7 +139,9 @@ const ProductManagement = () => {
                 <td className="p-4 text-center">
                   <span
                     className={`text-sm font-medium px-2 py-1 rounded ${
-                      product.isLiquidation ? "bg-red-100 text-red-600" : "bg-gray-100 text-gray-500"
+                      product.isLiquidation
+                        ? "bg-red-100 text-red-600"
+                        : "bg-gray-100 text-gray-500"
                     }`}
                   >
                     {product.isLiquidation ? "Có" : "Không"}
@@ -137,16 +155,18 @@ const ProductManagement = () => {
                 </td>
                 <td className="p-4 flex gap-2 justify-center">
                   <Button
-                    onClick={() => navigate(`/admin/product/edit/${product._id}`)}
+                    onClick={() =>
+                      router.push(`/admin/product/edit/${product._id}`)
+                    }
                     className="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded-md text-sm"
                   >
                     Sửa
                   </Button>
                   <DeleteConfirmDialog
-                  onConfirm={() => handleDelete(product._id)}
-                >
-                  <Button variant="destructive">Xoá</Button>
-                </DeleteConfirmDialog>
+                    onConfirm={() => handleDelete(product._id)}
+                  >
+                    <Button variant="destructive">Xoá</Button>
+                  </DeleteConfirmDialog>
                 </td>
               </tr>
             ))}

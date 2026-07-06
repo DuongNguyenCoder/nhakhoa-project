@@ -1,69 +1,79 @@
-import React, { useContext } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { FaChevronRight } from "react-icons/fa";
-import { AiFillHome } from "react-icons/ai"; // 👈 Thêm icon home
-import { ProductContext } from "@/layout/ProductLayout";
-import { NewContext } from "@/layout/DefaultLayout";
-const breadcrumbNameMap = {
-  products: "Sản phẩm",
-  "hang-thanh-ly": "Hàng thanh lý",
-  "gio-hang": "Giỏ hàng",
-  checkout: "Thanh toán",
-  "dang-nhap": "Đăng nhập",
-  "dang-ky": "Đăng ký",
-  contact: "Liên hệ",
-  about: "Giới thiệu",
-  news: "Tin tức",
-  "bao-hanh": "Bảo hành",
-  "hang-khuyen-mai": "Hàng Khuyến mãi"
-};
+"use client";
 
-const Breadcrumb = () => {
-  const { productTitle: tp } = useContext(ProductContext) || {};
-  const { newTitle: tn } = useContext(NewContext) || {};
-  const location = useLocation();
-  const pathnames = location.pathname.split("/").filter((x) => x);
-  const searchParams = new URLSearchParams(location.search);
-  const queryTitle = searchParams.get("title");
+import Link from "next/link";
+import { cn } from "@/lib/utils";
+import {
+  Breadcrumb,
+  BreadcrumbList,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import { Fragment } from "react";
+
+export function CustomBreadcrumb(items, title, subtitle, className) {
+  if (!items?.length) {
+    return null;
+  }
 
   return (
-    <nav className="w-full lg:h-20 h-16 bg-red-100 py-3 px-2 sm:px-20 md:px-[100px] lg:px-[140px] shadow-sm mb-5">
-      <div className="flex h-full items-center text-sm font-medium text-gray-700">
-        {/* Trang chủ với icon */}
-        <Link
-          to="/"
-          className="flex items-center text-blue-600 hover:underline hover:text-blue-800"
-        >
-          <AiFillHome className="mr-1 text-xl" />
-          Trang chủ
-        </Link>
+    <div
+      className={cn(
+        "rounded-3xl border border-border bg-white/90 p-4 shadow-sm backdrop-blur-sm sm:p-5",
+        className,
+      )}
+    >
+      <div className="flex flex-col gap-3 sm:gap-4 lg:flex-row lg:items-end lg:justify-between">
+        <div className="space-y-2">
+          <Breadcrumb className="overflow-hidden">
+            <BreadcrumbList className="flex flex-wrap items-center gap-2 text-xs uppercase tracking-[0.24em] text-muted-foreground md:text-sm">
+              {items.map((item, index) => {
+                const isLast = index === items.length - 1;
 
-        {pathnames.map((name, index) => {
-          const routeTo = "/" + pathnames.slice(0, index + 1).join("/");
-          const isLast = index === pathnames.length - 1;
+                return (
+                  <Fragment key={item.href ?? item.label}>
+                    <BreadcrumbItem>
+                      {item.href && !isLast ? (
+                        <BreadcrumbLink asChild>
+                          <Link
+                            href={item.href}
+                            className="text-sm font-medium text-foreground transition-colors hover:text-primary"
+                          >
+                            {item.label}
+                          </Link>
+                        </BreadcrumbLink>
+                      ) : (
+                        <BreadcrumbPage className="text-sm font-semibold text-foreground">
+                          {item.label}
+                        </BreadcrumbPage>
+                      )}
+                    </BreadcrumbItem>
 
-          const title =
-            (isLast && (tp || tn || queryTitle)) || breadcrumbNameMap[name] || decodeURIComponent(name);
+                    {!isLast && (
+                      <BreadcrumbSeparator className="text-muted-foreground">
+                        /
+                      </BreadcrumbSeparator>
+                    )}
+                  </Fragment>
+                );
+              })}
+            </BreadcrumbList>
+          </Breadcrumb>
 
-          return (
-            <div key={routeTo} className="flex items-center">
-              <FaChevronRight className="mx-2 text-gray-400" />
-              {isLast ? (
-                <span className="capitalize text-gray-600">{title}</span>
-              ) : (
-                <Link
-                  to={routeTo}
-                  className="capitalize text-blue-600 hover:underline hover:text-blue-800"
-                >
-                  {title}
-                </Link>
-              )}
-            </div>
-          );
-        })}
+          {title ? (
+            <h1 className="text-xl font-semibold tracking-tight text-foreground sm:text-2xl lg:text-3xl">
+              {title}
+            </h1>
+          ) : null}
+
+          {subtitle ? (
+            <p className="max-w-3xl text-sm text-muted-foreground sm:text-base">
+              {subtitle}
+            </p>
+          ) : null}
+        </div>
       </div>
-    </nav>
+    </div>
   );
-};
-
-export default Breadcrumb;
+}

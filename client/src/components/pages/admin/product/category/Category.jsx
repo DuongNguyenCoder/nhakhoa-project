@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { useNavigate } from "react-router-dom";
-import { Plus, Trash } from "lucide-react";  // Thêm icon Trash
+import { Plus, Trash } from "lucide-react"; // Thêm icon Trash
 import { apiGetCategory } from "@/apis/CategoryAPI";
 import { apiGetDirectory } from "@/apis/DirectoryAPI";
 import { apiDeleteCategory } from "@/apis/CategoryAPI";
 import { toast } from "react-toastify";
 import DeleteConfirmDialog from "@/components/common/DeleteConfirmDialog";
+import { useRouter } from "next/navigation";
 
 const formatDate = (dateStr) => {
   const date = new Date(dateStr);
@@ -22,7 +22,7 @@ const formatDate = (dateStr) => {
 const Category = () => {
   const [categories, setCategories] = useState([]);
   const [directories, setDirectories] = useState([]);
-  const navigate = useNavigate();
+  const router = useRouter();
 
   const fetchCategories = async () => {
     const res = await apiGetCategory();
@@ -51,7 +51,7 @@ const Category = () => {
   const handleDeleteCategory = async (id) => {
     const res = await apiDeleteCategory(id);
     if (res.data.success) {
-      fetchCategories();  // Gọi lại fetch để cập nhật danh sách sau khi xóa
+      fetchCategories(); // Gọi lại fetch để cập nhật danh sách sau khi xóa
       toast.success("Xóa thành công!");
     } else {
       console.log("Lỗi khi xóa category!");
@@ -60,13 +60,13 @@ const Category = () => {
 
   // Tính toán số lượng directories liên quan đến mỗi category
   const categoryCount = categories.map((category) => {
-    const relatedDirectories = directories.filter((directory) =>
-      directory.category.some((cat) => cat._id === category._id)  // Kiểm tra xem _id của category có trong mảng directory.category hay không
+    const relatedDirectories = directories.filter(
+      (directory) => directory.category.some((cat) => cat._id === category._id), // Kiểm tra xem _id của category có trong mảng directory.category hay không
     );
     console.log("relatedDirectories: ", relatedDirectories);
     return {
       ...category,
-      relatedDirectoriesCount: relatedDirectories.length,  // Số lượng directory liên quan
+      relatedDirectoriesCount: relatedDirectories.length, // Số lượng directory liên quan
     };
   });
 
@@ -77,17 +77,20 @@ const Category = () => {
         <h2 className="text-2xl font-semibold text-gray-800">
           Danh sách phân mục
         </h2>
-  
+
         <div className="text-sm bg-gray-100 text-gray-700 px-4 py-2 rounded-full shadow-sm">
           Tổng số: <strong>{categories.length}</strong> phân mục
         </div>
-  
-        <Button onClick={() => navigate("/admin/category/create")} className="flex items-center gap-2">
+
+        <Button
+          onClick={() => router.push("/admin/category/create")}
+          className="flex items-center gap-2"
+        >
           <Plus className="w-4 h-4" />
           Thêm phân mục
         </Button>
       </div>
-  
+
       {/* Nội dung */}
       {categories.length === 0 ? (
         <div className="text-center text-gray-500">Chưa có phân mục nào.</div>
@@ -106,7 +109,7 @@ const Category = () => {
                   Gắn với {item.relatedDirectoriesCount || 0} danh mục
                 </p>
               </div>
-  
+
               <div className="text-sm text-gray-500">
                 <p>
                   <strong>Ngày tạo: </strong>
@@ -117,10 +120,12 @@ const Category = () => {
                   {formatDate(item.updatedAt)}
                 </p>
               </div>
-  
+
               <div className="mt-4 flex justify-between">
                 <Button
-                  onClick={() => navigate(`/admin/category/edit/${item._id}`)}
+                  onClick={() =>
+                    router.push(`/admin/category/edit/${item._id}`)
+                  }
                   className="bg-slate-50 text-black hover:bg-slate-100 border shadow-md w-32"
                 >
                   Chỉnh sửa
@@ -137,7 +142,6 @@ const Category = () => {
       )}
     </div>
   );
-  
 };
 
 export default Category;

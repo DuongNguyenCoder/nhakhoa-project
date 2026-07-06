@@ -12,10 +12,10 @@ import {
   ClockIcon,
   CubeIcon,
 } from "@heroicons/react/24/outline";
-import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import DeleteConfirmDialog from "@/components/common/DeleteConfirmDialog";
 import Pagination from "@/components/ui/Pagination";
+import { useRouter } from "next/navigation";
 
 const formatDate = (dateStr) => {
   const date = new Date(dateStr);
@@ -53,11 +53,11 @@ const Orders = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [ordersPerPage] = useState(10); // số lượng đơn mỗi trang
-  const navigate = useNavigate();
+  const router = useRouter();
   useEffect(() => {
-    apiGetAllOrder({limit: 9999}).then((res) => {
-      if (res?.data?.data){
-        console.log("dsadsa",res)
+    apiGetAllOrder({ limit: 9999 }).then((res) => {
+      if (res?.data?.data) {
+        console.log("dsadsa", res);
         setOrders(res.data.data);
       } else {
         console.log("Lỗi get all Orders.");
@@ -72,10 +72,10 @@ const Orders = () => {
         searchUserId.trim() === "" || order.orderBy._id === searchUserId.trim(),
     );
 
-    // Phân trang sau khi đã lọc
+  // Phân trang sau khi đã lọc
   const paginatedOrders = filteredOrders.slice(
     (currentPage - 1) * ordersPerPage,
-    currentPage * ordersPerPage
+    currentPage * ordersPerPage,
   );
 
   useEffect(() => {
@@ -231,7 +231,9 @@ const Orders = () => {
             {/* Nút thao tác */}
             <div className="mt-3 flex gap-3">
               <button
-                onClick={() => navigate(`/admin/orders/preview/${order._id}`)}
+                onClick={() =>
+                  router.push(`/admin/orders/preview/${order._id}`)
+                }
                 className="rounded-md bg-blue-100 px-4 py-1 text-sm text-blue-700 transition hover:bg-blue-200"
               >
                 Xem
@@ -258,7 +260,11 @@ const Orders = () => {
           Không có đơn hàng phù hợp.
         </div>
       )}
-      <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={(page) => setCurrentPage(page)}/>
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={(page) => setCurrentPage(page)}
+      />
     </div>
   );
 };

@@ -8,6 +8,7 @@ import { apiGetCategory } from "@/apis/CategoryAPI";
 import { apiGetOneProduct, apiUpdateProduct } from "@/apis/ProductAPI";
 import DescriptionBuilder from "@/components/common/DescriptionBuilder";
 import { useParams, useRouter } from "next/navigation";
+import slugify from "slugify";
 
 const EditProduct = () => {
   const router = useRouter();
@@ -19,6 +20,7 @@ const EditProduct = () => {
 
   const [form, setForm] = useState({
     title: "",
+    slug: "",
     originalPrice: "",
     salePrice: "",
     quantity: "",
@@ -58,6 +60,9 @@ const EditProduct = () => {
         const product = res.data.data;
         setForm({
           title: product.title,
+          slug:
+            product.slug ||
+            slugify(product.title || "", { lower: true, strict: true }),
           originalPrice: product.originalPrice,
           salePrice: product.salePrice,
           quantity: product.quantity,
@@ -88,6 +93,17 @@ const EditProduct = () => {
     }));
   };
 
+  useEffect(() => {
+    const computedSlug = slugify(form.title || "", {
+      lower: true,
+      strict: true,
+    });
+
+    if (form.slug !== computedSlug) {
+      setForm((prev) => ({ ...prev, slug: computedSlug }));
+    }
+  }, [form.title]);
+
   const handleImageUpload = (e) => {
     const files = Array.from(e.target.files);
     setForm((prev) => ({ ...prev, productPics: files }));
@@ -107,6 +123,7 @@ const EditProduct = () => {
     submitData.append("isLiquidation", form.isLiquidation ? "true" : "false");
     submitData.append("isFeatured", form.isFeatured ? "true" : "false");
     submitData.append("directory", form.directory);
+    submitData.append("slug", form.slug);
     if (form.category) submitData.append("category", form.category);
     submitData.append("introduce", form.introduce);
     submitData.append("description", form.description);
@@ -175,6 +192,19 @@ const EditProduct = () => {
               value={form.title}
               onChange={handleInputChange}
               className="mt-1 w-full rounded border border-gray-300 px-3 py-2"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Đường dẫn xem trước
+            </label>
+            <input
+              type="text"
+              name="slug"
+              value={form.slug ? `/san-pham/${form.slug}` : ""}
+              disabled
+              className="mt-1 w-full rounded border border-gray-200 bg-gray-100 px-3 py-2 text-gray-600"
             />
           </div>
 

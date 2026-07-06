@@ -1,150 +1,188 @@
-import React, { Fragment, useEffect, useRef, useState } from "react";
-import { NavLinks } from "@/data/NavLinks";
-import { enableBodyScroll, disableBodyScroll } from "body-scroll-lock";
+"use client";
+
+import { Fragment, useEffect, useState } from "react";
 import {
   Dialog,
   DialogPanel,
   Transition,
   TransitionChild,
 } from "@headlessui/react";
-import { Link } from "react-router-dom";
-import { XCircleIcon } from "@heroicons/react/24/outline";
-import AuthButtons from "../buttons/AuthButtons";
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
+import Link from "next/link";
+
+import { NavLinks } from "../../data/NavLinks";
+import { apiGetDirectory } from "../../apis/DirectoryAPI";
+
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import AuthButtons from "../buttons/AuthButtons";
 
 const NavBarMobile = () => {
-  const [navShow, setNavShow] = useState(false);
-  const navRef = useRef(null);
+  const [open, setOpen] = useState(false);
+  const [directories, setDirectories] = useState([]);
 
-  const onToggleNav = () => {
-    setNavShow((status) => {
-      if (status) {
-        enableBodyScroll(navRef.current);
-      } else {
-        // Prevent scrolling
-        disableBodyScroll(navRef.current);
-      }
-      return !status;
-    });
-  };
-
-  // ✅ Tự động đóng nav khi màn hình >= 768px
   useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth >= 768 && navShow) {
-        setNavShow(false);
-        enableBodyScroll(navRef.current); // đảm bảo không khóa scroll desktop
+    const fetchDirectories = async () => {
+      try {
+        const res = await apiGetDirectory();
+
+        if (res?.data?.success) {
+          setDirectories(res.data.data || []);
+        }
+      } catch (error) {
+        console.error(error);
       }
     };
 
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, [navShow]);
+    fetchDirectories();
+  }, []);
 
   return (
-    <div className="w-full flex items-start md:hidden">
+    <div className="md:hidden">
+      {/* Trigger */}
       <button
-        aria-label="Toggle Menu"
-        onClick={onToggleNav}
-        className="h-full items-center pl-2.5"
+        aria-label="Open menu"
+        onClick={() => setOpen(true)}
+        className="flex items-center justify-center p-2 text-white"
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-          className="hover:text-red-400 h-8 w-8 text-white"
-        >
-          <path
-            fillRule="evenodd"
-            d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
-            clipRule="evenodd"
-          />
-        </svg>
+        <Bars3Icon className="size-7" />
       </button>
-      <Transition appear show={navShow} as={Fragment} unmount={false}>
-        <Dialog as="div" onClose={onToggleNav} unmount={false}>
+
+      <Transition show={open} as={Fragment}>
+        <Dialog onClose={() => setOpen(false)} className="relative z-[9999]">
+          {/* Overlay */}
           <TransitionChild
             as={Fragment}
-            enter="ease-out duration-300"
+            enter="transition-opacity duration-300"
             enterFrom="opacity-0"
             enterTo="opacity-100"
-            leave="ease-in duration-200"
+            leave="transition-opacity duration-200"
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
-            unmount={false}
           >
-            <div className="z-70 fixed inset-0 bg-black/40" />
+            <div className="fixed inset-0 bg-black/40 backdrop-blur-sm" />
           </TransitionChild>
 
+          {/* Panel */}
           <TransitionChild
             as={Fragment}
-            enter="transition ease-in-out duration-300 transform"
-            enterFrom="translate-x-full opacity-0"
-            enterTo="translate-x-0 opacity-100"
-            leave="transition ease-in duration-200 transform"
-            leaveFrom="translate-x-0 opacity-100"
-            leaveTo="translate-x-full opacity-0"
-            unmount={false}
+            enter="transition duration-300 ease-out"
+            enterFrom="translate-x-full"
+            enterTo="translate-x-0"
+            leave="transition duration-200 ease-in"
+            leaveFrom="translate-x-0"
+            leaveTo="translate-x-full"
           >
-            <DialogPanel className="z-[9999] fixed right-0 top-0 h-full w-[70%] bg-red-500 duration-300 rounded-l-2xl">
-              <nav
-                ref={navRef}
-                className="flex h-full flex-col items-start overflow-y-auto"
-              >
-                <div className="flex h-16 w-full items-center py-1 justify-between bg-red-500 px-3 shadow-lg rounded-tl-2xl">
-                  <Image
-                    src="/assets/logo.svg"
-                    alt="logo"
-                    width={56}
-                    height={56}
-                    className="rounded-full bg-red-100 p-1"
-                  />
-                  <XCircleIcon
-                    onClick={onToggleNav}
-                    className="hover:text-white z-80 h-11 w-11 p-2 text-white cursor-pointer"
-                  />
+            <DialogPanel className="fixed flex flex-col right-0 top-0 h-full w-[84%] max-w-sm bg-white shadow-xl">
+              {/* Header */}
+              <div className="flex h-16 items-center justify-between border-b border-[#9c1d22]/10 bg-[#9c1d22] px-4">
+                <Image
+                  src="/assets/logo_f.svg"
+                  alt="logo"
+                  width={120}
+                  height={40}
+                  className="object-contain"
+                />
+
+                <button onClick={() => setOpen(false)}>
+                  <XMarkIcon className="size-7 text-white" />
+                </button>
+              </div>
+
+              <div className="shrink-0">
+                <AuthButtons />
+              </div>
+
+              {/* Menu */}
+              <div className="flex min-h-0 flex-1 flex-col overflow-y-auto">
+                <div className="px-4 py-5">
+                  <p className="mb-4 text-xs font-semibold uppercase tracking-widest text-[#9c1d22]/70">
+                    Điều hướng
+                  </p>
+
+                  <div className="space-y-1">
+                    {NavLinks.map((link) => {
+                      if (link.childItems) {
+                        return (
+                          <Accordion key={link.title} type="single" collapsible>
+                            <AccordionItem
+                              value="products"
+                              className="border-b"
+                            >
+                              <AccordionTrigger className="py-4 text-[15px] font-medium text-gray-800 hover:no-underline">
+                                <div className="flex items-center gap-3">
+                                  {link.linkPic}
+                                  {link.title}
+                                </div>
+                              </AccordionTrigger>
+
+                              <AccordionContent>
+                                <div className="space-y-1 pl-9 pb-2">
+                                  <Link
+                                    href={link.href}
+                                    onClick={() => setOpen(false)}
+                                    className="block py-2 text-sm font-medium text-[#9c1d22]"
+                                  >
+                                    Tất cả sản phẩm
+                                  </Link>
+
+                                  {directories.map((directory) => (
+                                    <Link
+                                      key={directory._id}
+                                      href={`/san-pham/directory?directory=${directory._id}&title=${encodeURIComponent(directory.title)}`}
+                                      onClick={() => setOpen(false)}
+                                      className="block py-2 text-sm text-gray-600"
+                                    >
+                                      {directory.title}
+                                    </Link>
+                                  ))}
+                                </div>
+                              </AccordionContent>
+                            </AccordionItem>
+                          </Accordion>
+                        );
+                      }
+
+                      return (
+                        <Link
+                          key={link.title}
+                          href={link.href}
+                          onClick={() => setOpen(false)}
+                          className="flex min-h-[48px] items-center gap-3 border-b border-gray-100 py-3 text-[15px] font-medium text-gray-800"
+                        >
+                          <span className="text-[#9c1d22]">{link.linkPic}</span>
+                          {link.title}
+                        </Link>
+                      );
+                    })}
+                  </div>
                 </div>
 
-                <div className="w-full h-10 bg-red-400 mb-2.5">
-                  <AuthButtons />
-                </div>
+                {/* Contact */}
+                <div className="mt-auto border-t border-gray-100 px-4 py-5">
+                  <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-[#9c1d22]/70">
+                    Liên hệ
+                  </p>
 
-                <div className="w-full px-4 py-2 grid gap-4">
-                  <div className="w-full items-center px-1">
-                    <h2 className="font-bold text-xl text-white">DANH MỤC</h2>
-                  </div>
-                  <ul className="w-full px-2.5 grid gap-4">
-                    {NavLinks.map((link) => (
-                      <Link
-                        key={link.title}
-                        to={link.href}
-                        className="flex items-center gap-4 py-2 px-4 rounded-lg text-lg font-semibold text-white hover:bg-red-400 transition-all"
-                        onClick={onToggleNav}
-                      >
-                        {link.linkPic}
-                        {link.title}
-                      </Link>
-                    ))}
-                  </ul>
+                  <div className="space-y-2 text-sm text-gray-700">
+                    <a href="tel:(+84 4) 3852 3643" className="block">
+                      Hotline: (+84 4) 3852 3643
+                    </a>
 
-                  <div className="w-full items-center px-1 mt-4">
-                    <h2 className="font-bold text-xl text-white">CONTACT</h2>
-                  </div>
-                  <span className="text-base font-medium px-2.5 text-white">
-                    Hotline:{" "}
-                    <a href="tel:(+84 4) 3852 3643">(+84 4) 3852 3643</a>
-                  </span>
-                  <span className="text-base font-medium px-2.5 text-white">
-                    Mail:{" "}
                     <a
                       href="mailto:vatlieunhakhoaminh@gmail.com"
-                      className="flex flex-wrap"
+                      className="block break-all"
                     >
                       vatlieunhakhoaminh@gmail.com
                     </a>
-                  </span>
+                  </div>
                 </div>
-              </nav>
+              </div>
             </DialogPanel>
           </TransitionChild>
         </Dialog>
