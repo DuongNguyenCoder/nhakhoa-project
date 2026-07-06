@@ -1,19 +1,24 @@
-const Joi = require('joi')
-const validateInfo = require('../middlewares/validateInfo')
-const { verifyToken, isAdmin } = require('../middlewares/verifyToken')
-const { stringReq, numberReq, boolean, files } = require('../middlewares/joiSchema')
-const { upload } = require('../configs/cloudinary')
-const router = require('express').Router()
-const ctrl = require('../controllers/productController')
-const { v2 } = require('../configs/cloudinary')
+const Joi = require("joi");
+const validateInfo = require("../middlewares/validateInfo");
+const { verifyToken, isAdmin } = require("../middlewares/verifyToken");
+const {
+  stringReq,
+  numberReq,
+  boolean,
+  files,
+} = require("../middlewares/joiSchema");
+const { upload } = require("../configs/cloudinary");
+const router = require("express").Router();
+const ctrl = require("../controllers/productController");
+const { v2 } = require("../configs/cloudinary");
 
 router.post(
-  '/add-product',
+  "/add-product",
   verifyToken,
   isAdmin,
   upload.fields([
     {
-      name: 'productPics',
+      name: "productPics",
       maxCount: 5,
     },
   ]),
@@ -21,6 +26,7 @@ router.post(
     Joi.object({
       productPics: files,
       title: stringReq,
+      slug: stringReq,
       description: stringReq,
       originalPrice: numberReq,
       salePrice: numberReq,
@@ -34,15 +40,15 @@ router.post(
     }),
   ),
   ctrl.addProductByAdmin,
-)
+);
 
 router.put(
-  '/update-product/:id',
+  "/update-product/:id",
   verifyToken,
   isAdmin,
   upload.fields([
     {
-      name: 'productPics',
+      name: "productPics",
       maxCount: 5,
     },
   ]),
@@ -50,6 +56,7 @@ router.put(
     Joi.object({
       productPics: files,
       title: stringReq,
+      slug: stringReq,
       description: stringReq,
       category: Joi.string().optional(),
       originalPrice: numberReq,
@@ -64,36 +71,46 @@ router.put(
     }),
   ),
   ctrl.updateProductByAdmin,
-)
+);
 
 router.put(
-  '/upload-description-pic',
+  "/upload-description-pic",
   verifyToken,
   isAdmin,
-  upload.single('descriptionPic'),
+  upload.single("descriptionPic"),
   (req, res) => {
     if (!req.file || !req.file.path) {
-      console.log('File không tồn tại!')
-      return res.status(400).json({ success: false, message: 'Không có ảnh được upload!' })
+      console.log("File không tồn tại!");
+      return res
+        .status(400)
+        .json({ success: false, message: "Không có ảnh được upload!" });
     }
 
     v2.uploader
-      .upload(req.file.path, { folder: 'app/products/description' })
-      .then(result => {
+      .upload(req.file.path, { folder: "app/products/description" })
+      .then((result) => {
         return res.status(200).json({
           success: true,
           url: result.secure_url, // trả về URL cloudinary cho frontend
-        })
+        });
       })
-      .catch(error => {
-        console.error('Lỗi upload descriptionPic:', error)
-        return res.status(500).json({ success: false, message: 'Upload thất bại!' })
-      })
+      .catch((error) => {
+        console.error("Lỗi upload descriptionPic:", error);
+        return res
+          .status(500)
+          .json({ success: false, message: "Upload thất bại!" });
+      });
   },
-)
+);
 
-router.delete('/delete-product/:id', verifyToken, isAdmin, ctrl.deleteProductByAdmin)
-router.get('/insert-data', ctrl.insertData)
-router.get('', ctrl.getAll)
-router.get('/:id', ctrl.getOne)
-module.exports = router
+router.delete(
+  "/delete-product/:id",
+  verifyToken,
+  isAdmin,
+  ctrl.deleteProductByAdmin,
+);
+router.get("/insert-data", ctrl.insertData);
+router.get("", ctrl.getAll);
+// router.get('/:id', ctrl.getOne)
+router.get("/:slug", ctrl.getBySlug);
+module.exports = router;

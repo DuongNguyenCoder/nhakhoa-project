@@ -7,6 +7,11 @@ var newSchema = new mongoose.Schema(
       required: true,
       index: true,
     },
+    slug: {
+      type: String,
+      required: true,
+      unique: true,
+    },
     description: {
       type: String,
       // required: true,
@@ -28,7 +33,7 @@ var newSchema = new mongoose.Schema(
       type: String,
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 //Export the model

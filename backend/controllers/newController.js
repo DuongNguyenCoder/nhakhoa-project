@@ -2,30 +2,45 @@ const { v2 } = require("cloudinary");
 const New = require("../models/new");
 
 const addNew = async (req, res) => {
-  const { newPic, pdfUrl } = req.files;
+  const newPicFile = req.files?.newPic?.[0];
+  const pdfFile = req.files?.pdfUrl?.[0];
+
+  if (!newPicFile) {
+    return res.status(400).json({
+      success: false,
+      mes: "Ảnh đại diện là bắt buộc.",
+    });
+  }
+
   const newRecord = await New.create({
     ...req.body,
-    newPic: newPic[0].path,
-    pdfUrl: pdfUrl[0].path,
+    newPic: newPicFile.path,
+    ...(pdfFile ? { pdfUrl: pdfFile.path } : {}),
   });
-  const uploadResponse = await v2.uploader.upload(newPic[0].path, {
+
+  const uploadResponse = await v2.uploader.upload(newPicFile.path, {
     public_id: `new_${newRecord._id}`,
     overwrite: true,
     folder: "app/new",
   });
-  const uploadPdf = await v2.uploader.upload(pdfUrl[0].path, {
-    public_id: `pdf_${newRecord._id}`,
-    overwrite: true,
-    folder: "app/pdf",
+
+  const updateData = {
+    newPic: uploadResponse.secure_url,
+  };
+
+  if (pdfFile) {
+    const uploadPdf = await v2.uploader.upload(pdfFile.path, {
+      public_id: `pdf_${newRecord._id}`,
+      overwrite: true,
+      folder: "app/pdf",
+    });
+    updateData.pdfUrl = uploadPdf.secure_url;
+  }
+
+  const updatedRecord = await New.findByIdAndUpdate(newRecord._id, updateData, {
+    new: true,
   });
-  const updatedRecord = await New.findByIdAndUpdate(
-    newRecord._id,
-    {
-      newPic: uploadResponse.secure_url,
-      pdfUrl: uploadPdf.secure_url,
-    },
-    { new: true }
-  );
+
   return res.json({
     success: Boolean(updatedRecord),
     mes: Boolean(updatedRecord)
@@ -33,28 +48,42 @@ const addNew = async (req, res) => {
       : "xảy ra một lỗi vui lòng thử lại.",
   });
 };
+
 const updateNew = async (req, res) => {
-  const uploadResponse = await v2.uploader.upload(req.files.newPic[0].path, {
+  const newPicFile = req.files?.newPic?.[0];
+  const pdfFile = req.files?.pdfUrl?.[0];
+
+  if (!newPicFile) {
+    return res.status(400).json({
+      success: false,
+      mes: "Ảnh đại diện là bắt buộc.",
+    });
+  }
+
+  const uploadResponse = await v2.uploader.upload(newPicFile.path, {
     public_id: `new_${req.params.id}`,
     overwrite: true,
     folder: "app/new",
   });
-  const uploadPdf = await v2.uploader.upload(req.files.pdfUrl[0].path, {
-    public_id: `pdf_${req.params.id}`,
-    overwrite: true,
-    folder: "app/pdf",
+
+  const updateData = {
+    ...req.body,
+    newPic: uploadResponse.secure_url,
+  };
+
+  if (pdfFile) {
+    const uploadPdf = await v2.uploader.upload(pdfFile.path, {
+      public_id: `pdf_${req.params.id}`,
+      overwrite: true,
+      folder: "app/pdf",
+    });
+    updateData.pdfUrl = uploadPdf.secure_url;
+  }
+
+  const response = await New.findByIdAndUpdate(req.params.id, updateData, {
+    new: true,
   });
-  const response = await New.findByIdAndUpdate(
-    req.params.id,
-    {
-      ...req.body,
-      newPic: uploadResponse.secure_url,
-      pdfUrl: uploadPdf.secure_url,
-    },
-    {
-      new: true,
-    }
-  );
+
   return res.json({
     success: Boolean(response),
     mes: Boolean(response) ? "sửa thành công." : "loại tin tức không tồn tại.",
@@ -112,4 +141,15 @@ const getAll = async (req, res) => {
   });
 };
 
-module.exports = { addNew, updateNew, deleteNew, getAll };
+const getBySlug = async (req, res) => {
+  const response = await New.findOne({ slug: req.params.slug });
+  return res.json({
+    success: Boolean(response),
+    message: Boolean(response)
+      ? "Get post detail successfully"
+      : "Get post detail failed.",
+    data: response,
+  });
+};
+
+module.exports = { addNew, updateNew, deleteNew, getAll, getBySlug };

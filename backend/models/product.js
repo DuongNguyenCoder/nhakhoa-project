@@ -9,6 +9,12 @@ var productSchema = new mongoose.Schema(
       unique: true,
       index: true,
     },
+    slug: {
+      type: String,
+      required: true,
+      unique: true,
+      index: true,
+    },
     description: {
       type: String,
       required: true,
@@ -49,7 +55,7 @@ var productSchema = new mongoose.Schema(
       require: true,
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 //Export the model

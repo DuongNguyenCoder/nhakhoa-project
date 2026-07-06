@@ -7,7 +7,7 @@ const { stringReq, file, string } = require("../middlewares/joiSchema");
 const { upload } = require("../configs/cloudinary");
 
 router.post(
-  "/add-new",
+  "/create",
   verifyToken,
   isAdmin,
   upload.fields([
@@ -17,17 +17,18 @@ router.post(
   validateInfo(
     Joi.object({
       title: stringReq,
+      slug: stringReq,
       description: string,
       status: stringReq,
       category: string,
       newPic: file,
-      pdfUrl: file,
-    })
+      pdfUrl: Joi.any().optional(),
+    }),
   ),
-  ctrl.addNew
+  ctrl.addNew,
 );
 router.put(
-  "/update-new/:id",
+  "/update/:id",
   verifyToken,
   isAdmin,
   upload.fields([
@@ -37,22 +38,24 @@ router.put(
   validateInfo(
     Joi.object({
       title: stringReq,
+      slug: stringReq,
       description: string,
       status: stringReq,
       category: string,
       newPic: file,
-      pdfUrl: file,
-    })
+      pdfUrl: Joi.any().optional(),
+    }),
   ),
-  ctrl.updateNew
+  ctrl.updateNew,
 );
 router.delete(
-  "/delete-new/:id",
+  "/delete/:id",
   verifyToken,
   isAdmin,
 
-  ctrl.deleteNew
+  ctrl.deleteNew,
 );
 router.get("", ctrl.getAll);
+router.get("/:slug", ctrl.getBySlug);
 
 module.exports = router;
