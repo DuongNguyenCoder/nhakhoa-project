@@ -73,7 +73,7 @@ export default function EditProductPage() {
           origin: product.origin,
           isLiquidation: product.isLiquidation,
           isFeatured: product.isFeatured,
-          directory: product.directory,
+          directory: product.directory._id,
           category: product.category,
           introduce: product.introduce,
           description: product.description,
@@ -287,7 +287,7 @@ export default function EditProductPage() {
             </label>
             <select
               name="directory"
-              value={form.directory._id}
+              value={form.directory}
               onChange={handleInputChange}
               className="mt-1 w-full rounded border border-gray-300 px-3 py-2"
             >
