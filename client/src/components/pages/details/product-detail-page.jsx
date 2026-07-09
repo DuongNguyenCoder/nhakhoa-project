@@ -21,6 +21,7 @@ import { useDispatch, useSelector } from "react-redux";
 import PageTitle from "@/components/pageTitle";
 // import { ProductContext } from "@/layout/ProductLayout";
 import { useParams, useRouter } from "next/navigation";
+import Image from "next/image";
 
 export default function ProductDetail({ product }) {
   const [quantity, setQuantity] = useState(1);
@@ -115,7 +116,7 @@ export default function ProductDetail({ product }) {
     return (
       <div className="space-y-6">
         {data.mainHeader && (
-          <h2 className="text-center text-xl py-1 sm:text-2xl font-bold text-red-600 shadow-md">
+          <h2 className="text-center text-xl mt-1.5 py-1 sm:text-2xl font-bold text-[#9c1d22]">
             {data.mainHeader}
           </h2>
         )}
@@ -177,10 +178,12 @@ export default function ProductDetail({ product }) {
         <div className="flex w-full flex-col items-center gap-5 rounded-2xl bg-white shadow-xl md:flex-row md:items-start md:p-3">
           {/* Ảnh Sản Phẩm */}
           <div className="mt-2 flex w-full flex-col items-center gap-2 border-b-8 pb-4 md:ml-3 md:mr-6 md:mt-0 md:w-[40%] md:border-none md:pb-0 lg:ml-5">
-            <div className="h-[350px] w-[350px] overflow-hidden rounded-md border md:h-[270px] md:w-[270px] lg:h-[300px] lg:w-[300px] xl:h-[350px] xl:w-[350px]">
-              <img
+            <div className="relative aspect-square w-[90%] xs:w-[65%] md:w-full  overflow-hidden rounded-md border">
+              <Image
                 src={product.productPics[currentIndex]}
-                className="h-full w-full cursor-pointer object-cover object-center"
+                alt={`${product.title}`}
+                fill
+                className="cursor-pointer object-cover object-center"
               />
             </div>
             <div className="mt-2 flex items-center gap-2 md:mt-0">
@@ -189,16 +192,17 @@ export default function ProductDetail({ product }) {
                 <div
                   key={index}
                   onClick={() => setCurrentIndex(index)}
-                  className={`h-[70px] w-[70px] border-2 ${
+                  className={`relative h-[70px] w-[70px] border-2 ${
                     currentIndex === index
                       ? "border-green-500"
                       : "border-transparent"
                   } cursor-pointer overflow-hidden rounded-md`}
                 >
-                  <img
+                  <Image
                     src={img}
                     alt={`Thumbnail ${index}`}
-                    className="h-full w-full object-cover object-center"
+                    fill
+                    className="object-cover object-center"
                   />
                 </div>
               ))}
@@ -318,9 +322,11 @@ export default function ProductDetail({ product }) {
 
         {/* SẢN PHẨM LIÊN QUAN */}
         <div className="mt-5 w-full bg-white p-4 shadow-md">
-          <div className="mb-3 flex w-full gap-1.5 p-2 text-blue-800">
+          <div className="mb-3 flex w-full gap-1.5 p-2 text-[#9c1d22]">
             <CubeIcon className="size-7" />
-            <h2 className="font-normal">SẢN PHẨM LIÊN QUAN</h2>
+            <h2 className="font-semibold text-[#9c1d22] ">
+              SẢN PHẨM LIÊN QUAN
+            </h2>
           </div>
           <div className="grid w-full grid-cols-2 gap-5 px-5 md:grid-cols-3 md:px-0 xl:grid-cols-4">
             {allProduct?.length > 0 ? (

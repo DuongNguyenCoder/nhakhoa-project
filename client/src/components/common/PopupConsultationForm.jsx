@@ -71,12 +71,12 @@ export default function PopupConsultationForm() {
   };
 
   return (
-    <div className="w-full overflow-hidden rounded-2xl md:grid md:grid-cols-2 bg-gradient-to-br from-[#faf5f5] via-[#fcebeb] to-[#f4dbdd]">
+    <div className="w-full overflow-hidden rounded-2xl md:grid grid-cols-1 md:grid-cols-2 bg-linear-to-br from-[#faf5f5] via-[#fcebeb] to-[#f4dbdd]">
       {/* LEFT FORM */}
       <div className="p-6 md:p-8 ">
         <div className="mb-6">
           <p className="text-sm font-semibold text-[#9c1d22] uppercase tracking-wide">
-            Tư vấn thiết bị nha khoa
+            Tư vấn thiết bị vật tư nha khoa
           </p>
 
           <h2 className="mt-2 text-2xl font-bold text-gray-900">
@@ -84,9 +84,12 @@ export default function PopupConsultationForm() {
           </h2>
 
           <p className="mt-2 text-sm text-gray-500">
-            Để lại thông tin, đội ngũ chuyên viên sẽ liên hệ trong thời gian sớm
-            nhất.
+            Chào mừng Quý khách hàng đến với Minh Dental, <br />
+            vui lòng để lại tin nhắn hoặc gọi tới số
           </p>
+          <a href="tel:0909217885" className="mt-1 text-[15px] text-gray-500">
+            Hotline 090.921.7885
+          </a>
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -172,10 +175,10 @@ export default function PopupConsultationForm() {
       </div>
 
       {/* RIGHT IMAGE - Desktop only */}
-      <div className="hidden md:flex md:flex-col md:justify-center md:space-y-3 min-h-[620px] py-4 pr-4">
-        <div className=" relative aspect-1/2 h-[70vh]">
+      <div className="hidden md:flex hidden flex-col hidden justify-center hidden space-y-3 min-h-[620px] py-4 pr-4">
+        <div className="relative aspect-3/2 w-full">
           <Image
-            src="/assets/image-popup-sos-md-proservice.png"
+            src="/assets/image-popup-consultation.png"
             alt="consultation"
             fill
             className="object-cover rounded-xl transition-transform overflow-hidden border border-red-200"
@@ -186,7 +189,7 @@ export default function PopupConsultationForm() {
 
         <div className=" text-[#9c1d22]">
           <h3 className="text-[22px] text-center font-bold leading-snug">
-            Giải pháp thiết bị nha khoa chuyên sâu
+            GIẢI PHÁP THIẾT BỊ VẬT TƯ NHA&nbsp;KHOA TOÀN DIỆN
           </h3>
 
           {/* <p className="mt-3 text-sm text-gray-500">

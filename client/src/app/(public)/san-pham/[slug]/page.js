@@ -1,3 +1,5 @@
+"use cache";
+
 import ProductDetail from "@/components/pages/details/product-detail-page";
 import { ProductService } from "@/services/product.service";
 

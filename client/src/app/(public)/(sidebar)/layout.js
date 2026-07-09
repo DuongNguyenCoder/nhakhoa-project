@@ -2,10 +2,10 @@ import SideBarDiscount from "@/components/SideBarDiscount";
 
 export default function NewsLayout({ children }) {
   return (
-    <div className="mx-auto w-full md:w-[760px] md:px-1 lg:flex lg:w-[970px] lg:px-3 xl:w-[1230px] 2xl:w-[1500px]">
-      <div className="my-5 w-full px-4 lg:w-[72%]">{children}</div>
+    <div className="mx-auto w-full max-w-7xl grid grid-cols-1 lg:grid-cols-4 gap-6 px-4">
+      <div className="my-5 lg:col-span-3 w-full px-4">{children}</div>
 
-      <aside className="mt-6 flex w-full flex-col px-2 lg:mt-5 lg:w-[28%]">
+      <aside className="mt-6 lg:col-span-1 w-full px-2 lg:mt-5">
         <SideBarDiscount />
       </aside>
     </div>

@@ -18,6 +18,7 @@ import PartnerSlider from "./partner-slider";
 import Reveal from "../ui/Reveal";
 import { Separator } from "../ui/separator";
 import PopupConsultationForm from "../common/PopupConsultationForm";
+import DirectoryGrid from "../DirectoryGrid";
 
 const Home = () => {
   const [directories, setDirectories] = useState([]);
@@ -58,6 +59,22 @@ const Home = () => {
       <div className="w-full h-auto">
         <BannerHome />
       </div>
+
+      <Reveal
+        rootMargin="-36px"
+        duration={0.9}
+        y={20}
+        threshold={1}
+        className="mt-16 px-3"
+      >
+        <div className="max-w-7xl mx-auto space-y-3">
+          <h2 className="text-xl text-center font-bold uppercase tracking-wide text-[#9c1d22] md:text-2xl lg:text-3xl">
+            Everything for Your dental practice
+          </h2>
+          <div className="mx-auto mb-5 h-[3px] w-20 rounded-full bg-[#9c1d22]" />
+          <DirectoryGrid directories={directories} />
+        </div>
+      </Reveal>
 
       <Reveal
         rootMargin="-36px"

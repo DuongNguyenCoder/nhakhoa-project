@@ -12,20 +12,23 @@ const ProductSlider = ({ title }) => {
     const getAPIProduct = async () => {
       const response = await ProductService.getAll({ limit: 9999 });
       console.log("Service product => ", response);
-      setDataProduct(response.data.data);
+      setDataProduct(response.data ?? []);
     };
     getAPIProduct();
   }, []);
 
-  if (!dataProduct.length) return null;
+  if (!dataProduct?.length) return null;
 
   return (
     <div className="relative z-10 w-full">
       {/* Title */}
       {title && (
-        <h2 className="text-lg md:text-xl font-bold mb-4 pb-2 border-b-2 border-red-400 pl-2 text-red-700 shadow-sm">
-          {title ?? "Sản phẩm nổi bật"}
-        </h2>
+        <>
+          <h2 className="text-lg md:text-xl font-bold text-[#9c1d22] text-center">
+            {title ?? "Sản phẩm nổi bật"}
+          </h2>
+          <div className="mx-auto mt-2 h-[3px] w-20 rounded-full bg-[#9c1d22]" />
+        </>
       )}
 
       {/* Swiper */}
@@ -46,7 +49,7 @@ const ProductSlider = ({ title }) => {
           pauseOnMouseEnter: true,
         }}
         modules={[Navigation, Autoplay]}
-        className="w-full"
+        className="w-full mt-4"
       >
         {dataProduct !== undefined &&
           dataProduct?.map((item) => (

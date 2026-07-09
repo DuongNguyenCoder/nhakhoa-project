@@ -6,9 +6,9 @@ import { Outlet } from "../../provider/react-router-dom";
 
 const AdminLayout = () => {
   return (
-    <div className="flex h-screen bg-gradient-to-r from-slate-900 to-gray-800 text-white">
+    <div className="flex h-screen text-white">
       <Sidebar />
-      <div className="flex-1 p-6 overflow-y-auto bg-slate-100 text-slate-900 rounded-tl-3xl shadow-inner">
+      <div className="flex-1 p-6 overflow-y-auto text-slate-900 shadow-inner">
         <Header />
         <div className="mt-6">
           <Outlet />

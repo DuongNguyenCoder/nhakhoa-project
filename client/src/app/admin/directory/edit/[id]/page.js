@@ -139,7 +139,7 @@ export default function Page() {
         {/* Image */}
         <div>
           <Label htmlFor="directoryPic" className="mb-1">
-            Ảnh danh mục
+            Ảnh danh mục (Chọn ảnh có tỉ lệ 1:1)
           </Label>
           <Input
             id="directoryPic"

@@ -1,19 +1,12 @@
 import React from "react";
-import {
-  MapPin,
-  Phone,
-  Printer,
-  Mail,
-  Building2,
-  Store,
-} from "lucide-react";
+import { MapPin, Phone, Printer, Mail, Building2, Store } from "lucide-react";
 import PageTitle from "@/components/pageTitle";
 
 const ContactPage = () => {
   return (
     <div className="p-6 max-w-3xl mx-auto">
       <PageTitle title="Liên Hệ - Minh Dental" />
-      <h1 className="text-4xl font-bold text-center text-rose-600 mb-12">
+      <h1 className="text-xl sm:text-2xl xl:text-4xl font-bold text-center text-[#9c1d22] mb-12">
         Trụ Sở Chính
       </h1>
 
@@ -30,7 +23,7 @@ const ContactPage = () => {
       </div>
 
       {/* Trụ sở */}
-      <div className="bg-white/90 backdrop-blur-xl p-6 mb-10 rounded-2xl shadow-lg border-l-4 border-rose-400">
+      <div className="bg-white/90 backdrop-blur-xl p-6 mb-10 rounded-2xl shadow-lg border-x-4 border-[#9c1d22]">
         <div className="flex items-center gap-3 mb-4">
           <Building2 className="text-rose-500" />
           <h2 className="text-2xl font-semibold text-rose-700">Trụ sở chính</h2>

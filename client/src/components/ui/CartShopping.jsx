@@ -40,7 +40,9 @@ const CartShopping = () => {
               {totalQuantity}
             </span>
           </div>
-          <span className=" font-mono text-base font-semibold">GIỎ HÀNG</span>
+          <span className=" font-mono text-base font-semibold md:hidden lg:block">
+            GIỎ HÀNG
+          </span>
         </PopoverButton>
         <PopoverPanel
           className={`absolute top-full z-40 origin-top-right rounded-b-lg border border-gray-200 bg-white p-2 shadow-lg transition-all duration-150 focus:outline-none left-auto right-5 md:w-[400px] lg:w-[435px] w-full max-w-[90vw]`}

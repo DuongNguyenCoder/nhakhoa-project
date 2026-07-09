@@ -19,6 +19,7 @@ import {
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
 import Image from "next/image";
+import { ChevronRight } from "lucide-react";
 
 const MenuHeader = () => {
   const [directories, setDirectories] = useState([]);
@@ -50,8 +51,8 @@ const MenuHeader = () => {
                 return (
                   <NavigationMenuItem key={link.title}>
                     <NavigationMenuTrigger
-                      className="
-      relative bg-transparent px-4 py-2 text-sm font-medium text-white
+                      className="uppercase font-sans
+      relative bg-transparent px-4 py-2 text-sm font-semibold text-white
       hover:bg-transparent focus:bg-transparent active:bg-transparent
       data-[state=open]:bg-transparent
       after:absolute after:bottom-0 after:left-4 after:h-[2px]
@@ -86,7 +87,7 @@ const MenuHeader = () => {
                 <NavigationMenuItem key={link.title}>
                   <Link
                     href={link.href}
-                    className="relative flex items-center px-4 py-2 text-sm font-medium text-white after:absolute after:bottom-0 after:left-4 after:h-[2px] after:w-0 after:bg-yellow-300 after:transition-all after:duration-300 hover:after:w-[calc(100%-2rem)]"
+                    className="relative uppercase flex items-center px-4 py-2 text-sm font-sans font-semibold text-white after:absolute after:bottom-0 after:left-4 after:h-[2px] after:w-0 after:bg-yellow-300 after:transition-all after:duration-300 hover:after:w-[calc(100%-2rem)]"
                   >
                     {link.title}
                   </Link>
@@ -138,9 +139,9 @@ function CategoryItem({ title, icon, href }) {
       <NavigationMenuLink asChild>
         <Link
           href={href}
-          className="block rounded-xl p-3 transition hover:bg-muted"
+          className=" flex justify-between rounded-xl p-3 transition hover:bg-muted"
         >
-          {icon !== "" && (
+          {/* {icon !== "" && (
             <div className="relative w-16 h-16 overflow-hidden border border-gray-200">
               <Image
                 src={icon}
@@ -149,8 +150,9 @@ function CategoryItem({ title, icon, href }) {
                 className="object-cover transition-transform"
               />
             </div>
-          )}
+          )} */}
           <div className="text-sm font-semibold text-[#9c1d22]">{title}</div>
+          <ChevronRight className="text-[#9c1d22]" />
         </Link>
       </NavigationMenuLink>
     </li>

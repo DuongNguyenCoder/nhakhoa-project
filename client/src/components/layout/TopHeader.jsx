@@ -11,20 +11,20 @@ const TopHeader = () => {
         <a href="tel:0909217885" className="flex items-center gap-1">
           <PhoneIcon className="h-[20px] w-[20px]" />
           <span className="text-base">Hotline:</span>
-          <span className="font-medium text-base text-red-700 hover:text-red-600 transition-colors duration-200">
+          <span className="font-medium text-base text-red-800 hover:text-red-600 transition-colors duration-200">
             0909 217 885
           </span>
         </a>
 
         {/* Email */}
         <a
-          href="mailto:dentalmart1.vn@gmail.com"
+          href="mailto:info@minhdental.com"
           className="flex items-center gap-1 "
         >
           <EnvelopeIcon className="w-[20px] h-[20px]" />
           <span className="text-base">Email:</span>
-          <span className="font-medium text-base text-red-700 hover:text-red-600 transition-colors duration-200">
-            dentalmart1.vn@gmail.com
+          <span className="font-medium text-base text-red-800 hover:text-red-600 transition-colors duration-200">
+            info@minhdental.com
           </span>
         </a>
       </div>

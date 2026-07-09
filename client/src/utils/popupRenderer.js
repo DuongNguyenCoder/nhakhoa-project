@@ -24,7 +24,7 @@ export default function PopupRenderer() {
 
   return (
     <div className="fixed inset-0 z-50 bg-black/60 p-4 flex items-center justify-center">
-      <div className="relative w-full max-w-[920px] max-h-[90vh] overflow-y-auto rounded-2xl">
+      <div className="relative w-full max-w-[920px] max-h-[85vh] rounded-2xl">
         <PopupConsultationForm />
 
         <button

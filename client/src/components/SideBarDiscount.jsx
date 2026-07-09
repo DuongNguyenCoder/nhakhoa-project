@@ -60,7 +60,7 @@ const SideBarDiscount = () => {
   return (
     <div className="mt-6 flex w-full flex-col rounded-lg bg-gray-100 shadow-sm">
       {/* Header */}
-      <div className="flex h-10 w-full items-center justify-center rounded-t-lg bg-red-600">
+      <div className="flex h-10 w-full items-center justify-center rounded-t-lg bg-[#9c1d22]">
         <h2 className="text-center text-sm font-bold tracking-wide text-white">
           HÀNG KHUYẾN MÃI
         </h2>
