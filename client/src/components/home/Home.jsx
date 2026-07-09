@@ -110,7 +110,7 @@ const Home = () => {
             {/* Item */}
             <div className="flex items-center gap-3 rounded-xl bg-white/8 px-4 py-4 backdrop-blur-sm">
               <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/12">
-                <ShieldCheckIcon className="h-5 w-5 text-white" />
+                <HandThumbUpIcon className="h-5 w-5 text-white" />
               </div>
 
               <span className="text-sm font-medium leading-snug text-white xs:text-[15px] lg:text-base">
@@ -121,11 +121,11 @@ const Home = () => {
             {/* Item */}
             <div className="flex items-center gap-3 rounded-xl bg-white/8 px-4 py-4 backdrop-blur-sm">
               <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/12">
-                <HandThumbUpIcon className="h-5 w-5 text-white" />
+                <ShieldCheckIcon className="h-5 w-5 text-white" />
               </div>
 
               <span className="text-sm font-medium leading-snug text-white xs:text-[15px] lg:text-base">
-                Giá tốt cho membership
+                Đầy đủ giấy tờ thẩm định
               </span>
             </div>
           </div>

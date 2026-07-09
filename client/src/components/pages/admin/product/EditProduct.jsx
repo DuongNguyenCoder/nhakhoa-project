@@ -14,6 +14,7 @@ const EditProduct = () => {
   const router = useRouter();
   const params = useParams();
   const id = params?.id;
+  console.log("ID PRODUCT AS SLUG => ", id);
   const [directories, setDirectories] = useState([]);
   const [categories, setCategories] = useState([]);
   const [initialized, setInitialized] = useState(false);

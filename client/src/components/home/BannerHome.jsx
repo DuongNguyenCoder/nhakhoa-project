@@ -24,39 +24,38 @@ const BannerHome = () => {
   const enabledBanners = useMemo(() => {
     return dataBanner.filter((banner) => banner.status === "ENABLE");
   }, [dataBanner]);
+
   return (
-    <div className="w-full">
-      <div className="w-full h-[300px] sm:h-[350px] md:h-[450px] lg:h-[500px] shadow-lg xl:h-[580px] relative">
-        <Swiper
-          key={enabledBanners.length}
-          modules={[Autoplay, Navigation, Pagination]}
-          loop={true}
-          autoplay={{
-            delay: 3500,
-            disableOnInteraction: false,
-            pauseOnMouseEnter: true,
-          }}
-          pagination={{ clickable: true }}
-          navigation={true}
-          className="w-full h-full rounded-b-lg overflow-hidden"
-        >
-          {enabledBanners.map((banner) => (
-            <SwiperSlide key={banner._id}>
-              <Link
-                href={banner.url || "#"}
-                className="relative block h-full w-full overflow-hidden"
-              >
-                <Image
-                  src={banner.bannerPic}
-                  alt={`Banner ${banner._id}`}
-                  fill
-                  className="transition-transform object-cover"
-                />
-              </Link>
-            </SwiperSlide>
-          ))}
-        </Swiper>
-      </div>
+    <div className="w-full aspect-8/4 sm:aspect-8/3 shadow-lg relative">
+      <Swiper
+        key={enabledBanners.length}
+        modules={[Autoplay, Navigation, Pagination]}
+        loop={true}
+        autoplay={{
+          delay: 3500,
+          disableOnInteraction: false,
+          pauseOnMouseEnter: true,
+        }}
+        pagination={{ clickable: true }}
+        navigation={true}
+        className="w-full h-full rounded-b-lg overflow-hidden"
+      >
+        {enabledBanners.map((banner) => (
+          <SwiperSlide key={banner._id}>
+            <Link
+              href={banner.url || "#"}
+              className="relative block h-full w-full overflow-hidden"
+            >
+              <Image
+                src={banner.bannerPic}
+                alt={`Banner ${banner._id}`}
+                fill
+                className="transition-transform object-cover"
+              />
+            </Link>
+          </SwiperSlide>
+        ))}
+      </Swiper>
     </div>
   );
 };

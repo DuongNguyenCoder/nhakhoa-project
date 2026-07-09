@@ -156,7 +156,7 @@ const ProductManagement = () => {
                 <td className="p-4 flex gap-2 justify-center">
                   <Button
                     onClick={() =>
-                      router.push(`/admin/product/edit/${product._id}`)
+                      router.push(`/admin/product/edit/${product.slug}`)
                     }
                     className="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded-md text-sm"
                   >

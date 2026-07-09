@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { apiAddProduct } from "@/apis/ProductAPI";
@@ -106,7 +108,7 @@ const CreateProduct = () => {
     <div className="mx-auto max-w-6xl p-6">
       <div className="mb-6 flex items-center justify-between">
         <h2 className="text-3xl font-bold text-gray-800">Tạo sản phẩm mới</h2>
-        <Button onClick={() => router.push(-1)} variant="outline">
+        <Button onClick={() => router.push("/admin/product")} variant="outline">
           ← Quay lại
         </Button>
       </div>
@@ -216,7 +218,7 @@ const CreateProduct = () => {
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                Danh mục
+                Danh mục sản phẩm
               </label>
               <select
                 name="directory"
@@ -233,7 +235,7 @@ const CreateProduct = () => {
               </select>
             </div>
 
-            <div>
+            {/* <div>
               <label className="block text-sm font-medium text-gray-700">
                 Phân mục
               </label>
@@ -250,7 +252,7 @@ const CreateProduct = () => {
                   </option>
                 ))}
               </select>
-            </div>
+            </div> */}
 
             <div className="flex items-center gap-4">
               <label className="flex items-center gap-2 text-sm text-gray-700">
