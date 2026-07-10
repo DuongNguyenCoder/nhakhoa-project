@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { toast } from "react-toastify";
 import { useParams, useRouter } from "next/navigation";
 import { LoaderCircle } from "lucide-react";
+import Image from "next/image";
 
 export default function EditBanner() {
   const { id } = useParams();
@@ -117,17 +118,18 @@ export default function EditBanner() {
 
         <div>
           <Label className="mb-1 block">Hình ảnh hiện tại</Label>
-          <div className="w-full h-[400px] border rounded overflow-hidden">
-            <img
+          <div className="relative border border-gray-300 rounded-lg overflow-hidden shadow max-w-lg mx-auto aspect-8/3">
+            <Image
               src={previewImage}
               alt="Preview"
-              className="w-full h-full object-contain"
+              fill
+              className="object-cover"
             />
           </div>
         </div>
 
         <div>
-          <Label className="mb-1 block">Thay ảnh mới (nếu muốn)</Label>
+          <Label className="mb-1 block">Thay ảnh mới (Tỉ lệ 8:3)</Label>
           <Input type="file" accept="image/*" onChange={handleImageChange} />
         </div>
 

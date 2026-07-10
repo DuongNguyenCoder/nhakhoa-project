@@ -5,6 +5,7 @@ import { apiAddDirectory } from "@/apis/DirectoryAPI";
 import { toast } from "react-toastify";
 import { apiGetCategory } from "@/apis/CategoryAPI";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 const CreateDirectory = () => {
   const router = useRouter();
@@ -113,7 +114,7 @@ const CreateDirectory = () => {
         {/* Ảnh danh mục */}
         <div>
           <label className="block text-sm font-medium mb-2">
-            Ảnh danh mục <span className="text-red-500">*</span>
+            Ảnh danh mục <span className="text-red-500">(Ảnh tỉ lệ 1:1)*</span>
           </label>
           <Input
             name="directoryPic"
@@ -122,11 +123,12 @@ const CreateDirectory = () => {
             onChange={handleChange}
           />
           {previewImg && (
-            <div className="mt-3 w-[200px] h-[150px] rounded border overflow-hidden">
-              <img
+            <div className="mt-3 relative w-[200px] aspect-square rounded border overflow-hidden">
+              <Image
                 src={previewImg}
                 alt="preview"
-                className="w-full h-full object-contain"
+                fill
+                className="object-contain"
               />
             </div>
           )}

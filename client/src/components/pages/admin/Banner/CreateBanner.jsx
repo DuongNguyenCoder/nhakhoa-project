@@ -1,5 +1,6 @@
 import { apiAddBanner } from "@/apis/BannerAPI";
 import { LoaderCircle } from "lucide-react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-toastify";
@@ -94,7 +95,7 @@ const CreateBanner = () => {
           {/* Upload Image */}
           <div>
             <label className="block mb-1 font-medium text-gray-700">
-              Chọn hình banner
+              Chọn hình banner (Tỉ lệ 8:3)
             </label>
             <input
               type="file"
@@ -112,11 +113,12 @@ const CreateBanner = () => {
           {previewImg && (
             <div>
               <p className="text-sm mb-2 text-gray-500">Xem trước ảnh:</p>
-              <div className="border border-gray-300 rounded-lg overflow-hidden shadow">
-                <img
+              <div className="relative border border-gray-300 rounded-lg overflow-hidden shadow max-w-lg mx-auto aspect-8/3">
+                <Image
                   src={previewImg}
                   alt="Preview"
-                  className="w-full object-contain max-h-[400px]"
+                  fill
+                  className="object-cover"
                 />
               </div>
             </div>

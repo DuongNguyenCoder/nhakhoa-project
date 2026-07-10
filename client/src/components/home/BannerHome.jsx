@@ -26,7 +26,7 @@ const BannerHome = () => {
   }, [dataBanner]);
 
   return (
-    <div className="w-full aspect-8/4 sm:aspect-8/3 shadow-lg relative">
+    <div className="w-full aspect-16/7 sm:aspect-8/3 shadow-lg relative">
       <Swiper
         key={enabledBanners.length}
         modules={[Autoplay, Navigation, Pagination]}
