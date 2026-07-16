@@ -42,6 +42,7 @@ export async function http(options = {}, schema) {
 
   const finalHeaders = {
     ...headers,
+    ...((init && init.headers) || {}),
   };
 
   // console.log("FETCH URL:", url);
@@ -59,12 +60,16 @@ export async function http(options = {}, schema) {
     }
   }
 
+  // Default to sending credentials (cookies) so authenticated requests include JWT.
+  // Callers can override by passing `credentials` in options (e.g. undefined/null/'omit')
+  const fetchCredentials = credentials ?? init.credentials ?? "include";
+
   const res = await fetch(url, {
     ...init,
     method,
     headers: finalHeaders,
     body: finalBody,
-    credentials,
+    credentials: fetchCredentials,
   });
 
   const contentType = res.headers.get("content-type");

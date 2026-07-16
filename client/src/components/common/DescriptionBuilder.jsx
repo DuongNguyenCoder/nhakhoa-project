@@ -8,7 +8,9 @@ const DescriptionBuilder = ({ value, onChange }) => {
 
   useEffect(() => {
     if (!initialized && value && Object.keys(value).length > 0) {
-      setMainHeader(typeof value.mainHeader === "string" ? value.mainHeader : "");
+      setMainHeader(
+        typeof value.mainHeader === "string" ? value.mainHeader : "",
+      );
       setBlocks(Array.isArray(value.blocks) ? value.blocks : []);
       setInitialized(true);
     }
@@ -52,7 +54,9 @@ const DescriptionBuilder = ({ value, onChange }) => {
   return (
     <div className="space-y-6 rounded-xl border bg-gray-50 p-6 shadow-inner">
       <div>
-        <label className="block text-lg font-semibold text-gray-700 mb-2">🎨 Tiêu đề chính</label>
+        <label className="block text-lg font-semibold text-gray-700 mb-2">
+          🎨 Tiêu đề chính
+        </label>
         <input
           type="text"
           value={mainHeader}
@@ -77,22 +81,30 @@ const DescriptionBuilder = ({ value, onChange }) => {
           </button>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">📝 Tiêu đề block</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              📝 Tiêu đề block
+            </label>
             <input
               type="text"
               value={block.header}
-              onChange={(e) => updateBlock(idx, { ...block, header: e.target.value })}
+              onChange={(e) =>
+                updateBlock(idx, { ...block, header: e.target.value })
+              }
               className="w-full rounded border border-gray-300 px-4 py-2 focus:border-blue-500 focus:ring focus:ring-blue-200 transition"
               placeholder="Nhập tiêu đề block..."
             />
           </div>
 
           <div className="mt-4">
-            <label className="block text-sm font-medium text-gray-700 mb-1">✏️ Nội dung block</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              ✏️ Nội dung block
+            </label>
             <textarea
               rows="4"
               value={block.content}
-              onChange={(e) => updateBlock(idx, { ...block, content: e.target.value })}
+              onChange={(e) =>
+                updateBlock(idx, { ...block, content: e.target.value })
+              }
               className="w-full rounded border border-gray-300 px-4 py-2 focus:border-blue-500 focus:ring focus:ring-blue-200 transition resize-none"
               placeholder="Nhập nội dung chi tiết..."
             />
@@ -101,7 +113,9 @@ const DescriptionBuilder = ({ value, onChange }) => {
           {block.type === "imageText" && (
             <div className="mt-4 space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">🖼️ Ảnh minh họa</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  🖼️ Ảnh minh họa (Tỉ lệ 16:9)
+                </label>
                 <input
                   type="file"
                   accept="image/*"
@@ -118,10 +132,14 @@ const DescriptionBuilder = ({ value, onChange }) => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">📐 Bố cục ảnh</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  📐 Bố cục ảnh
+                </label>
                 <select
                   value={block.layout}
-                  onChange={(e) => updateBlock(idx, { ...block, layout: e.target.value })}
+                  onChange={(e) =>
+                    updateBlock(idx, { ...block, layout: e.target.value })
+                  }
                   className="w-full rounded border border-gray-300 px-4 py-2 focus:border-blue-500 focus:ring focus:ring-blue-200 transition"
                 >
                   <option value="left">Ảnh trái</option>

@@ -11,25 +11,12 @@ const CreateDirectory = () => {
   const router = useRouter();
 
   const [previewImg, setPreviewImg] = useState(null);
-  const [allCategories, setAllCategories] = useState([]);
 
   const [form, setForm] = useState({
     title: "",
     directoryPic: null,
     category: [], // mảng chứa id các category được chọn
   });
-
-  useEffect(() => {
-    const fetchCategories = async () => {
-      const res = await apiGetCategory();
-      if (res.data.success) {
-        setAllCategories(res.data.data);
-      } else {
-        console.log("Lỗi tải category!");
-      }
-    };
-    fetchCategories();
-  }, []);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -132,28 +119,6 @@ const CreateDirectory = () => {
               />
             </div>
           )}
-        </div>
-
-        {/* Chọn category */}
-        <div>
-          <label className="block text-sm font-medium mb-2">
-            Chọn loại sản phẩm (có thể chọn nhiều)
-          </label>
-          <div className="space-y-2">
-            {allCategories.map((cat) => (
-              <label
-                key={cat._id}
-                className="flex items-center space-x-2 text-sm"
-              >
-                <input
-                  type="checkbox"
-                  checked={form.category.includes(cat._id)}
-                  onChange={() => handleCheckboxChange(cat._id)}
-                />
-                <span>{cat.title}</span>
-              </label>
-            ))}
-          </div>
         </div>
 
         {/* Nút submit */}

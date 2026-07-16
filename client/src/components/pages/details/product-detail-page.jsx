@@ -1,6 +1,6 @@
 "use client";
 
-import { apiGetAllProduct, apiGetOneProduct } from "@/apis/ProductAPI";
+import { apiGetAllProduct } from "@/apis/ProductAPI";
 import AddToCartButton from "@/components/buttons/AddToCartButton";
 import BuyNowButton from "@/components/buttons/BuyNowButton";
 import ProductCard from "@/components/ui/ProductCart";
@@ -13,14 +13,13 @@ import {
   ShareIcon,
 } from "@heroicons/react/24/outline";
 import { CubeIcon, HandThumbUpIcon } from "@heroicons/react/24/solid";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Pagination from "@/components/ui/Pagination";
 import { apiAddToCard, apiGetCurrent } from "@/apis/userAPI";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import PageTitle from "@/components/pageTitle";
-// import { ProductContext } from "@/layout/ProductLayout";
-import { useParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 
 export default function ProductDetail({ product }) {
@@ -124,40 +123,42 @@ export default function ProductDetail({ product }) {
           data.blocks.map((block, index) => (
             <div key={index} className="space-y-2">
               {block.type === "text" && block.content && (
-                <div className="">
+                <div className="space-y-2">
                   {block.header && (
-                    <h3 className="text-lg xl:text-xl font-medium text-gray-800">
+                    <h3 className="text-lg xl:text-xl font-bold text-gray-800">
                       {block.header}
                     </h3>
                   )}
-                  <p className="whitespace-pre-line text-base xl:text-lg text-gray-700">
+                  <p className="whitespace-pre-line text-base xl:text-lg text-gray-600">
                     {block.content}
                   </p>
                 </div>
               )}
               {block.type === "imageText" && (
                 <div
-                  className={`flex flex-col-reverse gap-4 md:flex-row ${
-                    block.layout === "right" ? "md:flex-row-reverse" : ""
-                  }`}
+                  // className={`flex flex-col-reverse gap-4 md:flex-row ${
+                  //   block.layout === "right" ? "md:flex-row-reverse" : ""
+                  // }`}
+                  className="w-full flex flex-col gap-4"
                 >
                   {block.image && (
-                    <div className="w-auto flex justify-center">
-                      <img
+                    <div className="relative w-full flex aspect-video justify-center border border-amber-400/50 rounded-xl overflow-hidden">
+                      <Image
                         src={block.image}
                         alt="img-description"
-                        className="h-auto w-[300px] md:w-[250px] xl:w-[300px] flex-none rounded shadow"
+                        fill
+                        className="object-cover object-center transition-transform"
                       />
                     </div>
                   )}
                   <div className="mt-2 space-y-2">
                     {block.header && (
-                      <h3 className="text-lg xl:text-xl font-medium text-gray-800">
+                      <h3 className="text-lg xl:text-xl font-bold text-gray-800">
                         {block.header}
                       </h3>
                     )}
                     {block.content && (
-                      <p className="whitespace-pre-line text-base xl:text-lg text-gray-700">
+                      <p className="whitespace-pre-line text-base xl:text-lg text-gray-600">
                         {block.content}
                       </p>
                     )}
@@ -310,8 +311,8 @@ export default function ProductDetail({ product }) {
 
         {/* MÔ TẢ CHI TIẾT */}
         <div className="mt-5 w-full bg-white p-3 shadow-lg">
-          <div className="w-full border-b p-2">
-            <h2 className="text-sm lg:text-base font-medium">MÔ TẢ SẢN PHẨM</h2>
+          <div className="w-full border-b border-gray-400 p-2">
+            <h2 className="text-sm font-bold font-sans">MÔ TẢ SẢN PHẨM</h2>
           </div>
           <div className="w-full max-w-none overflow-x-auto break-words px-4 pb-6 md:px-6 xl:px-8">
             <div>{renderDescription(product.description)}</div>

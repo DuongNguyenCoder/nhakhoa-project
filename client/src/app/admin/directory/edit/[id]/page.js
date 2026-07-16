@@ -5,9 +5,7 @@ import { toast } from "react-toastify";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import DeleteConfirmDialog from "@/components/common/DeleteConfirmDialog";
-import { apiGetDirectory, apiUpdateDirectory } from "@/apis/DirectoryAPI";
-import { apiGetCategory } from "@/apis/CategoryAPI";
+import DirectoryService from "@/services/directory.service";
 import { useParams, useRouter } from "next/navigation";
 
 export default function Page() {
@@ -18,31 +16,21 @@ export default function Page() {
   const [form, setForm] = useState({
     title: "",
     directoryPic: null,
-    category: [], // mảng id các phân mục con
   });
   const [previewImg, setPreviewImg] = useState(null);
-  const [allCategories, setAllCategories] = useState([]);
 
   // Load data directory & categories
   useEffect(() => {
     const load = async () => {
-      // 1) Lấy directory
-      const dirRes = await apiGetDirectory();
-      if (dirRes.data.success) {
-        const dir = dirRes.data.data.find((d) => d._id === id);
-        if (dir) {
-          setForm({
-            title: dir.title,
-            directoryPic: dir.directoryPic, // file mới
-            category: dir.category.map((c) => c._id),
-          });
-          setPreviewImg(dir.directoryPic);
-        }
-      }
-      // 2) Lấy tất cả category
-      const catRes = await apiGetCategory();
-      if (catRes.data.success) {
-        setAllCategories(catRes.data.data);
+      if (!id) return;
+      const dir = await DirectoryService.getById(id);
+      if (dir) {
+        console.log("Fetch dir => ", dir);
+        setForm({
+          title: dir.title ?? "",
+          directoryPic: dir.directoryPic ?? null,
+        });
+        setPreviewImg(dir.directoryPic ?? null);
       }
     };
     load();
@@ -65,24 +53,12 @@ export default function Page() {
   };
 
   // Chọn/bỏ chọn category
-  const toggleCategory = (catId) => {
-    setForm((p) => {
-      const has = p.category.includes(catId);
-      return {
-        ...p,
-        category: has
-          ? p.category.filter((c) => c !== catId)
-          : [...p.category, catId],
-      };
-    });
-  };
 
   // Gửi update
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = new FormData();
     data.append("title", form.title);
-
     let directoryFile = form.directoryPic;
 
     if (typeof directoryFile === "string") {
@@ -93,16 +69,19 @@ export default function Page() {
     }
 
     data.append("directoryPic", directoryFile);
-    form.category.forEach((c) => data.append("category[]", c));
 
-    const res = await apiUpdateDirectory(id, data);
-    console.log("Directories: ", res);
-    if (res.data.success) {
-      toast.success("Cập nhật thành công!");
-      router.push("/admin/directory");
-    } else {
+    try {
+      const res = await DirectoryService.update({ id, data });
+      if (res?.success) {
+        toast.success("Cập nhật thành công!");
+        router.push("/admin/directory");
+        return;
+      }
       toast.error("Cập nhật thất bại.");
-      console.log("Lỗi cập nhật Directory!");
+      console.error("Lỗi cập nhật Directory!", res);
+    } catch (err) {
+      toast.error("Cập nhật thất bại.");
+      console.error();
     }
   };
 
@@ -159,26 +138,7 @@ export default function Page() {
           )}
         </div>
 
-        {/* Categories (checkbox) */}
-        <div>
-          <Label className="mb-1">Chọn phân mục con</Label>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-56 overflow-y-auto p-2 border rounded">
-            {allCategories.map((cat) => (
-              <label
-                key={cat._id}
-                className="flex items-center space-x-2 text-sm"
-              >
-                <input
-                  type="checkbox"
-                  checked={form.category.includes(cat._id)}
-                  onChange={() => toggleCategory(cat._id)}
-                  className="accent-green-600"
-                />
-                <span>{cat.title}</span>
-              </label>
-            ))}
-          </div>
-        </div>
+        {/* (Categories removed) */}
 
         {/* Actions */}
         <div className="flex justify-end space-x-3 pt-4">
