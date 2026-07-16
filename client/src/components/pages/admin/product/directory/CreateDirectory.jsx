@@ -38,16 +38,6 @@ const CreateDirectory = () => {
     }
   };
 
-  const handleCheckboxChange = (id) => {
-    setForm((prev) => {
-      const exists = prev.category.includes(id);
-      const newCategory = exists
-        ? prev.category.filter((item) => item !== id)
-        : [...prev.category, id];
-      return { ...prev, category: newCategory };
-    });
-  };
-
   const handleSubmit = async () => {
     const submitData = new FormData();
     submitData.append("title", form.title);
@@ -61,6 +51,12 @@ const CreateDirectory = () => {
         if (rs.data && rs.data.success) {
           router.push("/admin/directory");
           toast.success("Thêm thành công!");
+          setForm({
+            title: "",
+            directoryPic: null,
+            category: [],
+          });
+          setPreviewImg(null);
         } else {
           toast.warning("Vui lòng điền đầy đủ tất cả thông tin!");
           console.log("Lỗi thêm Directory!");

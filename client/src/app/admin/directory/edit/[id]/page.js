@@ -12,6 +12,8 @@ export default function Page() {
   const { id } = useParams();
   const router = useRouter();
 
+  console.log("ID Dir => ", id);
+
   // State form
   const [form, setForm] = useState({
     title: "",

@@ -159,6 +159,7 @@ export default function EditProductPage() {
       if (res.data.success) {
         toast.success("Cập nhật sản phẩm thành công!");
         router.push("/admin/product");
+        await fetch(`/api/revalidate?tag=san-pham/${form.slug}`);
       } else {
         console.error("Lỗi cập nhật sản phẩm!");
         toast.error("Cập nhật sản phẩm thất bại!");

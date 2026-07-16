@@ -3,5 +3,5 @@
 import CreateDirectory from "@/components/pages/admin/product/directory/CreateDirectory";
 
 export default function Page() {
-  return <CreateDirectory />;
+  return <CreateDirectory key="create-directory" />;
 }

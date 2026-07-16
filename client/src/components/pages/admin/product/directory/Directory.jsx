@@ -4,6 +4,7 @@ import { apiDeleteDirectory, apiGetDirectory } from "@/apis/DirectoryAPI";
 import { toast } from "react-toastify";
 import DeleteConfirmDialog from "@/components/common/DeleteConfirmDialog";
 import { useRouter } from "next/navigation";
+import DirectoryService from "@/services/directory.service";
 
 const formatDate = (dateStr) => {
   const date = new Date(dateStr);
@@ -22,9 +23,10 @@ const Directory = () => {
   const [directories, setDirectories] = useState([]);
 
   const fetchDirectory = async () => {
-    const res = await apiGetDirectory();
-    if (res.data.success) {
-      setDirectories(res.data.data);
+    const res = await DirectoryService.getAll();
+    console.log("ress => ", res);
+    if (res.success) {
+      setDirectories(res.data);
     } else {
       console.log("Lỗi không lấy được danh mục!");
     }
