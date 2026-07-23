@@ -68,8 +68,8 @@ const Home = () => {
         className="mt-16 px-3"
       >
         <div className="max-w-7xl mx-auto space-y-3">
-          <h2 className="text-xl text-center font-bold uppercase tracking-wide text-[#9c1d22] md:text-2xl lg:text-3xl">
-            Everything for Your dental practice
+          <h2 className="text-lg xs:text-xl text-center font-bold uppercase tracking-wide text-[#9c1d22] md:text-2xl xl:text-3xl">
+            Complete Solutions for Your Dental Practice
           </h2>
           <div className="mx-auto mb-5 h-[3px] w-20 rounded-full bg-[#9c1d22]" />
           <DirectoryGrid directories={directories} />
@@ -81,7 +81,7 @@ const Home = () => {
         duration={0.9}
         y={20}
         threshold={1}
-        className="mt-12 px-3"
+        className="mt-20 px-3"
       >
         <div className="rounded-2xl max-w-7xl mx-auto border border-[#9c1d22]/10 bg-[#9c1d22]/95 p-3 xs:p-4 lg:p-5 shadow-sm">
           <div className="grid grid-cols-1 gap-3 xs:grid-cols-2 lg:grid-cols-4">

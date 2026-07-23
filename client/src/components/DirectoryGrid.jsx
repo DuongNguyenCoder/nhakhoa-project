@@ -10,7 +10,7 @@ export default function DirectoryGrid({ directories = [] }) {
         {directories.map((directory) => (
           <Link
             key={directory._id}
-            href={`/san-pham/directory?directory=${directory._id}&title=${encodeURIComponent(directory.title)}`}
+            href={`/san-pham/directory/${directory.slug}`}
             className="group"
           >
             <div className="flex aspect-square flex-col items-center justify-center rounded-2xl border border-[#9c1d22]/10 bg-white p-4 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-[#9c1d22] hover:shadow-lg">

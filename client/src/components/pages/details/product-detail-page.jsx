@@ -21,6 +21,7 @@ import { useDispatch, useSelector } from "react-redux";
 import PageTitle from "@/components/pageTitle";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { splitOverview } from "@/utils/text";
 
 export default function ProductDetail({ product }) {
   const [quantity, setQuantity] = useState(1);
@@ -231,9 +232,9 @@ export default function ProductDetail({ product }) {
               <h3 className="text-base font-medium text-gray-800">
                 Tính năng nổi bật
               </h3>
-              <span className="line-clamp-3 font-sans text-base font-normal text-gray-700">
+              <p className="whitespace-pre-line font-sans text-base font-normal text-gray-700">
                 {product.introduce}
-              </span>
+              </p>
               <div className="mt-1 flex flex-col text-base font-normal text-gray-500">
                 <span>Thương hiệu: {product.brand}</span>
                 <span>Xuất xứ: {product.origin}</span>

@@ -9,7 +9,7 @@ export default function HeroSection() {
       {/* Image */}
       <div className="lg:col-span-2 lg:order-2 lg:aspect-square relative aspect-16/10 rounded-2xl overflow-hidden w-full">
         <Image
-          src="https://leyfeolxdr.ufs.sh/f/DKQnMo5A7EdzsoslYiTCrQDgKVYa12HOj0ULuoncFkEAhm7z"
+          src="/assets/image-popup-consultation.png"
           alt="minhdental Proservice"
           fill
           priority

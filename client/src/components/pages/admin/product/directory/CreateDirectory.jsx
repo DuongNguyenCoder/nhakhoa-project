@@ -12,6 +12,11 @@ import { toast } from "react-toastify";
 import { CategoryService } from "@/services/category.service";
 import { DirectoryService } from "@/services/directory.service";
 
+slugify.extend({
+  đ: "d",
+  Đ: "D",
+});
+
 const defaultValues = {
   title: "",
   slug: "",
@@ -103,16 +108,14 @@ const CreateDirectory = ({ data }) => {
       return;
     }
 
+    console.log(values.directoryPic);
+    console.log(values.directoryPic instanceof File);
+
     const categories = Array.isArray(values.category)
       ? values.category
       : values.category
         ? [values.category]
         : [];
-
-    if (!categories.length) {
-      toast.error("Vui lòng chọn ít nhất một phân mục.");
-      return;
-    }
 
     const submitData = new FormData();
     submitData.append("title", values.title.trim());
@@ -212,13 +215,7 @@ const CreateDirectory = ({ data }) => {
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Ảnh danh mục <span className="text-red-500">*</span>
             </label>
-            <Input
-              type="file"
-              accept="image/*"
-              {...register("directoryPic", {
-                onChange: handleFileChange,
-              })}
-            />
+            <Input type="file" accept="image/*" onChange={handleFileChange} />
             {errors.directoryPic && (
               <p className="text-sm text-red-500 mt-1">
                 {errors.directoryPic.message}

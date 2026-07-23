@@ -34,19 +34,21 @@ export const NavLinks = [
     linkPic: <NewspaperIcon className="size-5" />,
   },
   {
-    href: "/dich-vu-khac",
+    href: "/",
     title: "Dịch Vụ Khác",
     linkPic: <WrenchScrewdriverIcon className="size-5" />,
     childItems: true,
     dropdownType: "menu",
     childData: [
       {
+        _id: "abc",
         title: "Sửa chữa và bảo trì",
-        href: "/dich-vu/sua-chua-bao-tri",
+        href: "/dich-vu-bao-tri-bao-duong-md-proservice",
       },
       {
+        _id: "def",
         title: "Tư vấn thiết kế - thi công phòng nha",
-        href: "/dich-vu/tu-van-thiet-ke-thi-cong-phong-nha",
+        href: "/",
       },
     ],
   },

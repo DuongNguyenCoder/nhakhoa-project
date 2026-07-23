@@ -90,11 +90,7 @@ const Products = () => {
             dataDirectory.map((item) => (
               <div
                 key={item._id}
-                onClick={() =>
-                  router.push(
-                    `/san-pham/directory?directory=${item._id}&title=${encodeURIComponent(item.title)}`,
-                  )
-                }
+                onClick={() => router.push(`/san-pham/directory/${item.slug}`)}
                 className="group cursor-pointer rounded-xl overflow-hidden shadow-md hover:shadow-lg transition duration-300 bg-gray-50"
               >
                 <div className="w-full h-36 overflow-hidden">

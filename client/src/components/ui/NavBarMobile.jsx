@@ -21,29 +21,34 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import AuthButtons from "../buttons/AuthButtons";
+import MobileMenuItem from "./mobile-menu-items";
+import ProductMenu from "./product-menu";
 
 const NavBarMobile = () => {
   const [open, setOpen] = useState(false);
   const [directories, setDirectories] = useState([]);
 
-  useEffect(() => {
-    const fetchDirectories = async () => {
-      try {
-        const res = await apiGetDirectory();
+  const fetchDirectories = async () => {
+    try {
+      const res = await apiGetDirectory();
 
-        if (res?.data?.success) {
-          setDirectories(res.data.data || []);
-        }
-      } catch (error) {
-        console.error(error);
+      if (res?.data?.success) {
+        setDirectories(res.data.data ?? []);
       }
-    };
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
+  useEffect(() => {
     fetchDirectories();
   }, []);
 
+  const handleClose = () => setOpen(false);
+  const handleOpen = () => setOpen(true);
+
   return (
-    <div className="md:hidden">
+    <div className="lg:hidden">
       {/* Trigger */}
       <button
         aria-label="Open menu"
@@ -104,63 +109,28 @@ const NavBarMobile = () => {
                   <p className="mb-4 text-xs font-semibold uppercase tracking-widest text-[#9c1d22]/70">
                     Điều hướng
                   </p>
+                </div>
 
-                  <div className="space-y-1">
-                    {NavLinks.map((link) => {
-                      if (link.childItems) {
-                        return (
-                          <Accordion key={link.title} type="single" collapsible>
-                            <AccordionItem
-                              value="products"
-                              className="border-b"
-                            >
-                              <AccordionTrigger className="py-4 text-[15px] font-medium text-gray-800 hover:no-underline">
-                                <div className="flex items-center gap-3">
-                                  {link.linkPic}
-                                  {link.title}
-                                </div>
-                              </AccordionTrigger>
-
-                              <AccordionContent>
-                                <div className="space-y-1 pl-9 pb-2">
-                                  <Link
-                                    href={link.href}
-                                    onClick={() => setOpen(false)}
-                                    className="block py-2 text-sm font-medium text-[#9c1d22]"
-                                  >
-                                    Tất cả sản phẩm
-                                  </Link>
-
-                                  {directories.map((directory) => (
-                                    <Link
-                                      key={directory._id}
-                                      href={`/san-pham/directory?directory=${directory._id}&title=${encodeURIComponent(directory.title)}`}
-                                      onClick={() => setOpen(false)}
-                                      className="block py-2 text-sm text-gray-600"
-                                    >
-                                      {directory.title}
-                                    </Link>
-                                  ))}
-                                </div>
-                              </AccordionContent>
-                            </AccordionItem>
-                          </Accordion>
-                        );
-                      }
-
-                      return (
-                        <Link
-                          key={link.title}
-                          href={link.href}
-                          onClick={() => setOpen(false)}
-                          className="flex min-h-[48px] items-center gap-3 border-b border-gray-100 py-3 text-[15px] font-medium text-gray-800"
-                        >
-                          <span className="text-[#9c1d22]">{link.linkPic}</span>
-                          {link.title}
-                        </Link>
-                      );
-                    })}
-                  </div>
+                <div className="space-y-1">
+                  {NavLinks.map((link) =>
+                    link.childItems ? (
+                      <ProductMenu
+                        key={link.title}
+                        href={link.href}
+                        title={link.title}
+                        childData={link?.childData || []}
+                        directories={directories}
+                        onClose={handleClose}
+                      />
+                    ) : (
+                      <MobileMenuItem
+                        key={link.title}
+                        href={link.href}
+                        title={link.title}
+                        onClick={handleClose}
+                      />
+                    ),
+                  )}
                 </div>
 
                 {/* Contact */}

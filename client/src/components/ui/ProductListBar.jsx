@@ -42,7 +42,7 @@ const ProductListBar = () => {
             >
               <div className="flex items-center gap-x-1">
                 <Link
-                  href={`/san-pham/directory?directory=${item._id}&title=${encodeURIComponent(item.title)}`}
+                  href={`/san-pham/directory/${item.slug}`}
                   className="flex items-center gap-1.5 text-wrap text-sm font-medium uppercase tracking-wide text-gray-800"
                 >
                   {item.directoryPic && (
@@ -71,7 +71,7 @@ const ProductListBar = () => {
                     >
                       <ArrowRightCircleIcon className="size-5" />
                       <Link
-                        href={`/san-pham/category?category=${child._id}&title=${encodeURIComponent(child.title)}`}
+                        href={`/san-pham/category/${child.slug}`}
                         className="text-[17px] font-normal text-slate-900 hover:text-ellipsis hover:text-[17px] hover:font-medium hover:text-red-600"
                       >
                         {child.title}

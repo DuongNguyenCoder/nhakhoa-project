@@ -5,9 +5,15 @@ import { toast } from "react-toastify";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { CategoryService } from "@/services/category.service";
 import slugify from "slugify";
+import { Switch } from "@/components/ui/switch";
+
+slugify.extend({
+  đ: "d",
+  Đ: "D",
+});
 
 const defaultValues = {
   title: "",
@@ -23,6 +29,7 @@ const CreateCategory = ({ data }) => {
     handleSubmit,
     watch,
     reset,
+    control,
     formState: { errors },
   } = useForm({
     defaultValues,
@@ -50,7 +57,7 @@ const CreateCategory = ({ data }) => {
 
     const payload = {
       title: values.title.trim(),
-      slug: slugify(values.title),
+      slug: slugify(values.title, { lower: true, strict: true }),
       isNews: !!values.isNews,
     };
 
@@ -116,7 +123,7 @@ const CreateCategory = ({ data }) => {
             </label>
             <p className="text-sm text-gray-700">
               {watchTitle
-                ? `/category/${slugify(watchTitle, { lower: true })}`
+                ? `/category/${slugify(watchTitle, { lower: true, strict: true })}`
                 : "(chưa có)"}
             </p>
             <p className="text-sm text-gray-500 mt-1">
@@ -126,14 +133,30 @@ const CreateCategory = ({ data }) => {
 
           {/* isNews checkbox */}
           <div className="flex items-center space-x-2 mb-4">
-            <input
+            {/* <input
               id="isNews"
               type="checkbox"
               {...register("isNews")}
               className="w-4 h-4"
+            /> */}
+            <Controller
+              control={control}
+              name="isNews"
+              render={({ field }) => (
+                <Switch
+                  checked={field.value}
+                  className="data-[state=checked]:bg-blue-600"
+                  onCheckedChange={field.onChange}
+                />
+              )}
             />
-            <label htmlFor="isNews" className="text-sm text-gray-700">
-              Hiển thị là tin tức
+            <label
+              htmlFor="isNews"
+              className="text-sm flex flex-col text-gray-700"
+            >
+              Phân mục dành cho Tin tức & Tài liệu
+              <br />
+              <span className="text-[12px]">Mặc định là phân mục sản phẩm</span>
             </label>
           </div>
 

@@ -10,6 +10,11 @@ import { useRouter } from "next/navigation";
 import slugify from "slugify";
 import { Loader } from "lucide-react";
 
+slugify.extend({
+  đ: "d",
+  Đ: "D",
+});
+
 const defaultValue = {
   title: "",
   slug: "",

@@ -50,7 +50,7 @@ const SideBar = () => {
                   />
                 )}
                 <Link
-                  href={`/san-pham/directory?directory=${item._id}&title=${encodeURIComponent(item.title)}`}
+                  href={`/san-pham/directory/${directory.slug}`}
                   className="font-medium text-sm uppercase tracking-wide text-gray-800 text-wrap"
                 >
                   {item.title}
@@ -71,7 +71,7 @@ const SideBar = () => {
                     <li key={child._id} className="flex items-center gap-4">
                       <ArrowRightCircleIcon className="size-4" />
                       <Link
-                        href={`/san-pham/category?category=${child._id}&title=${encodeURIComponent(child.title)}`}
+                        href={`/san-pham/category/${child.slug}`}
                         className="text-[16px] text-slate-900 hover:text-ellipsis hover:text-[17px] hover:font-medium hover:text-red-600"
                       >
                         {child.title}

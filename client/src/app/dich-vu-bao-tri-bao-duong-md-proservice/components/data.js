@@ -420,6 +420,6 @@ export const SERVICES = [
 ];
 
 export const SLIDES = [
-  "https://leyfeolxdr.ufs.sh/f/DKQnMo5A7Edz4umjcuny0NEHRIYvxT2pkBKXWgCmVL38aFrd",
-  "https://leyfeolxdr.ufs.sh/f/DKQnMo5A7EdzsoslYiTCrQDgKVYa12HOj0ULuoncFkEAhm7z",
+  "/assets/MinhDental_Group.png",
+  "/assets/image-popup-consultation.png",
 ];

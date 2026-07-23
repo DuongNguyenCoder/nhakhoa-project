@@ -10,6 +10,11 @@ import slugify from "slugify";
 import { DirectoryService } from "@/services/directory.service";
 import { Loader } from "lucide-react";
 
+slugify.extend({
+  đ: "d",
+  Đ: "D",
+});
+
 export default function EditProductPage() {
   const router = useRouter();
   const { id } = useParams();
@@ -64,8 +69,8 @@ export default function EditProductPage() {
           origin: product.origin,
           isLiquidation: product.isLiquidation,
           isFeatured: product.isFeatured,
-          directory: product.directory._id,
-          category: product.category,
+          directory: product?.directory?._id || "",
+          category: product?.category || "",
           introduce: product.introduce,
           description: product.description,
           productPics: product.productPics || [],

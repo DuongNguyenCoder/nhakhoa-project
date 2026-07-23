@@ -36,9 +36,9 @@ const Directory = () => {
   }, []);
 
   const handleDeleteDirectory = async (id) => {
-    const res = await apiDeleteDirectory(id);
+    const res = await DirectoryService.delete(id);
     console.log("RESSSSS: ", res);
-    if (res.data.success) {
+    if (res.success) {
       fetchDirectory();
       toast.warning("Xóa thành công!");
     } else {

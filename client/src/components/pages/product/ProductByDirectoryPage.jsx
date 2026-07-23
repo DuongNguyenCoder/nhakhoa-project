@@ -1,54 +1,27 @@
+"use client";
+
 import { apiGetAllProduct } from "@/apis/ProductAPI";
 import ProductCard from "@/components/ui/ProductCart";
-import React, { useEffect, useMemo, useState } from "react";
-import { useLocation, useNavigate } from "../../../provider/react-router-dom";
-import Pagination from "@/components/ui/Pagination";
-import { apiGetDirectory } from "@/apis/DirectoryAPI";
+import { useEffect, useState } from "react";
 import { CubeIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import Link from "next/link";
+import PaginationCustom from "@/components/ui/pagination-custom";
 
-const useQuery = () => {
-  const { search } = useLocation();
-  return useMemo(() => new URLSearchParams(search), [search]);
-};
-
-const ProductByDirectoryPage = () => {
-  const query = useQuery();
-  const directoryId = query.get("directory");
-  const directoryTitle = query.get("title") || "Sản phẩm";
+const ProductByDirectoryPage = ({ directory, directories }) => {
+  const directoryId = directory._id;
+  const directoryTitle = directory.title;
   const [products, setProducts] = useState([]);
-  const [dataDirectory, setDataDirectory] = useState([]);
   console.log("directoryId: ", directoryId);
   const [totalPages, setTotalPages] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
-
-  useEffect(() => {
-    const fetchDirectory = async () => {
-      await apiGetDirectory()
-        .then((res) => {
-          if (res.data?.success) {
-            setDataDirectory(res.data.data);
-          } else {
-            console.log("Lỗi get directory!");
-          }
-        })
-        .catch((err) => {
-          console.error("Lỗi: ", err);
-        });
-    };
-    fetchDirectory();
-  }, []);
-
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }, [directoryId]);
 
   useEffect(() => {
     const fetchProducts = async () => {
       const res = await apiGetAllProduct({
         directory: directoryId,
         page: currentPage,
+        limit: 8,
       });
       console.log("Get ALL PRODUCT BY DIRECTORY: ", res);
       if (res?.data?.data) {
@@ -58,6 +31,18 @@ const ProductByDirectoryPage = () => {
     };
     fetchProducts();
   }, [directoryId, currentPage]);
+
+  if (!directoryId) {
+    return (
+      <div className="w-full rounded-2xl bg-white px-4 py-6 shadow-xl 2xl:px-10">
+        <div className="w-full uppercase tracking-wider mb-6 ">
+          <h1 className="text-lg text-center font-bold uppercase text-[#9c1d22] md:text-xl lg:text-2xl">
+            Danh mục sản phẩm không tồn tại
+          </h1>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full space-y-8">
@@ -74,9 +59,9 @@ const ProductByDirectoryPage = () => {
             <ProductCard key={product._id} item={product} />
           ))}
         </div>
-        <div className="w-full">
-          <Pagination
-            currentPage={currentPage}
+        <div className="w-full mt-8">
+          <PaginationCustom
+            page={currentPage}
             totalPages={totalPages}
             onPageChange={(page) => setCurrentPage(page)}
           />
@@ -97,11 +82,11 @@ const ProductByDirectoryPage = () => {
 
         {/* Hiển thị các dòng sản phẩm */}
         <div className="mt-4 grid w-full grid-cols-2 gap-8 px-3 md:grid-cols-3 xl:grid-cols-4">
-          {dataDirectory.length > 0 ? (
-            dataDirectory.map((directory) => (
+          {directories.length > 0 ? (
+            directories.map((directory) => (
               <Link
                 key={directory._id}
-                href={`/san-pham/directory?directory=${directory._id}&title=${encodeURIComponent(directory.title)}`}
+                href={`/san-pham/directory/${directory.slug}`}
                 className="group"
               >
                 <div className="flex aspect-square flex-col items-center justify-center rounded-2xl border border-[#9c1d22]/10 bg-white p-4 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-[#9c1d22] hover:shadow-lg">

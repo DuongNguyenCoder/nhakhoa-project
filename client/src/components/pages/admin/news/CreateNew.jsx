@@ -8,13 +8,6 @@ import { toast } from "react-toastify";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import DescriptionEditor from "@/components/common/DescriptionEditor";
 import { createNewsAction } from "@/app/admin/news/create/actions";
 import PdfUploader from "@/components/uploader/PdfUploader";
@@ -23,6 +16,11 @@ import { CategoryService } from "@/services/category.service";
 import Image from "next/image";
 import { Textarea } from "@/components/ui/textarea";
 import { NewService } from "@/services/new.service";
+
+slugify.extend({
+  đ: "d",
+  Đ: "D",
+});
 
 const defaultValues = {
   title: "",
