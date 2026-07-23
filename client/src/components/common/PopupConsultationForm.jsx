@@ -17,10 +17,12 @@ import {
 } from "@/components/ui/select";
 
 const ServiceList = [
-  "Ghế nha khoa CINGOL",
-  "Kệ tủ nha khoa",
-  "Kính lúp nha khoa",
-  "Dịch vụ bảo trì, bảo dưỡng MD ProService",
+  "THIẾT BỊ NHA KHOA",
+  "VẬT LIỆU NHA KHOA",
+  "VẬT TƯ – DỤNG CỤ - PHỤ TÙNG SỬA CHỮA",
+  "DỊCH VỤ BẢO TRÌ, BẢO DƯỠNG MD PRO SERVICE",
+  "TƯ VẤN THIẾT KẾ - THI CÔNG PHÒNG NHA",
+  "NỘI THẤT – TRANG TRÍ PHÒNG NHA",
 ];
 
 export default function PopupConsultationForm() {
