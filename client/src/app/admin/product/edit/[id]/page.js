@@ -3,21 +3,21 @@
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { apiGetDirectory } from "@/apis/DirectoryAPI";
-import { apiGetCategory } from "@/apis/CategoryAPI";
 import { apiGetOneProduct, apiUpdateProduct } from "@/apis/ProductAPI";
 import DescriptionBuilder from "@/components/common/DescriptionBuilder";
 import { useParams, useRouter } from "next/navigation";
 import slugify from "slugify";
+import { DirectoryService } from "@/services/directory.service";
+import { Loader } from "lucide-react";
 
 export default function EditProductPage() {
   const router = useRouter();
   const { id } = useParams();
 
   const [directories, setDirectories] = useState([]);
-  const [categories, setCategories] = useState([]);
   const [initialized, setInitialized] = useState(false);
   const [productId, setProductId] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const [form, setForm] = useState({
     title: "",
@@ -37,21 +37,12 @@ export default function EditProductPage() {
   });
   const [previews, setPreviews] = useState([]);
 
-  // Fetch directories
-  useEffect(() => {
-    apiGetDirectory().then((res) => {
-      if (res.data.success) setDirectories(res.data.data);
-      else console.error("Lỗi lấy directory!");
-    });
-  }, []);
-
   // Fetch categories
-  useEffect(() => {
-    apiGetCategory().then((res) => {
-      if (res.data.success) setCategories(res.data.data);
-      else console.error("Lỗi lấy category!");
-    });
-  }, []);
+
+  const fetchDirectories = async () => {
+    const res = await DirectoryService.getAll({}, { cache: "no-store" });
+    setDirectories(res.data || []);
+  };
 
   console.log("FORM DATA => ", form);
 
@@ -87,14 +78,32 @@ export default function EditProductPage() {
       }
     };
     fetchProduct();
+    fetchDirectories();
   }, [id]);
+
+  const activeDirectory = directories.find(
+    (item) => item._id === form.directory,
+  );
+
+  const categories = activeDirectory?.category || [];
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setForm((prev) => ({
-      ...prev,
-      [name]: type === "checkbox" ? checked : value,
-    }));
+
+    setForm((prev) => {
+      if (name === "directory") {
+        return {
+          ...prev,
+          directory: value,
+          category: "",
+        };
+      }
+
+      return {
+        ...prev,
+        [name]: type === "checkbox" ? checked : value,
+      };
+    });
   };
 
   useEffect(() => {
@@ -116,6 +125,8 @@ export default function EditProductPage() {
   };
 
   const handleSubmit = async (e) => {
+    setLoading(true);
+
     e.preventDefault();
     const submitData = new FormData();
     submitData.append("title", form.title);
@@ -160,6 +171,7 @@ export default function EditProductPage() {
         toast.success("Cập nhật sản phẩm thành công!");
         router.push("/admin/product");
         await fetch(`/api/revalidate?tag=san-pham/${form.slug}`);
+        setLoading(false);
       } else {
         console.error("Lỗi cập nhật sản phẩm!");
         toast.error("Cập nhật sản phẩm thất bại!");
@@ -167,8 +179,12 @@ export default function EditProductPage() {
     } catch (err) {
       console.error(err);
       toast.error(err.mes || "Lỗi khi gửi dữ liệu, vui lòng kiểm tra lại!");
+    } finally {
+      setLoading(false);
     }
   };
+
+  console.log("check directory =>", directories);
   return (
     <div className="mx-auto max-w-6xl p-6">
       <div className="mb-6 flex items-center justify-between">
@@ -301,7 +317,7 @@ export default function EditProductPage() {
             </select>
           </div>
 
-          {/* <div>
+          <div>
             <label className="block text-sm font-medium text-gray-700">
               Phân mục
             </label>
@@ -318,7 +334,7 @@ export default function EditProductPage() {
                 </option>
               ))}
             </select>
-          </div> */}
+          </div>
 
           <div className="flex items-center gap-4">
             <label className="flex items-center gap-2 text-sm text-gray-700">
@@ -349,7 +365,7 @@ export default function EditProductPage() {
               name="introduce"
               value={form.introduce}
               onChange={handleInputChange}
-              rows="3"
+              rows={3}
               className="mt-1 w-full rounded border border-gray-300 px-3 py-2"
             />
           </div>
@@ -412,7 +428,11 @@ export default function EditProductPage() {
             type="submit"
             className="w-full bg-blue-600 text-white hover:bg-blue-700"
           >
-            Cập nhật sản phẩm
+            {loading ? (
+              <Loader className="size-6 animate-spin" />
+            ) : (
+              "Cập nhật sản phẩm"
+            )}
           </Button>
         </div>
       </form>

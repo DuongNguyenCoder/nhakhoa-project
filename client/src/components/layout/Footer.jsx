@@ -48,7 +48,7 @@ const Footer = () => {
           <ul className="space-y-2 text-gray-200">
             <li>
               <Link
-                href="/tin-tuc-va-khuyen-mai"
+                href="/tin-tuc-va-tai-lieu"
                 className="transition hover:text-red-300"
               >
                 Chính sách bảo mật
@@ -56,7 +56,7 @@ const Footer = () => {
             </li>
             <li>
               <Link
-                href="/tin-tuc-va-khuyen-mai"
+                href="/tin-tuc-va-tai-lieu"
                 className="transition hover:text-red-300"
               >
                 Chính sách đổi - trả
@@ -64,7 +64,7 @@ const Footer = () => {
             </li>
             <li>
               <Link
-                href="/tin-tuc-va-khuyen-mai"
+                href="/tin-tuc-va-tai-lieu"
                 className="transition hover:text-red-300"
               >
                 Chế độ bảo hành
@@ -72,7 +72,7 @@ const Footer = () => {
             </li>
             <li>
               <Link
-                href="/tin-tuc-va-khuyen-mai"
+                href="/tin-tuc-va-tai-lieu"
                 className="transition hover:text-red-300"
               >
                 Quy định giao - nhận

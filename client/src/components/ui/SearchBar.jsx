@@ -141,7 +141,7 @@ const SearchBar = ({ variant = "desktop" }) => {
 
       {/* Dropdown */}
       {open && (
-        <div className="absolute top-[calc(100%+10px)] z-50 w-full overflow-hidden rounded-2xl border border-white/20 bg-white/85 backdrop-blur-xl shadow-xl">
+        <div className="absolute top-[calc(100%+10px)] z-60 w-full overflow-hidden rounded-2xl border border-white/20 bg-white/85 backdrop-blur-xl shadow-xl">
           {loading ? (
             <div className="p-4 text-sm text-gray-500">Đang tìm kiếm...</div>
           ) : results.length > 0 ? (

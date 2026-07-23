@@ -170,7 +170,7 @@ const Home = () => {
             {dataTinNoiBat.slice(0, 4).map((item, index) => (
               <Link
                 key={item._id}
-                href={`/tin-tuc-va-khuyen-mai/${item.slug}`}
+                href={`/tin-tuc-va-tai-lieu/${item.slug}`}
                 className="group flex flex-col overflow-hidden rounded-xl border border-gray-200 shadow-sm transition hover:shadow-md"
               >
                 {/* Mobile layout: image left, text right */}
@@ -219,7 +219,7 @@ const Home = () => {
           {/* Link xem thêm */}
           <div className="flex flex-nowrap items-center justify-center gap-1.5 font-serif text-blue-700">
             <Link
-              href="/tin-tuc-va-khuyen-mai"
+              href="/tin-tuc-va-tai-lieu"
               className="text-[17px] hover:underline"
             >
               Xem thêm bản tin

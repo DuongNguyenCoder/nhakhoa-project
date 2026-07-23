@@ -19,7 +19,7 @@ const menu = [
   { label: "Danh sách sản phẩm", path: "/admin/product", Icon: Package },
   { label: "Danh mục sản phẩm", path: "/admin/directory", Icon: Layers },
   { label: "Đối tác", path: "/admin/partner", Icon: Users },
-  { label: "Loại tin tức", path: "/admin/news/category", Icon: Tag },
+  { label: "Phân loại", path: "/admin/category", Icon: Tag },
   { label: "Danh sách tin tức", path: "/admin/news", Icon: FileText },
   { label: "Bảo hành", path: "/admin/warranty", Icon: ShieldCheck },
   { label: "Đơn hàng", path: "/admin/orders", Icon: ShoppingCart },
@@ -30,7 +30,7 @@ const menu = [
 const Sidebar = () => {
   return (
     <aside
-      className="w-64 bg-white text-slate-800 h-full flex flex-col border-r"
+      className="w-full bg-white text-slate-800 h-full flex flex-col border-r"
       aria-label="Admin sidebar"
     >
       <div className="p-5 flex-1 overflow-y-auto">

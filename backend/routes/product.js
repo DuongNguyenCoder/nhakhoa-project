@@ -33,6 +33,7 @@ router.post(
       quantity: numberReq,
       isLiquidation: boolean,
       directory: stringReq,
+      category: Joi.string().optional(),
       isFeatured: boolean,
       brand: stringReq,
       origin: stringReq,

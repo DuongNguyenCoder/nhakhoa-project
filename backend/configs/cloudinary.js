@@ -10,9 +10,20 @@ v2.config({
 
 const storage = new CloudinaryStorage({
   cloudinary: v2,
-  params: {
-    folder: "app",
-    allowed_formats: ["jpg", "jpeg", "png", "gif", "webp", "pdf"],
+  params: async (req, file) => {
+    if (file.fieldname === "pdfFile") {
+      return {
+        folder: "app/pdf",
+        resource_type: "raw",
+        format: "pdf",
+      };
+    }
+
+    return {
+      folder: "app/image",
+      resource_type: "image",
+      allowed_formats: ["jpg", "jpeg", "png", "gif", "webp"],
+    };
   },
 });
 

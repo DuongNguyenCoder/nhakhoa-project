@@ -15,7 +15,6 @@ const useQuery = () => {
 
 const ProductByDirectoryPage = () => {
   const query = useQuery();
-  const navigate = useNavigate();
   const directoryId = query.get("directory");
   const directoryTitle = query.get("title") || "Sản phẩm";
   const [products, setProducts] = useState([]);

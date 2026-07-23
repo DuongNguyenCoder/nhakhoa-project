@@ -27,6 +27,7 @@ const ProductByCategoryPage = () => {
         category: categoryId,
         page: currentPage,
       });
+      console.log("res product by category => ", res);
       if (res?.data?.data) {
         setProducts(res.data.data);
         setTotalPages(res.data.pagination.totalPages);
@@ -38,11 +39,13 @@ const ProductByCategoryPage = () => {
   }, [categoryId, currentPage]);
 
   return (
-    <div className="w-full">
-      <div className="w-full border-b border-b-blue-300 uppercase tracking-wider mb-4">
-        <h1 className="text-xl font-bold text-blue-600 shadow-lg">
+    <div className="w-full rounded-2xl bg-white px-4 py-6 shadow-xl 2xl:px-10">
+      <div className="w-full uppercase tracking-wider mb-6 ">
+        <h1 className="text-lg text-center font-bold uppercase text-[#9c1d22] md:text-xl lg:text-2xl">
           {categoryTitle}
         </h1>
+
+        <div className="mx-auto mt-2 h-[1.5px] w-[95%] rounded-full bg-[#9c1d22]" />
       </div>
       <div className="w-full px-5 md:px-0 grid grid-cols-2 gap-5 md:grid-cols-3 xl:grid-cols-4">
         {products.map((product) => (

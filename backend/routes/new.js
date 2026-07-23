@@ -3,7 +3,12 @@ const ctrl = require("../controllers/newController");
 const Joi = require("joi");
 const validateInfo = require("../middlewares/validateInfo");
 const { verifyToken, isAdmin } = require("../middlewares/verifyToken");
-const { stringReq, file, string } = require("../middlewares/joiSchema");
+const {
+  stringReq,
+  file,
+  string,
+  boolean,
+} = require("../middlewares/joiSchema");
 const { upload } = require("../configs/cloudinary");
 
 router.post(
@@ -12,17 +17,20 @@ router.post(
   isAdmin,
   upload.fields([
     { name: "newPic", maxCount: 1 },
-    { name: "pdfUrl", maxCount: 1 },
+    { name: "pdfFile", maxCount: 1 },
   ]),
   validateInfo(
     Joi.object({
       title: stringReq,
       slug: stringReq,
+      overview: string,
       description: string,
-      status: stringReq,
-      category: string,
+      isActive: boolean,
+      featured: boolean,
+      category: Joi.string().optional(),
       newPic: file,
-      pdfUrl: Joi.any().optional(),
+      hasPdf: boolean,
+      pdfFile: Joi.any().optional(),
     }),
   ),
   ctrl.addNew,
@@ -33,17 +41,20 @@ router.put(
   isAdmin,
   upload.fields([
     { name: "newPic", maxCount: 1 },
-    { name: "pdfUrl", maxCount: 1 },
+    { name: "pdfFile", maxCount: 1 },
   ]),
   validateInfo(
     Joi.object({
       title: stringReq,
       slug: stringReq,
+      overview: string,
       description: string,
-      status: stringReq,
-      category: string,
+      isActive: boolean,
+      featured: boolean,
+      category: Joi.string().optional(),
       newPic: file,
-      pdfUrl: Joi.any().optional(),
+      hasPdf: boolean,
+      pdfFile: Joi.any().optional(),
     }),
   ),
   ctrl.updateNew,

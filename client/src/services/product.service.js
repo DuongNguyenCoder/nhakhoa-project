@@ -1,5 +1,4 @@
 import { http } from "@/lib/http";
-import z, { object } from "zod";
 
 export const ProductService = {
   getAll: (query, init) =>

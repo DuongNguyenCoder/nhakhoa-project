@@ -1,139 +1,151 @@
-import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Plus, Trash } from "lucide-react"; // Thêm icon Trash
-import { apiGetCategory } from "@/apis/CategoryAPI";
-import { apiGetDirectory } from "@/apis/DirectoryAPI";
-import { apiDeleteCategory } from "@/apis/CategoryAPI";
-import { toast } from "react-toastify";
-import DeleteConfirmDialog from "@/components/common/DeleteConfirmDialog";
-import { useRouter } from "next/navigation";
+"use client";
 
-const formatDate = (dateStr) => {
-  const date = new Date(dateStr);
-  return date.toLocaleString("vi-VN", {
+import { useEffect, useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
+import { Plus } from "lucide-react";
+import { toast } from "react-toastify";
+
+import { Button } from "@/components/ui/button";
+import DeleteConfirmDialog from "@/components/common/DeleteConfirmDialog";
+import { CategoryService } from "@/services/category.service";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
+const formatDate = (date) =>
+  new Intl.DateTimeFormat("vi-VN", {
     day: "2-digit",
     month: "2-digit",
     year: "numeric",
     hour: "2-digit",
     minute: "2-digit",
-  });
-};
+  }).format(new Date(date));
 
-const Category = () => {
-  const [categories, setCategories] = useState([]);
-  const [directories, setDirectories] = useState([]);
+export default function Category({ isNews }) {
   const router = useRouter();
 
-  const fetchCategories = async () => {
-    const res = await apiGetCategory();
-    if (res.data.success) {
-      setCategories(res.data.data);
-    } else {
-      console.log("Lỗi lấy category!");
-    }
-  };
+  const [categories, setCategories] = useState([]);
+  const [isPending, startTransition] = useTransition();
+  const [filter, setFilter] = useState("all");
 
-  const fetchDirectories = async () => {
-    const res = await apiGetDirectory();
-    if (res.data.success) {
-      setDirectories(res.data.data);
-    } else {
-      console.log("Lỗi lấy directory!");
+  const fetchCategories = async () => {
+    try {
+      const query =
+        filter === "all"
+          ? {}
+          : {
+              isNews: filter === "news",
+            };
+
+      const res = await CategoryService.getAll(query, {
+        cache: "no-store",
+      });
+
+      setCategories(res.data || []);
+    } catch (error) {
+      toast.error("Không thể tải danh sách phân mục.");
     }
   };
 
   useEffect(() => {
     fetchCategories();
-    fetchDirectories();
-  }, []);
+  }, [filter]);
 
-  // Hàm xóa category
-  const handleDeleteCategory = async (id) => {
-    const res = await apiDeleteCategory(id);
-    if (res.data.success) {
-      fetchCategories(); // Gọi lại fetch để cập nhật danh sách sau khi xóa
-      toast.success("Xóa thành công!");
-    } else {
-      console.log("Lỗi khi xóa category!");
-    }
+  const handleDelete = (id) => {
+    startTransition(async () => {
+      try {
+        const res = await CategoryService.delete(id);
+
+        if (!res.success) {
+          toast.error(res.message || "Xóa thất bại.");
+          return;
+        }
+
+        toast.success("Xóa phân mục thành công.");
+
+        setCategories((prev) => prev.filter((item) => item._id !== id));
+      } catch (error) {
+        console.error(error);
+        toast.error("Có lỗi xảy ra.");
+      }
+    });
   };
 
-  // Tính toán số lượng directories liên quan đến mỗi category
-  const categoryCount = categories.map((category) => {
-    const relatedDirectories = directories.filter(
-      (directory) => directory.category.some((cat) => cat._id === category._id), // Kiểm tra xem _id của category có trong mảng directory.category hay không
-    );
-    console.log("relatedDirectories: ", relatedDirectories);
-    return {
-      ...category,
-      relatedDirectoriesCount: relatedDirectories.length, // Số lượng directory liên quan
-    };
-  });
-
   return (
-    <div className="p-6">
+    <div className="space-y-6">
       {/* Header */}
-      <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
-        <h2 className="text-2xl font-semibold text-gray-800">
-          Danh sách phân mục
-        </h2>
-
-        <div className="text-sm bg-gray-100 text-gray-700 px-4 py-2 rounded-full shadow-sm">
-          Tổng số: <strong>{categories.length}</strong> phân mục
+      <div className="flex flex-wrap items-center justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold">Quản lý phân mục</h1>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Tổng cộng {categories.length} phân mục
+          </p>
         </div>
 
-        <Button
-          onClick={() => router.push("/admin/category/create")}
-          className="flex items-center gap-2"
-        >
-          <Plus className="w-4 h-4" />
-          Thêm phân mục
-        </Button>
+        <div className="flex items-center gap-3">
+          <Select value={filter} onValueChange={setFilter}>
+            <SelectTrigger className="w-58 bg-amber-50 border border-gray-300 rounded-md px-2">
+              <SelectValue />
+            </SelectTrigger>
+
+            <SelectContent>
+              <SelectItem value="all">Tất cả phân mục</SelectItem>
+              <SelectItem value="news">Tin tức & Tài liệu</SelectItem>
+              <SelectItem value="product">Sản phẩm</SelectItem>
+            </SelectContent>
+          </Select>
+
+          <Button onClick={() => router.push("/admin/category/create")}>
+            <Plus className="mr-2 h-4 w-4" />
+            Thêm phân mục
+          </Button>
+        </div>
       </div>
 
-      {/* Nội dung */}
+      {/* List */}
       {categories.length === 0 ? (
-        <div className="text-center text-gray-500">Chưa có phân mục nào.</div>
+        <div className="rounded-xl border border-dashed py-16 text-center text-muted-foreground">
+          Chưa có phân mục nào.
+        </div>
       ) : (
-        <div className="space-y-6">
-          {categoryCount.map((item) => (
+        <div className="grid gap-5 lg:grid-cols-2 xl:grid-cols-3">
+          {categories.map((item) => (
             <div
               key={item._id}
-              className="bg-white border rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 p-6"
+              className="rounded-xl border bg-white p-5 shadow-sm transition hover:shadow-md"
             >
-              <div className="mb-4">
-                <h3 className="text-xl font-semibold text-gray-800 mb-2 truncate">
+              <div className="space-y-2">
+                <h2 className="line-clamp-2 text-lg font-semibold">
                   {item.title}
-                </h3>
-                <p className="text-sm text-gray-500">
-                  Gắn với {item.relatedDirectoriesCount || 0} danh mục
+                </h2>
+
+                <p className="text-sm text-muted-foreground">
+                  Slug: {item.slug}
                 </p>
+
+                <div className="space-y-1 pt-3 text-sm text-muted-foreground">
+                  <p>Tạo: {formatDate(item.createdAt)}</p>
+                  <p>Cập nhật: {formatDate(item.updatedAt)}</p>
+                </div>
               </div>
 
-              <div className="text-sm text-gray-500">
-                <p>
-                  <strong>Ngày tạo: </strong>
-                  {formatDate(item.createdAt)}
-                </p>
-                <p>
-                  <strong>Ngày cập nhật: </strong>
-                  {formatDate(item.updatedAt)}
-                </p>
-              </div>
-
-              <div className="mt-4 flex justify-between">
+              <div className="mt-5 flex gap-3">
                 <Button
-                  onClick={() =>
-                    router.push(`/admin/category/edit/${item._id}`)
-                  }
-                  className="bg-slate-50 text-black hover:bg-slate-100 border shadow-md w-32"
+                  variant="outline"
+                  className="flex-1"
+                  onClick={() => router.push(`/admin/category/${item.slug}`)}
                 >
                   Chỉnh sửa
                 </Button>
-                <DeleteConfirmDialog
-                  onConfirm={() => handleDeleteCategory(item._id)}
-                >
-                  <Button variant="destructive">Xoá</Button>
+
+                <DeleteConfirmDialog onConfirm={() => handleDelete(item._id)}>
+                  <Button variant="destructive" disabled={isPending}>
+                    Xóa
+                  </Button>
                 </DeleteConfirmDialog>
               </div>
             </div>
@@ -142,6 +154,4 @@ const Category = () => {
       )}
     </div>
   );
-};
-
-export default Category;
+}

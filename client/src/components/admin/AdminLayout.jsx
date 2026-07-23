@@ -8,9 +8,9 @@ const AdminLayout = () => {
   return (
     <div className="flex h-screen text-white">
       <Sidebar />
-      <div className="flex-1 p-6 overflow-y-auto text-slate-900 shadow-inner">
+      <div className="flex-1 overflow-y-auto p-6 text-slate-900 shadow-inner">
         <Header />
-        <div className="mt-6">
+        <div className="flex-1 mt-6 ">
           <Outlet />
         </div>
       </div>

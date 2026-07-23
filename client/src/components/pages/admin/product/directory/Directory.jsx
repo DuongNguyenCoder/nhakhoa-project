@@ -4,7 +4,7 @@ import { apiDeleteDirectory, apiGetDirectory } from "@/apis/DirectoryAPI";
 import { toast } from "react-toastify";
 import DeleteConfirmDialog from "@/components/common/DeleteConfirmDialog";
 import { useRouter } from "next/navigation";
-import DirectoryService from "@/services/directory.service";
+import { DirectoryService } from "@/services/directory.service";
 
 const formatDate = (dateStr) => {
   const date = new Date(dateStr);
@@ -90,9 +90,7 @@ const Directory = () => {
               <div className="flex gap-2">
                 <Button
                   variant="outline"
-                  onClick={() =>
-                    router.push(`/admin/directory/edit/${item._id}`)
-                  }
+                  onClick={() => router.push(`/admin/directory/${item.slug}`)}
                 >
                   Chỉnh sửa
                 </Button>

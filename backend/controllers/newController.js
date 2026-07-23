@@ -3,7 +3,7 @@ const New = require("../models/new");
 
 const addNew = async (req, res) => {
   const newPicFile = req.files?.newPic?.[0];
-  const pdfFile = req.files?.pdfUrl?.[0];
+  const pdfFile = req.files?.pdfFile?.[0];
 
   if (!newPicFile) {
     return res.status(400).json({
@@ -12,38 +12,51 @@ const addNew = async (req, res) => {
     });
   }
 
-  const newRecord = await New.create({
-    ...req.body,
+  const hasPdf = req.body.hasPdf === "true";
+  const payload = {
+    title: req.body.title,
+    slug: req.body.slug,
+    overview: req.body.overview,
+    category: req.body.category,
+    featured: req.body.featured === "true",
+    isActive: req.body.isActive === "true",
+    hasPdf,
+
     newPic: newPicFile.path,
-    ...(pdfFile ? { pdfUrl: pdfFile.path } : {}),
-  });
 
-  const uploadResponse = await v2.uploader.upload(newPicFile.path, {
-    public_id: `new_${newRecord._id}`,
-    overwrite: true,
-    folder: "app/new",
-  });
-
-  const updateData = {
-    newPic: uploadResponse.secure_url,
+    description: hasPdf ? "" : req.body.description || "",
+    pdfFile: hasPdf && pdfFile ? pdfFile.path : "",
   };
 
-  if (pdfFile) {
-    const uploadPdf = await v2.uploader.upload(pdfFile.path, {
-      public_id: `pdf_${newRecord._id}`,
-      overwrite: true,
-      folder: "app/pdf",
-    });
-    updateData.pdfUrl = uploadPdf.secure_url;
-  }
+  const newRecord = await New.create(payload);
 
-  const updatedRecord = await New.findByIdAndUpdate(newRecord._id, updateData, {
-    new: true,
-  });
+  // const uploadResponse = await v2.uploader.upload(newPicFile.path, {
+  //   public_id: `new_${newRecord._id}`,
+  //   overwrite: true,
+  //   folder: "app/new",
+  // });
+
+  // const updateData = {
+  //   newPic: uploadResponse.secure_url,
+  // };
+
+  // if (pdfFile) {
+  //   const uploadPdf = await v2.uploader.upload(pdfFile.path, {
+  //     resource_type: "raw",
+  //     public_id: `pdf_${newRecord._id}`,
+  //     overwrite: true,
+  //     folder: "app/pdf",
+  //   });
+  //   updateData.pdfFile = uploadPdf.secure_url;
+  // }
+
+  // const updatedRecord = await New.findByIdAndUpdate(newRecord._id, updateData, {
+  //   new: true,
+  // });
 
   return res.json({
-    success: Boolean(updatedRecord),
-    mes: Boolean(updatedRecord)
+    success: Boolean(newRecord),
+    mes: Boolean(newRecord)
       ? "thêm thành công."
       : "xảy ra một lỗi vui lòng thử lại.",
   });
@@ -51,7 +64,7 @@ const addNew = async (req, res) => {
 
 const updateNew = async (req, res) => {
   const newPicFile = req.files?.newPic?.[0];
-  const pdfFile = req.files?.pdfUrl?.[0];
+  const pdfFile = req.files?.pdfFile?.[0];
 
   if (!newPicFile) {
     return res.status(400).json({
@@ -60,27 +73,44 @@ const updateNew = async (req, res) => {
     });
   }
 
-  const uploadResponse = await v2.uploader.upload(newPicFile.path, {
-    public_id: `new_${req.params.id}`,
-    overwrite: true,
-    folder: "app/new",
-  });
+  // const uploadResponse = await v2.uploader.upload(newPicFile.path, {
+  //   public_id: `new_${req.params.id}`,
+  //   overwrite: true,
+  //   folder: "app/new",
+  // });
 
-  const updateData = {
-    ...req.body,
-    newPic: uploadResponse.secure_url,
+  // const updateData = {
+  //   ...req.body,
+  //   newPic: uploadResponse.secure_url,
+  // };
+
+  // if (pdfFile) {
+  //   const uploadPdf = await v2.uploader.upload(pdfFile.path, {
+  //     public_id: `pdf_${req.params.id}`,
+  //     overwrite: true,
+  //     folder: "app/pdf",
+  //   });
+  //   updateData.pdfFile = uploadPdf.secure_url;
+  // }
+
+  const hasPdf = req.body.hasPdf === "true";
+
+  const payload = {
+    title: req.body.title,
+    slug: req.body.slug,
+    overview: req.body.overview,
+    category: req.body.category,
+    featured: req.body.featured === "true",
+    isActive: req.body.isActive === "true",
+    hasPdf,
+
+    newPic: newPicFile.path,
+
+    description: hasPdf ? "" : req.body.description || "",
+    pdfFile: hasPdf && pdfFile ? pdfFile.path : "",
   };
 
-  if (pdfFile) {
-    const uploadPdf = await v2.uploader.upload(pdfFile.path, {
-      public_id: `pdf_${req.params.id}`,
-      overwrite: true,
-      folder: "app/pdf",
-    });
-    updateData.pdfUrl = uploadPdf.secure_url;
-  }
-
-  const response = await New.findByIdAndUpdate(req.params.id, updateData, {
+  const response = await New.findByIdAndUpdate(req.params.id, payload, {
     new: true,
   });
 
@@ -89,6 +119,7 @@ const updateNew = async (req, res) => {
     mes: Boolean(response) ? "sửa thành công." : "loại tin tức không tồn tại.",
   });
 };
+
 const deleteNew = async (req, res) => {
   const response = await New.findByIdAndDelete(req.params.id);
   return res.json({
@@ -105,12 +136,12 @@ const getAll = async (req, res) => {
     category,
     search,
     description,
-    status,
+    isActive,
   } = req.query;
   const queries = {};
   if (title) queries.title = { $regex: new RegExp(title, "i") };
-  if (status) queries.status = status;
-  if (category) queries.category = { $regex: new RegExp(category, "i") };
+  if (category) queries.category = category;
+  if (isActive !== undefined) queries.isActive = isActive === "true";
   if (description)
     queries.description = { $regex: new RegExp(description, "i") };
   if (search) {
@@ -123,7 +154,7 @@ const getAll = async (req, res) => {
 
   const total = await New.countDocuments(queries);
   const totalPages = Math.ceil(total / limit);
-  const news = await New.find()
+  const news = await New.find(queries)
     .skip(Math.round(Math.max(page - 1, 0)) * limit)
     .limit(limit)
     .sort(sort);

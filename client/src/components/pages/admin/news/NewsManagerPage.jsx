@@ -152,9 +152,7 @@ export default function NewsManagerPage() {
                       <Eye className="h-5 w-5 text-blue-500" />
                     </Button>
                     <Button
-                      onClick={() =>
-                        router.push(`/admin/news/edit/${item._id}`)
-                      }
+                      onClick={() => router.push(`/admin/news/${item.slug}`)}
                       variant="ghost"
                       size="icon"
                     >

@@ -79,7 +79,11 @@ export async function http(options = {}, schema) {
     : null;
 
   if (!res.ok) {
-    throw new HttpError(res.status, data?.message || "Request failed", data);
+    throw new HttpError(
+      res.status,
+      data?.message || data?.mes || "Request failed",
+      data,
+    );
   }
 
   return schema ? schema.parse(data) : data;

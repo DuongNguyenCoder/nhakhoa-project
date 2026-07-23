@@ -21,7 +21,7 @@ const addDirectory = async (req, res) => {
       ...req.body,
       directoryPic: uploadResponse.secure_url,
     },
-    { new: true }
+    { new: true },
   );
   return res.json({
     success: Boolean(response),
@@ -31,6 +31,19 @@ const addDirectory = async (req, res) => {
   });
 };
 const updateDirectory = async (req, res) => {
+  const mongoose = require("mongoose");
+
+  console.log(
+    Directory.collection === mongoose.connection.db.collection("directories"),
+  );
+
+  console.log(Directory.collection.collectionName);
+
+  console.log(Directory.collection.dbName);
+
+  console.log(Directory.collection.namespace);
+
+  console.log(mongoose.connection.db.databaseName);
   const uploadResponse = await v2.uploader.upload(req.file.path, {
     public_id: `directory_${req.params.id}`,
     overwrite: true,
@@ -41,7 +54,7 @@ const updateDirectory = async (req, res) => {
     { ...req.body, directoryPic: uploadResponse.secure_url },
     {
       new: true,
-    }
+    },
   );
   return res.json({
     success: Boolean(response),
@@ -60,6 +73,7 @@ const getAll = async (req, res) => {
     path: "category",
     model: Category,
   });
+
   return res.json({
     success: Boolean(response),
     mes: Boolean(response) ? "thành công." : "không có danh mục.",
@@ -67,4 +81,21 @@ const getAll = async (req, res) => {
   });
 };
 
-module.exports = { addDirectory, updateDirectory, deleteDirectory, getAll };
+const getOne = async (req, res) => {
+  const response = await Directory.findOne({ slug: req.params.slug });
+  return res.json({
+    success: Boolean(response),
+    message: Boolean(response)
+      ? "Lấy directory thành công"
+      : "Lấy directory thất bại.",
+    data: response,
+  });
+};
+
+module.exports = {
+  addDirectory,
+  updateDirectory,
+  deleteDirectory,
+  getAll,
+  getOne,
+};

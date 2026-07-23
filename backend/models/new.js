@@ -12,24 +12,32 @@ var newSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
+    overview: {
+      type: String,
+      require: false,
+    },
     description: {
       type: String,
-      // required: true,
+      required: false,
     },
     newPic: {
       type: String,
       required: true,
     },
-    category: {
-      type: String,
-      // required: true,
+    category: { type: mongoose.Types.ObjectId, ref: "Category" },
+    isActive: {
+      type: Boolean,
+      default: true,
     },
-    status: {
-      type: String,
-      enum: ["ENABLE", "DISABLE"],
-      default: "DISABLE",
+    featured: {
+      type: Boolean,
+      default: false,
     },
-    pdfUrl: {
+    hasPdf: {
+      type: Boolean,
+      default: false,
+    },
+    pdfFile: {
       type: String,
     },
   },

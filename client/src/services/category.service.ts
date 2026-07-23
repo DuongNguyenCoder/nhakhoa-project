@@ -1,37 +1,37 @@
-import { http } from "@/lib/http";
+import { http } from "../lib/http";
 
-export const NewService = {
+export const CategoryService = {
   getAll: (query, init) =>
     http({
-      path: "/new",
+      path: "/category",
       method: "GET",
       query,
       init,
     }),
 
-  getBySlug: (slug, init) =>
+  getOne: (slug, init) =>
     http({
-      path: `/new/${slug}`,
+      path: `/category/${slug}`,
       method: "GET",
-      init,
+      init: {
+        ...init,
+        tag: [`news/${slug}`],
+      },
     }),
 
-  create: ({ data, cookieHeader }) =>
+  create: (data) =>
     http({
-      path: "/new/create",
+      path: "/category/create",
       method: "POST",
       body: data,
-      headers: {
-        Cookie: cookieHeader,
-      },
       init: {
         cache: "no-store",
       },
     }),
 
-  update: ({ id, data }) =>
+  update: (id, data) =>
     http({
-      path: `/new/update/${id}`,
+      path: `/category/update/${id}`,
       method: "PUT",
       body: data,
       init: {
@@ -41,7 +41,7 @@ export const NewService = {
 
   delete: (id) =>
     http({
-      path: `/new/delete/${id}`,
+      path: `/category/delete/${id}`,
       method: "DELETE",
       init: {
         cache: "no-store",

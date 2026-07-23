@@ -7,40 +7,39 @@ const { upload } = require("../configs/cloudinary");
 const Joi = require("joi");
 
 router.post(
-  "/add-directory",
+  "/create",
   verifyToken,
   isAdmin,
   upload.single("directoryPic"),
   validateInfo(
     Joi.object({
       title: stringReq,
+      slug: stringReq,
       category,
       directoryPic: file,
-    })
+    }),
   ),
-  ctrl.addDirectory
+  ctrl.addDirectory,
 );
 router.put(
-  "/update-directory/:id",
+  "/update/:id",
   verifyToken,
   isAdmin,
   upload.single("directoryPic"),
   validateInfo(
     Joi.object({
       title: stringReq,
+      slug: stringReq,
       category,
       directoryPic: file,
-    })
+    }),
   ),
-  ctrl.updateDirectory
+  ctrl.updateDirectory,
 );
-router.delete(
-  "/delete-directory/:id",
-  verifyToken,
-  isAdmin,
-  ctrl.deleteDirectory
-);
+router.delete("/delete/:id", verifyToken, isAdmin, ctrl.deleteDirectory);
 
 router.get("", ctrl.getAll);
+
+router.get("/:slug", ctrl.getOne);
 
 module.exports = router;

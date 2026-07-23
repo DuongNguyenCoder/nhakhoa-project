@@ -9,6 +9,11 @@ var directorySchema = new mongoose.Schema(
       unique: true,
       index: true,
     },
+    slug: {
+      type: String,
+      required: true,
+      unique: true,
+    },
     category: [
       { type: mongoose.Types.ObjectId, ref: "Category", required: true },
     ],

@@ -1,32 +1,14 @@
-"use client";
-
-import { apiGetNew } from "@/apis/NewsAPI";
-import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
-import { Navigation } from "swiper/modules";
-import { Swiper, SwiperSlide } from "swiper/react";
-import Link from "next/link";
+import { NewService } from "@/services/new.service";
+import NewsCard from "@/components/ui/news-card";
 
-export default function NewDetailView({ news }) {
-  const [allNews, setAllNews] = useState([]);
+export default async function NewDetailView({ news }) {
+  const resNews = await NewService.getAll(
+    { isActive: true, limit: 5, page: 1, category: news.category },
+    { revalidate: 600, tags: ["news-list"] },
+  );
 
-  useEffect(() => {
-    const fetchNewsDetail = async () => {
-      try {
-        const rs = await apiGetNew();
-
-        if (!rs?.data?.success) return;
-
-        const newsData = rs.data.data || [];
-
-        setAllNews(newsData);
-      } catch (err) {
-        console.error("Lỗi lấy tin tức:", err);
-      }
-    };
-
-    fetchNewsDetail();
-  }, [news]);
+  const relatedNews = resNews.data || [];
 
   const formatDate = (dateStr) => {
     return new Intl.DateTimeFormat("vi-VN", {
@@ -36,13 +18,10 @@ export default function NewDetailView({ news }) {
     }).format(new Date(dateStr));
   };
 
-  const relatedNews = useMemo(() => {
-    if (!news?._id) return [];
-
-    return allNews.filter(
-      (item) => item.category === news.category && item._id !== news._id,
-    );
-  }, [allNews, news]);
+  const downloadUrl = news.pdfFile.replace(
+    "/upload/",
+    "/upload/fl_attachment:TaiLieuMinhDental/",
+  );
 
   if (!news) {
     return (
@@ -53,115 +32,124 @@ export default function NewDetailView({ news }) {
   }
 
   return (
-    <div className="mx-auto max-w-4xl space-y-10 rounded-[32px] bg-slate-50/90 px-5 py-10 md:px-8 md:py-16">
+    <div className="w-full bg-slate-50/90 px-5 py-3">
       {/* Header */}
-      <div className="space-y-4 text-center">
-        <h1 className="text-3xl font-bold leading-tight tracking-tight text-gray-800 md:text-5xl">
-          {news.title}
-        </h1>
-
-        <p className="text-sm text-gray-500 md:text-base">
-          🗓️ {formatDate(news.createdAt)}
-          <span className="mx-2 text-gray-300">|</span>
-          🏷️ <span className="font-medium text-blue-600">{news.category}</span>
-        </p>
-      </div>
-
-      {/* Cover Image */}
-      <div className="relative h-[240px] w-full overflow-hidden rounded-[28px] shadow-md md:h-[420px]">
+      <div className="relative aspect-video overflow-hidden rounded-3xl">
         <Image
           src={news.newPic}
           alt={news.title}
           fill
           priority
-          sizes="(max-width: 768px) 100vw, 1024px"
-          className="object-cover object-center transition-transform duration-700 hover:scale-105"
+          sizes="100vw"
+          className="object-cover"
         />
       </div>
 
+      <div className="w-full flex flex-col justify-center items-center space-y-1 py-5 md:px-3">
+        <h1 className="text-2xl font-bold leading-tight text-slate-900 sm:text-3xl xl:text-4xl">
+          {news.title}
+        </h1>
+
+        <div className="flex flex-wrap items-center gap-3 text-sm uppercase tracking-wide text-slate-500">
+          <span>
+            Posted on{" "}
+            <strong className="font-semibold text-slate-700">
+              {formatDate(news.createdAt)}
+            </strong>
+          </span>
+
+          <span>•</span>
+
+          <span>
+            By{" "}
+            <span className="font-semibold text-[#9c1d22]">MINHDENTAL.COM</span>
+          </span>
+        </div>
+      </div>
+
       {/* Content */}
-      <article
-        className="
-          prose prose-gray max-w-none
-          prose-headings:text-gray-800
-          prose-headings:font-bold
-          prose-p:text-gray-700
-          prose-p:leading-8
-          prose-a:text-blue-600
-          prose-strong:text-gray-900
-          prose-li:text-gray-700
-          prose-img:rounded-2xl
-          prose-img:shadow-md
-          prose-img:w-full
-          prose-img:max-h-[500px]
-          prose-img:object-cover
-          prose-h1:text-3xl
-          prose-h2:text-2xl
-          prose-h3:text-xl
-          prose-table:block
-          prose-table:overflow-x-auto
-        "
-        dangerouslySetInnerHTML={{
-          __html: news.description || "",
-        }}
-      />
+      {news.hasPdf ? (
+        <section className="space-y-6">
+          <div className="rounded-3xl border bg-white p-8 shadow-sm">
+            <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+              <div className="flex items-center gap-5">
+                <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-red-50">
+                  📄
+                </div>
 
-      {/* Related News */}
-      <section className="border-t border-gray-200 pt-10">
-        <h2 className="mb-8 text-2xl font-bold text-gray-800">
-          📰 Tin tức liên quan
-        </h2>
+                <div>
+                  <h2 className="text-xl font-semibold">Tài liệu PDF</h2>
 
-        {relatedNews.length > 0 ? (
-          <Swiper
-            spaceBetween={20}
-            slidesPerView={1.1}
-            navigation
-            modules={[Navigation]}
-            breakpoints={{
-              640: {
-                slidesPerView: 2,
-              },
-              1024: {
-                slidesPerView: 3,
-              },
-            }}
-            className="!pb-10"
-          >
-            {relatedNews.map((item) => (
-              <SwiperSlide key={item._id}>
-                <Link
-                  href={`/tin-tuc-va-khuyen-mai/${item._id}`}
-                  className="group block overflow-hidden rounded-2xl bg-white shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+                  <p className="mt-1 text-sm text-slate-500">
+                    Xem trực tuyến hoặc tải tài liệu về thiết bị.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex gap-3">
+                <a
+                  href={news.pdfFile}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rounded-xl border px-5 py-3 font-medium hover:bg-slate-100"
                 >
-                  <div className="relative h-44 overflow-hidden">
-                    <Image
-                      src={item.newPic}
-                      alt={item.title}
-                      fill
-                      sizes="400px"
-                      className="object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
-                  </div>
+                  Xem PDF
+                </a>
 
-                  <div className="space-y-2 p-4">
-                    <h3 className="line-clamp-2 text-lg font-semibold text-gray-800 transition-colors group-hover:text-red-600">
-                      {item.title}
-                    </h3>
+                <a
+                  href={downloadUrl}
+                  className="rounded-xl bg-[#9c1d22] px-5 py-3 font-medium text-white transition hover:bg-[#7d171b]"
+                >
+                  Tải xuống
+                </a>
+              </div>
+            </div>
+          </div>
 
-                    <p className="text-sm text-gray-500">
-                      {formatDate(item.createdAt)}
-                    </p>
-                  </div>
-                </Link>
-              </SwiperSlide>
+          <div className="overflow-hidden rounded-3xl border bg-white shadow-sm">
+            <iframe
+              src={`${news.pdfFile}#toolbar=1`}
+              className="h-[900px] w-full"
+            />
+          </div>
+        </section>
+      ) : (
+        <article
+          className="
+    prose prose-slate
+    max-w-none
+    prose-headings:font-bold
+    prose-headings:text-slate-900
+    prose-p:text-slate-700
+    prose-p:leading-8
+    prose-img:rounded-2xl
+    prose-img:shadow-md
+    prose-img:w-full
+    prose-img:max-h-[600px]
+    prose-img:object-cover
+  "
+          dangerouslySetInnerHTML={{
+            __html: news.description,
+          }}
+        />
+      )}
+      {/* Related News */}
+      <section className="space-y-8 pt-12">
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className="text-3xl font-bold">Tin tức liên quan</h2>
+
+            <p className="mt-2 text-slate-500">Có thể bạn sẽ quan tâm</p>
+          </div>
+        </div>
+
+        <div className="space-y-5">
+          {relatedNews
+            .filter((item) => item._id !== news._id)
+            .map((item) => (
+              <NewsCard key={item._id} news={item} />
             ))}
-          </Swiper>
-        ) : (
-          <p className="text-center text-gray-500">
-            Không có tin tức liên quan...
-          </p>
-        )}
+        </div>
       </section>
     </div>
   );

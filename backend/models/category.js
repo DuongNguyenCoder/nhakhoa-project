@@ -8,8 +8,17 @@ var categorySchema = new mongoose.Schema(
       unique: true,
       index: true,
     },
+    slug: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    isNews: {
+      type: Boolean,
+      default: false,
+    },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 //Export the model

@@ -5,40 +5,39 @@ import { Button } from "@/components/ui/button";
 import { apiAddProduct } from "@/apis/ProductAPI";
 import { toast } from "react-toastify";
 import { apiGetDirectory } from "@/apis/DirectoryAPI";
-import { apiGetCategory } from "@/apis/CategoryAPI";
 import DescriptionBuilder from "@/components/common/DescriptionBuilder";
 import { useRouter } from "next/navigation";
 import slugify from "slugify";
+import { Loader } from "lucide-react";
+
+const defaultValue = {
+  title: "",
+  slug: "",
+  originalPrice: "",
+  salePrice: "",
+  quantity: "",
+  brand: "",
+  origin: "",
+  isLiquidation: false,
+  isFeatured: false,
+  directory: "",
+  category: "",
+  introduce: "",
+  description: "",
+  productPics: [],
+};
 
 const CreateProduct = () => {
   const router = useRouter();
   const [directories, setDirectories] = useState([]);
-  const [categories, setCategoriest] = useState([]);
-  const [form, setForm] = useState({
-    title: "",
-    slug: "",
-    originalPrice: "",
-    salePrice: "",
-    quantity: "",
-    brand: "",
-    origin: "",
-    isLiquidation: false,
-    isFeatured: false,
-    directory: "",
-    category: [],
-    introduce: "",
-    description: "",
-    productPics: [],
-  });
+  const [form, setForm] = useState(defaultValue);
   const [previews, setPreviews] = useState([]);
   const [initialized, setInitialized] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     apiGetDirectory().then((res) => {
       if (res.data.success) setDirectories(res.data.data);
-    });
-    apiGetCategory().then((res) => {
-      if (res.data.success) setCategoriest(res.data.data);
     });
   }, []);
 
@@ -59,7 +58,21 @@ const CreateProduct = () => {
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setForm({ ...form, [name]: type === "checkbox" ? checked : value });
+
+    setForm((prev) => {
+      if (name === "directory") {
+        return {
+          ...prev,
+          directory: value,
+          category: "",
+        };
+      }
+
+      return {
+        ...prev,
+        [name]: type === "checkbox" ? checked : value,
+      };
+    });
   };
 
   const handleImageUpload = (e) => {
@@ -69,7 +82,15 @@ const CreateProduct = () => {
     setPreviews([...previews]);
   };
 
+  const activeDirectory = directories.find(
+    (item) => item._id === form.directory,
+  );
+
+  const categories = activeDirectory?.category || [];
+
   const handleSubmit = async (e) => {
+    setLoading(true);
+
     e.preventDefault();
     const submitData = new FormData();
 
@@ -83,9 +104,7 @@ const CreateProduct = () => {
     submitData.append("isLiquidation", form.isLiquidation);
     submitData.append("isFeatured", form.isFeatured);
     submitData.append("directory", form.directory);
-    if (Array.isArray(form.category) && form.category.length > 0) {
-      form.category.forEach((cat) => submitData.append("category", cat));
-    }
+    if (form.category) submitData.append("category", form.category);
     submitData.append("introduce", form.introduce);
     submitData.append("description", form.description);
     form.productPics.forEach((file) => submitData.append("productPics", file));
@@ -95,12 +114,16 @@ const CreateProduct = () => {
       if (res.data.success) {
         router.push("/admin/product");
         toast.success("Thêm sản phẩm thành công!");
+        setForm(defaultValue);
+        setLoading(false);
       } else {
         toast.error("Lỗi thêm sản phẩm!");
       }
     } catch (err) {
       console.error(err);
       toast.error("Không để trống hoặc sản phẩm đã tồn tại!");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -235,7 +258,7 @@ const CreateProduct = () => {
               </select>
             </div>
 
-            {/* <div>
+            <div>
               <label className="block text-sm font-medium text-gray-700">
                 Phân mục
               </label>
@@ -252,7 +275,7 @@ const CreateProduct = () => {
                   </option>
                 ))}
               </select>
-            </div> */}
+            </div>
 
             <div className="flex items-center gap-4">
               <label className="flex items-center gap-2 text-sm text-gray-700">
@@ -283,7 +306,7 @@ const CreateProduct = () => {
                 name="introduce"
                 value={form.introduce}
                 onChange={handleInputChange}
-                rows="3"
+                rows={3}
                 className="mt-1 w-full rounded border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none"
               />
             </div>
@@ -346,9 +369,13 @@ const CreateProduct = () => {
         <div>
           <Button
             type="submit"
-            className="w-full rounded bg-blue-600 py-3 text-lg font-semibold text-white hover:bg-blue-700"
+            className="w-full rounded bg-blue-600 py-3 text-base font-semibold text-white hover:bg-blue-700"
           >
-            Tạo sản phẩm
+            {loading ? (
+              <Loader className="size-6 animate-spin" />
+            ) : (
+              "Thêm sản phẩm"
+            )}
           </Button>
         </div>
       </form>
