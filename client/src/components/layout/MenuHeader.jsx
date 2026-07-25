@@ -35,10 +35,10 @@ const MenuHeader = () => {
 
   return (
     <div className=" h-14 md:h-[60px] border-b border-[#9c1d22]/20 bg-[#9c1d22] shadow-sm">
-      <div className=" mx-auto flex h-full w-full max-w-screen-2xl items-center justify-between px-3 md:px-6">
+      <div className=" mx-auto flex h-full w-full max-w-screen-2xl items-center justify-between px-3 md:px-6 lg:px-2 xl:px-6">
         {/* Desktop */}
         <nav className="hidden lg:flex flex-1">
-          <ul className="flex items-center gap-1 lg:gap-2">
+          <ul className="flex items-center gap-1 xl:gap-2.5">
             {NavLinks.map((link) => {
               if (!link.childItems) {
                 return (
