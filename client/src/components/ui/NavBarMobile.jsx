@@ -104,14 +104,14 @@ const NavBarMobile = () => {
               </div>
 
               {/* Menu */}
-              <div className="flex min-h-0 flex-1 flex-col overflow-y-auto">
+              <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain scrollbar-thin">
                 <div className="px-4 py-5">
-                  <p className="mb-4 text-xs font-semibold uppercase tracking-widest text-[#9c1d22]/70">
+                  <p className="text-xs font-semibold uppercase tracking-widest text-[#9c1d22]/70">
                     Điều hướng
                   </p>
                 </div>
 
-                <div className="space-y-1">
+                <div className="space-y-1 px-0 pb-5">
                   {NavLinks.map((link) =>
                     link.childItems ? (
                       <ProductMenu
@@ -134,7 +134,7 @@ const NavBarMobile = () => {
                 </div>
 
                 {/* Contact */}
-                <div className="mt-auto border-t border-gray-100 px-4 py-5">
+                {/* <div className="mt-auto border-t border-gray-100 px-4 py-5">
                   <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-[#9c1d22]/70">
                     Liên hệ
                   </p>
@@ -151,6 +151,23 @@ const NavBarMobile = () => {
                       vatlieunhakhoaminh@gmail.com
                     </a>
                   </div>
+                </div> */}
+              </div>
+
+              <div className="shrink-0 border-t border-gray-100 bg-white px-4 py-5">
+                <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-[#9c1d22]/70">
+                  Liên hệ
+                </p>
+                <div className="space-y-2 text-sm text-gray-700">
+                  <a href="tel:(+84 4) 3852 3643" className="block">
+                    Hotline: (+84 4) 3852 3643
+                  </a>
+                  <a
+                    href="mailto:vatlieunhakhoaminh@gmail.com"
+                    className="block break-all"
+                  >
+                    vatlieunhakhoaminh@gmail.com
+                  </a>
                 </div>
               </div>
             </DialogPanel>

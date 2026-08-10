@@ -45,7 +45,7 @@ const MenuHeader = () => {
                   <li key={link.title}>
                     <Link
                       href={link.href}
-                      className="relative flex items-center px-2 xl:px-4 py-5 text-[13px] xl:text-sm font-semibold uppercase text-white
+                      className="relative flex items-center px-2 xl:px-4 py-5 text-[12px] xl:text-sm font-semibold uppercase text-white
               after:absolute after:bottom-2 after:left-4 after:h-[2px]
               after:w-0 after:bg-yellow-300 after:transition-all
               hover:after:w-[calc(100%-2rem)]"
@@ -79,7 +79,7 @@ ${isMegaMenu ? "w-[900px] xl:w-[1100px] -ml-24 xl:-ml-0" : "min-w-[320px]"}
                 >
                   <Link
                     href={link.href}
-                    className="relative flex items-center px-2 xl:px-4 py-5 text-[13px] xl:text-sm font-semibold uppercase text-white
+                    className="relative flex items-center px-2 xl:px-4 py-5 text-[12px] xl:text-sm font-semibold uppercase text-white
             after:absolute after:bottom-2 after:left-4 after:h-[2px]
             after:w-0 after:bg-yellow-300 after:transition-all
             hover:after:w-[calc(100%-2rem)]"

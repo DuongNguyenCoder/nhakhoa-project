@@ -5,13 +5,6 @@ import { useState } from "react";
 import { ChevronDown, ChevronRight } from "lucide-react";
 
 import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
-
-import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
@@ -20,31 +13,62 @@ import {
 export default function ProductMenu({
   title,
   href,
-  directories,
+  directories = [],
   onClose,
   childData = [],
 }) {
+  // ProductMenu parent open/close
+  const [openMenu, setOpenMenu] = useState(false);
+
+  // Directory category open/close
   const [openDirectory, setOpenDirectory] = useState(null);
 
-  const toggleDirectory = (id) => {
-    setOpenDirectory((prev) => (prev === id ? null : id));
+  const hasChildData = childData.length > 0;
+
+  // Nếu có childData thì chỉ dùng childData.
+  // Nếu không thì dùng directories.
+  const items = hasChildData ? childData : directories;
+
+  const handleMenuToggle = () => {
+    setOpenMenu((prev) => {
+      const next = !prev;
+
+      // Khi đóng ProductMenu thì đóng luôn directory đang mở
+      if (!next) {
+        setOpenDirectory(null);
+      }
+
+      return next;
+    });
   };
 
-  const hasChildData = childData.length;
-
-  const items = childData.length > 0 ? childData : directories;
-
-  console.log("Check directory ====> ", directories);
+  const handleDirectoryChange = (id, isOpen) => {
+    setOpenDirectory(isOpen ? id : null);
+  };
 
   return (
-    <Accordion type="single" collapsible>
-      <AccordionItem value="products" className="bg-gray-100 px-3">
-        <AccordionTrigger className="py-4 hover:no-underline">
-          <span className="text-[15px] font-medium text-gray-800">{title}</span>
-        </AccordionTrigger>
+    <div className="w-full">
+      {/* ================= PARENT ================= */}
+      <button
+        type="button"
+        onClick={handleMenuToggle}
+        className="flex w-full items-center justify-between rounded-lg px-3 py-3 text-left text-sm font-semibold text-gray-800 hover:bg-gray-50"
+        aria-expanded={openMenu}
+      >
+        <span>{title}</span>
 
-        <AccordionContent className="pb-2">
-          {!childData.length && (
+        {openMenu ? (
+          <ChevronDown className="h-4 w-4 shrink-0" />
+        ) : (
+          <ChevronRight className="h-4 w-4 shrink-0" />
+        )}
+      </button>
+
+      {/* ================= CHILD DATA ================= */}
+      {openMenu && (
+        <div className="mt-1">
+          {/* All products */}
+          {!hasChildData && (
             <Link
               href={href}
               onClick={onClose}
@@ -54,19 +78,21 @@ export default function ProductMenu({
             </Link>
           )}
 
+          {/* Directories */}
           <div className="space-y-1">
             {items.map((directory) => {
               const open = openDirectory === directory._id;
-              console.log(directory.title, directory.category);
+              const categories = directory?.category ?? [];
 
               return (
                 <Collapsible
                   key={directory._id}
                   open={open}
-                  onOpenChange={(isOpen) => {
-                    setOpenDirectory(isOpen ? directory._id : null);
-                  }}
+                  onOpenChange={(isOpen) =>
+                    handleDirectoryChange(directory._id, isOpen)
+                  }
                 >
+                  {/* Directory */}
                   <div className="flex items-center rounded-lg hover:bg-gray-50">
                     <Link
                       href={
@@ -75,16 +101,22 @@ export default function ProductMenu({
                           : `/san-pham/directory/${directory.slug}`
                       }
                       onClick={onClose}
-                      className="flex-1 px-3 py-2 text-sm font-medium text-gray-800"
+                      className="min-w-0 flex-1 px-3 py-2 text-sm font-medium text-gray-800"
                     >
                       {directory.title}
                     </Link>
 
-                    {!!directory.category?.length && (
+                    {/* Category toggle */}
+                    {categories.length > 0 && (
                       <CollapsibleTrigger asChild>
                         <button
                           type="button"
-                          className="rounded-md p-2 hover:bg-gray-100"
+                          aria-label={
+                            open
+                              ? `Thu gọn ${directory.title}`
+                              : `Mở rộng ${directory.title}`
+                          }
+                          className="shrink-0 rounded-md p-2 hover:bg-gray-100"
                         >
                           {open ? (
                             <ChevronDown className="h-4 w-4" />
@@ -96,14 +128,15 @@ export default function ProductMenu({
                     )}
                   </div>
 
-                  <CollapsibleContent className="data-[state=open]:animate-collapsible-down data-[state=closed]:animate-collapsible-up overflow-hidden">
+                  {/* Categories */}
+                  <CollapsibleContent className="data-[state=open]:animate-collapsible-down data-[state=closed]:animate-collapsible-up">
                     <div className="ml-4 border-l border-gray-200 pl-3">
-                      {directory?.category?.map((category) => (
+                      {categories.map((category) => (
                         <Link
                           key={category._id}
                           href={`/san-pham/category/${category.slug}`}
                           onClick={onClose}
-                          className="block rounded-md px-3 py-2 text-sm text-gray-600 hover:bg-gray-50 hover:text-[#9c1d22]"
+                          className="block rounded-md px-3 py-2 text-[13px] text-gray-600 hover:bg-gray-50 hover:text-[#9c1d22]"
                         >
                           {category.title}
                         </Link>
@@ -114,8 +147,8 @@ export default function ProductMenu({
               );
             })}
           </div>
-        </AccordionContent>
-      </AccordionItem>
-    </Accordion>
+        </div>
+      )}
+    </div>
   );
 }

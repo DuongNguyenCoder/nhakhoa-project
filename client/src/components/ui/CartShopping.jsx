@@ -28,11 +28,11 @@ const CartShopping = () => {
   };
 
   return (
-    <div className="h-auto w-auto border-none sm:mr-4">
+    <div className="h-auto w-24 border-none xl:mr-4">
       <Popover>
-        <PopoverButton className="inline-flex text-white items-center justify-center gap-x-2">
+        <PopoverButton className="inline-flex text-white items-center justify-center gap-x-1">
           <div className="relative">
-            <ShoppingCartIcon className="size-6 sm:size-7" />
+            <ShoppingCartIcon className="size-6" />
             <span
               id="soluong"
               className="absolute -right-1 -top-1 w-3 items-center justify-center rounded-full bg-red-500 text-xs text-white"
@@ -40,7 +40,7 @@ const CartShopping = () => {
               {totalQuantity}
             </span>
           </div>
-          <span className=" font-mono text-base font-semibold md:hidden lg:block">
+          <span className="font-mono text-base text-[12px] font-semibold">
             GIỎ HÀNG
           </span>
         </PopoverButton>

@@ -49,7 +49,7 @@ const AuthButtons = () => {
   }, [showLoginModal]);
 
   return (
-    <div className="relative flex items-center justify-center gap-2 p-1.5 md:p-0 text-sm text-black md:text-gray-700 border-y md:border-none border-y-yellow-500">
+    <div className="relative flex items-center justify-center gap-2 p-1.5 lg:p-0 text-sm text-black md:text-gray-700 border-y lg:border-none border-y-yellow-500">
       <IdentificationIcon className="size-6 md:size-5 text-primary" />
       {isLoggedIn ? (
         <div className="flex items-center gap-4">
